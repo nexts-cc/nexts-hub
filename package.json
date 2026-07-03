@@ -1,0 +1,16 @@
+{
+  "name": "nexts-hub",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "new:skill": "node scripts/new.mjs skill",
+    "new:plugin": "node scripts/new.mjs plugin",
+    "new:assistant": "node scripts/new.mjs assistant",
+    "new:mcp": "node scripts/new.mjs mcp",
+    "sync-index": "node scripts/sync-index.mjs",
+    "validate": "node scripts/validate.mjs"
+  }
+}

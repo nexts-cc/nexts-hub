@@ -1,0 +1,26 @@
+{
+  "name": "universal-email",
+  "version": "0.1.0+codex.20260630084429",
+  "description": "Read and send mail through one or more standard IMAP and SMTP accounts.",
+  "author": {
+    "name": "Local developer"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Universal Email",
+    "shortDescription": "Read and send mail with multi-account IMAP and SMTP.",
+    "longDescription": "Universal Email connects Codex to one or more mailbox providers that expose standard IMAP and SMTP endpoints. Configure common providers with provider, email, and password or app password; override server details for custom mailboxes.",
+    "developerName": "Local developer",
+    "category": "Communication",
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "defaultPrompt": [
+      "List my configured email accounts.",
+      "Read the latest unread messages from work.",
+      "Send an email from my personal account."
+    ]
+  },
+  "mcpServers": "./.mcp.json"
+}

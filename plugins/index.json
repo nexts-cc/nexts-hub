@@ -1,0 +1,70 @@
+{
+  "version": 1,
+  "items": [
+    {
+      "id": "browser",
+      "description": "Browser / browser-use plugin\n\nAliases: @browser, @browser-use, browser-use, Browser, in-app browser.\n\nUse Browser, the Nexts in-app browser, when the user asks to open, inspect, navigate, test, click, type, or screenshot local web targets such as localhost, 127.0.0.1, ::1, file:// URLs, or the current in-app browser tab.\n\nAfter significant frontend changes to a local app, use Browser to open the relevant local target when it is known or obvious, unless the user asks for another browser tool.\n\nFor requests like \"open localhost:3000\" or \"open to localhost:4000\", navigate the in-app browser to http://localhost:3000 or http://localhost:4000.\n\nDo not satisfy explicit @browser or @browser-use requests with macOS `open`, shell commands, or generic web browsing unless the user asks for another browser tool or approves a fallback.",
+      "path": "./plugins/browser"
+    },
+    {
+      "id": "chrome",
+      "description": "Control the user's real, logged-in Chrome for tasks that depend on existing Chrome state: open tabs, logged-in sessions, cookies, and extensions. Drives Chrome through the Chrome Control bridge (local JSON-RPC + Chrome extension). Prefer purpose-built connectors, APIs, or CLIs; use Chrome when the task needs the user's own browser state or the user explicitly asks for Chrome.",
+      "path": "./plugins/chrome"
+    },
+    {
+      "id": "computer-use",
+      "description": "Control desktop apps on Windows from Nexts through Computer Use.",
+      "path": "./plugins/computer-use"
+    },
+    {
+      "id": "documents",
+      "description": "Create and edit document artifacts in Nexts, including Word files and Google Docs.",
+      "path": "./plugins/documents"
+    },
+    {
+      "id": "gmail",
+      "description": "Work with Gmail using the configured Gmail app connector.",
+      "path": "./plugins/gmail"
+    },
+    {
+      "id": "google-calendar",
+      "description": "Connect Google Calendar for scheduling, availability, daily briefs, and event management.",
+      "path": "./plugins/google-calendar"
+    },
+    {
+      "id": "outlook-email",
+      "description": "Work with Outlook Email using the configured Microsoft Outlook app connector.",
+      "path": "./plugins/outlook-email"
+    },
+    {
+      "id": "pdf",
+      "description": "Read, create, inspect, render, and verify PDF files in Nexts.",
+      "path": "./plugins/pdf"
+    },
+    {
+      "id": "presentations",
+      "description": "Create, edit, render, verify, and export presentation slide decks. Use when Nexts needs to build or modify a deck, slidedeck, presentation deck, slide deck, slides, PowerPoint, Google Slides, PPT, PPTX, .ppt, or .pptx file.",
+      "path": "./plugins/presentations"
+    },
+    {
+      "id": "spreadsheets",
+      "description": "Create, edit, analyze, visualize, render, and export spreadsheets or Google Sheets-ready workbooks in Nexts.",
+      "path": "./plugins/spreadsheets"
+    },
+    {
+      "id": "superpowers",
+      "description": "An agentic skills framework & software development methodology that works: planning, TDD, debugging, and collaboration workflows.",
+      "path": "./plugins/superpowers"
+    },
+    {
+      "id": "template-creator",
+      "description": "Create and update personal artifact template skills.",
+      "path": "./plugins/template-creator"
+    },
+    {
+      "id": "universal-email",
+      "description": "Read and send mail through one or more standard IMAP and SMTP accounts.",
+      "path": "./plugins/universal-email"
+    }
+  ]
+}
