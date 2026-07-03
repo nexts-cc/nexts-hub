@@ -1,0 +1,13 @@
+{
+  "id": "my_server",
+  "display_name": "My MCP Server",
+  "description": "What this server provides.",
+  "transport": "stdio",
+  "command": "my-server",
+  "args": [],
+  "env": {},
+  "url": null,
+  "headers": {},
+  "enabled_by_default": false,
+  "platforms": ["windows", "macos", "linux"]
+}

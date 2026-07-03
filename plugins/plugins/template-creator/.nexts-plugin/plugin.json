@@ -1,0 +1,45 @@
+{
+  "name": "template-creator",
+  "version": "26.623.12021",
+  "description": "Create and update personal artifact template skills.",
+  "author": {
+    "name": "OpenAI",
+    "email": "support@openai.com",
+    "url": "https://openai.com/"
+  },
+  "homepage": "https://openai.com/",
+  "repository": "https://github.com/openai/openai",
+  "license": "Proprietary",
+  "keywords": [
+    "artifact",
+    "template",
+    "document",
+    "presentation",
+    "spreadsheet"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Template Creator",
+    "shortDescription": "Create or update personal artifact templates",
+    "longDescription": "Turn DOCX, PPTX, and XLSX references into reusable personal template skills, or update an existing personal artifact template.",
+    "developerName": "OpenAI",
+    "category": "Productivity",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "websiteURL": "https://openai.com/",
+    "privacyPolicyURL": "https://openai.com/policies/row-privacy-policy/",
+    "termsOfServiceURL": "https://openai.com/policies/row-terms-of-use/",
+    "defaultPrompt": [
+      "Create a personal template from this document",
+      "Create a personal template from this presentation",
+      "Create a personal template from this spreadsheet",
+      "Update this personal artifact template"
+    ],
+    "brandColor": "#10A37F",
+    "composerIcon": "./assets/icon.svg",
+    "logo": "./assets/icon.svg",
+    "screenshots": []
+  }
+}

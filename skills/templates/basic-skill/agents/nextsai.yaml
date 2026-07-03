@@ -1,0 +1,4 @@
+display_name: Basic Skill
+short_description: Replace with a short human-facing skill summary.
+default_prompt:
+  - Use $basic-skill to help with this task.

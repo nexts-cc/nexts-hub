@@ -1,0 +1,164 @@
+{
+  "name": "nextsai-plugins",
+  "interface": {
+    "displayName": "NextsAI Plugins"
+  },
+  "plugins": [
+    {
+      "name": "pdf",
+      "source": {
+        "source": "local",
+        "path": "./plugins/pdf"
+      },
+      "policy": {
+        "installation": "NOT_AVAILABLE",
+        "authentication": "NONE"
+      },
+      "category": "Documents"
+    },
+    {
+      "name": "documents",
+      "source": {
+        "source": "local",
+        "path": "./plugins/documents"
+      },
+      "policy": {
+        "installation": "NOT_AVAILABLE",
+        "authentication": "NONE"
+      },
+      "category": "Documents"
+    },
+    {
+      "name": "spreadsheets",
+      "source": {
+        "source": "local",
+        "path": "./plugins/spreadsheets"
+      },
+      "policy": {
+        "installation": "NOT_AVAILABLE",
+        "authentication": "NONE"
+      },
+      "category": "Documents"
+    },
+    {
+      "name": "presentations",
+      "source": {
+        "source": "local",
+        "path": "./plugins/presentations"
+      },
+      "policy": {
+        "installation": "NOT_AVAILABLE",
+        "authentication": "NONE"
+      },
+      "category": "Documents"
+    },
+    {
+      "name": "template-creator",
+      "source": {
+        "source": "local",
+        "path": "./plugins/template-creator"
+      },
+      "policy": {
+        "installation": "NOT_AVAILABLE",
+        "authentication": "NONE"
+      },
+      "category": "Documents"
+    },
+    {
+      "name": "browser",
+      "source": {
+        "source": "local",
+        "path": "./plugins/browser"
+      },
+      "policy": {
+        "installation": "NOT_AVAILABLE",
+        "authentication": "NONE"
+      },
+      "category": "Automation"
+    },
+    {
+      "name": "chrome",
+      "source": {
+        "source": "local",
+        "path": "./plugins/chrome"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "NONE"
+      },
+      "category": "Automation"
+    },
+    {
+      "name": "computer-use",
+      "source": {
+        "source": "local",
+        "path": "./plugins/computer-use"
+      },
+      "policy": {
+        "installation": "NOT_AVAILABLE",
+        "authentication": "NONE"
+      },
+      "category": "Automation"
+    },
+    {
+      "name": "gmail",
+      "source": {
+        "source": "local",
+        "path": "./plugins/gmail"
+      },
+      "policy": {
+        "installation": "NOT_AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Communication"
+    },
+    {
+      "name": "google-calendar",
+      "source": {
+        "source": "local",
+        "path": "./plugins/google-calendar"
+      },
+      "policy": {
+        "installation": "NOT_AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Communication"
+    },
+    {
+      "name": "outlook-email",
+      "source": {
+        "source": "local",
+        "path": "./plugins/outlook-email"
+      },
+      "policy": {
+        "installation": "NOT_AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Communication"
+    },
+    {
+      "name": "superpowers",
+      "source": {
+        "source": "local",
+        "path": "./plugins/superpowers"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "NONE"
+      },
+      "category": "Developer Tools"
+    },
+    {
+      "name": "universal-email",
+      "source": {
+        "source": "local",
+        "path": "./plugins/universal-email"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Communication"
+    }
+  ]
+}

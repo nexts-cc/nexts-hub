@@ -1,0 +1,16 @@
+{
+  "name": "{{plugin-name}}",
+  "version": "0.1.0",
+  "description": "{{plugin-description}}",
+  "author": {
+    "name": "Nexts"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "{{Plugin Display Name}}",
+    "shortDescription": "{{plugin-description}}",
+    "category": "Productivity",
+    "capabilities": ["Skill"],
+    "defaultPrompt": ["Use ${{plugin-name}} to help with this task."]
+  }
+}

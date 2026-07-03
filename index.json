@@ -1,0 +1,28 @@
+{
+  "$schema": "./schemas/index.schema.json",
+  "name": "nexts-hub",
+  "description": "Unified content hub for Nexts: skills, plugins, assistants, and MCP servers.",
+  "categories": {
+    "skills": {
+      "version": 1,
+      "path": "./skills/skills",
+      "installTo": "skills"
+    },
+    "plugins": {
+      "version": 1,
+      "path": "./plugins/plugins",
+      "registry": "./plugins/.agents/plugins/marketplace.json",
+      "installTo": "plugins"
+    },
+    "assistants": {
+      "version": 1,
+      "path": "./assistants",
+      "installTo": "assistants"
+    },
+    "mcp": {
+      "version": 1,
+      "path": "./mcp",
+      "installTo": "mcp"
+    }
+  }
+}

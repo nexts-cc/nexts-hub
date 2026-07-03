@@ -1,0 +1,35 @@
+{
+  "name": "chrome",
+  "version": "1.0.0",
+  "description": "Control the user's real, logged-in Chrome for tasks that depend on existing Chrome state: open tabs, logged-in sessions, cookies, and extensions. Drives Chrome through the Chrome Control bridge (local JSON-RPC + Chrome extension). Prefer purpose-built connectors, APIs, or CLIs; use Chrome when the task needs the user's own browser state or the user explicitly asks for Chrome.",
+  "author": {
+    "name": "Chrome Control"
+  },
+  "license": "Proprietary",
+  "keywords": [
+    "browser",
+    "chrome",
+    "bridge",
+    "json-rpc",
+    "extension"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Chrome",
+    "shortDescription": "Control your real Chrome with Chrome Control",
+    "longDescription": "Chrome lets Chrome Control use your real, logged-in Chrome for tasks that need your existing browser state — open tabs, page content, and sites you're already signed into. It can navigate, view, click, type, fill, search, and take screenshots while working, driving Chrome through the Chrome Control bridge. You stay in control: Chrome Control confirms before sensitive actions, you can stop at any time, and you can manage or remove Chrome access in settings. Browser content may include sensitive information from logged-in sites.",
+    "developerName": "Nexts AI",
+    "category": "Productivity",
+    "capabilities": [
+      "Interactive",
+      "Read"
+    ],
+    "defaultPrompt": [
+      "Help me open Gmail"
+    ],
+    "brandColor": "#4648d4",
+    "composerIcon": "./assets/google-chrome-composer.png",
+    "logo": "./assets/google-chrome.png",
+    "screenshots": []
+  }
+}

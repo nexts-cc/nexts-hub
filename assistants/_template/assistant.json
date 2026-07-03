@@ -1,0 +1,22 @@
+{
+  "id": "my_assistant",
+  "display_name": "My Assistant",
+  "description": "One-line description of what this assistant does.",
+  "avatar": "🛠️",
+  "system_prompt": "You are…",
+  "default_mode": "default",
+  "main_backend_id": "nextcli",
+  "model_id": null,
+  "skill_refs": [],
+  "default_tools": [],
+  "memory_policy": { "user": true, "project": true },
+  "prompts": [],
+  "i18n": {
+    "zh-CN": {
+      "display_name": "我的助手",
+      "description": "一句话说明这个助手的用途。",
+      "system_prompt": "你是…",
+      "prompts": []
+    }
+  }
+}
