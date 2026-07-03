@@ -4,7 +4,14 @@ import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 import { spawnSync } from "node:child_process";
 import process from "node:process";
-import { buildAllIndexes, hasBom, readJsonFile, readUtf8NoBom, toSlash } from "./sync-index.mjs";
+import {
+  buildAllRegistries,
+  checkPluginsMarketplace,
+  hasBom,
+  readJsonFile,
+  readUtf8NoBom,
+  toSlash,
+} from "./sync.mjs";
 
 const root = process.cwd();
 const errors = [];
@@ -24,22 +31,12 @@ if (errors.length > 0) {
 console.log("Hub validation passed.");
 
 function validateHub() {
-  requireCategoryIndexes();
   validateTopLevelIndex();
   validateSkills();
   validatePlugins();
   validateJsonCategory("assistants", "assistant.json", ["id", "display_name", "description", "system_prompt"]);
   validateJsonCategory("mcp", "mcp.json", ["id", "display_name", "description", "transport"]);
-  validateIndexesCurrent();
-}
-
-function requireCategoryIndexes() {
-  for (const category of ["skills", "plugins", "assistants", "mcp"]) {
-    const indexPath = join(root, category, "index.json");
-    if (!existsSync(indexPath)) {
-      errors.push(`${category}/index.json is missing; run npm run sync-index`);
-    }
-  }
+  validateRegistriesCurrent();
 }
 
 function validateTopLevelIndex() {
@@ -51,8 +48,17 @@ function validateTopLevelIndex() {
 
   const index = readJson(topLevelPath);
   for (const category of ["skills", "plugins", "assistants", "mcp"]) {
-    if (!index?.categories?.[category]) {
+    const entry = index?.categories?.[category];
+    if (!entry) {
       errors.push(`index.json categories.${category} is missing`);
+      continue;
+    }
+    if (!entry.registry) {
+      errors.push(`index.json categories.${category}.registry is missing`);
+      continue;
+    }
+    if (!existsSync(join(root, entry.registry))) {
+      errors.push(`index.json categories.${category}.registry points to a missing file: ${entry.registry}`);
     }
   }
 }
@@ -96,7 +102,9 @@ function validatePlugins() {
 
 function validateJsonCategory(category, manifestName, requiredFields) {
   const categoryRoot = join(root, category);
-  for (const id of listDirectories(categoryRoot).filter((entry) => !entry.startsWith("_"))) {
+  const skipped = (entry) =>
+    entry.startsWith("_") || entry === ".agents" || entry === "templates";
+  for (const id of listDirectories(categoryRoot).filter((entry) => !skipped(entry))) {
     const manifestPath = join(categoryRoot, id, manifestName);
     if (!existsSync(manifestPath)) {
       errors.push(`${category}/${id}/${manifestName} is missing`);
@@ -115,17 +123,21 @@ function validateJsonCategory(category, manifestName, requiredFields) {
   }
 }
 
-function validateIndexesCurrent() {
-  for (const result of buildAllIndexes(root)) {
+function validateRegistriesCurrent() {
+  for (const result of buildAllRegistries(root)) {
+    const relative = toSlash(result.filePath.slice(root.length + 1));
     if (!existsSync(result.filePath)) {
+      errors.push(`${relative} is missing; run npm run sync`);
       continue;
     }
 
     const current = readFileSync(result.filePath, "utf8");
     if (current !== result.content) {
-      errors.push(`${result.category}/index.json is out of date; run npm run sync-index`);
+      errors.push(`${relative} is out of date; run npm run sync`);
     }
   }
+
+  errors.push(...checkPluginsMarketplace(root));
 }
 
 function runChildValidator(category, scriptPath) {

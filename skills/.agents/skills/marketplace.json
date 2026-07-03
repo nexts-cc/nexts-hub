@@ -1,0 +1,43 @@
+{
+  "name": "nextsai-skills",
+  "interface": {
+    "displayName": "NextsAI Skills"
+  },
+  "skills": [
+    {
+      "name": "contract-review",
+      "source": {
+        "source": "local",
+        "path": "./skills/contract-review"
+      }
+    },
+    {
+      "name": "find-skills",
+      "source": {
+        "source": "local",
+        "path": "./skills/find-skills"
+      }
+    },
+    {
+      "name": "meeting-minutes",
+      "source": {
+        "source": "local",
+        "path": "./skills/meeting-minutes"
+      }
+    },
+    {
+      "name": "resume-screen",
+      "source": {
+        "source": "local",
+        "path": "./skills/resume-screen"
+      }
+    },
+    {
+      "name": "skill-creator",
+      "source": {
+        "source": "local",
+        "path": "./skills/skill-creator"
+      }
+    }
+  ]
+}

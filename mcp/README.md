@@ -4,7 +4,7 @@
 
 ```
 mcp/
-├── _template/mcp.json   模板(下划线开头的目录不会被加载)
+├── templates/basic-mcp/   模板(templates/、.agents/、_ 开头目录不作为内容加载)
 └── <id>/mcp.json
 ```
 
@@ -32,7 +32,7 @@ mcp/
 
 ## 约定
 
-- 目录名 == `id`;`_` 开头目录不加载。
+- 目录名 == `id`;`templates/`、`.agents/` 与 `_` 开头目录不作为内容加载。注册表 `.agents/mcp/marketplace.json` 由 `npm run sync` 生成。
 - 落地方式由 app 决定:写入数据目录 `mcp/` 或合并进 nextcli 的 `config.toml`(config 来源的 server 默认对 agent 放行)。
 - **不要在仓库里存任何密钥/token**;需要凭据的 server 在 `env`/`headers` 里留键名,值由用户在 app 内填。
 - 文件编码 UTF-8 无 BOM。

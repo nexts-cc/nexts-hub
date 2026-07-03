@@ -1,0 +1,7 @@
+{
+  "name": "nextsai-mcp",
+  "interface": {
+    "displayName": "NextsAI MCP"
+  },
+  "mcp": []
+}

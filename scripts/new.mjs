@@ -35,9 +35,9 @@ function createItem(category, id) {
     return createPlugin(id);
   }
   if (category === "assistant") {
-    return createJsonTemplate("assistants", "_template", id, "assistant.json");
+    return createJsonTemplate("assistants", "basic-assistant", id, "assistant.json");
   }
-  return createJsonTemplate("mcp", "_template", id, "mcp.json");
+  return createJsonTemplate("mcp", "basic-mcp", id, "mcp.json");
 }
 
 function createSkill(id) {
@@ -70,7 +70,7 @@ function createPlugin(id) {
 }
 
 function createJsonTemplate(category, templateName, id, manifestName) {
-  const source = join(root, category, templateName);
+  const source = join(root, category, "templates", templateName);
   const target = join(root, category, id);
   copyTemplate(source, target);
 
@@ -110,7 +110,7 @@ function appendMarketplacePlugin(id) {
 }
 
 function runSyncIndex() {
-  const result = spawnSync(process.execPath, ["scripts/sync-index.mjs"], {
+  const result = spawnSync(process.execPath, ["scripts/sync.mjs"], {
     cwd: root,
     stdio: "inherit",
   });

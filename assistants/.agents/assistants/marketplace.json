@@ -1,0 +1,7 @@
+{
+  "name": "nextsai-assistants",
+  "interface": {
+    "displayName": "NextsAI Assistants"
+  },
+  "assistants": []
+}

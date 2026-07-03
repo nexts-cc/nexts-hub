@@ -4,7 +4,7 @@
 
 ```
 assistants/
-├── _template/assistant.json   模板(下划线开头的目录不会被加载)
+├── templates/basic-assistant/   模板(templates/、.agents/、_ 开头目录不作为内容加载)
 └── <id>/assistant.json
 ```
 
@@ -35,7 +35,7 @@ assistants/
 
 ## 约定
 
-- 目录名 == `id`;`_` 开头的目录(如 `_template/`)不加载。
+- 目录名 == `id`;`templates/`、`.agents/` 与 `_` 开头目录不作为内容加载。注册表 `.agents/assistants/marketplace.json` 由 `npm run sync` 生成。
 - 内置助手(cowork、legal_review、hr_screen、meeting_summary、doc_writer、slides_maker、spreadsheet_helper、data_dashboard、diagram_drawer)将从 `assistants.rs` 逐个抽取到这里;抽取完成前,app 仍以 Rust 内置为准。
 - 用户在 app 里自建的助手也落在数据目录同结构下,更新拉取不得覆盖。
 - 文件编码 UTF-8 无 BOM。

@@ -7,7 +7,7 @@ English documentation: [README.md](README.md)
 ```
 nexts-hub/
 ├── index.json      总清单:各类目的版本号与入口,app 据此检查更新
-├── package.json    统一工具入口(npm scripts:脚手架 / 同步注册表 / 校验)
+├── package.json    统一工具入口(npm scripts:脚手架 / sync 同步注册表 / validate 校验)
 ├── skills/         技能(原 nexts-cc/skills 仓库,内部布局不变)
 │   └── skills/<name>/SKILL.md
 ├── plugins/        插件(原 nexts-cc/plugins 仓库,内部布局不变)
@@ -19,7 +19,7 @@ nexts-hub/
     └── <id>/mcp.json
 ```
 
-每个类目还有自己的入口清单(`skills/index.json`、`plugins/index.json`、`assistants/index.json`、`mcp/index.json`),由 `npm run sync-index` 生成。
+每个类目都有 `.agents` marketplace 注册表(`skills/.agents/skills/marketplace.json`、`plugins/.agents/plugins/marketplace.json`、`assistants/.agents/assistants/marketplace.json`、`mcp/.agents/mcp/marketplace.json`)。plugins 的为权威、手工维护;其余三个由 `npm run sync` 生成。
 
 ## 分发模型
 
@@ -45,6 +45,6 @@ nexts-hub/
 - 新增插件:`plugins/plugins/<name>/`,并在 `plugins/.agents/plugins/marketplace.json` 注册。
 - 新增助手:`assistants/<id>/assistant.json`(schema 见 `assistants/README.md`)。
 - 新增 MCP:`mcp/<id>/mcp.json`(schema 见 `mcp/README.md`)。
-- 优先用脚手架:`npm run new:skill -- <id>`(同理 `new:plugin` / `new:assistant` / `new:mcp`),然后 `npm run sync-index`、`npm run validate`。详见 `docs/DEVELOPMENT.md`。
+- 优先用脚手架:`npm run new:skill -- <id>`(同理 `new:plugin` / `new:assistant` / `new:mcp`),然后 `npm run sync`、`npm run validate`。详见 `docs/DEVELOPMENT.md`。
 - 每次发布内容变更,**同步递增 `index.json` 里对应类目的 version**,app 靠它判断是否需要更新。
 - 编码:UTF-8 无 BOM(含中文的文件尤其注意)。
