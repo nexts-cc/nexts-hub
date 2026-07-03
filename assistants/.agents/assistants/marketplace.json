@@ -3,5 +3,69 @@
   "interface": {
     "displayName": "NextsAI Assistants"
   },
-  "assistants": []
+  "assistants": [
+    {
+      "name": "cowork",
+      "source": {
+        "source": "local",
+        "path": "./cowork"
+      }
+    },
+    {
+      "name": "data_dashboard",
+      "source": {
+        "source": "local",
+        "path": "./data_dashboard"
+      }
+    },
+    {
+      "name": "diagram_drawer",
+      "source": {
+        "source": "local",
+        "path": "./diagram_drawer"
+      }
+    },
+    {
+      "name": "doc_writer",
+      "source": {
+        "source": "local",
+        "path": "./doc_writer"
+      }
+    },
+    {
+      "name": "hr_screen",
+      "source": {
+        "source": "local",
+        "path": "./hr_screen"
+      }
+    },
+    {
+      "name": "legal_review",
+      "source": {
+        "source": "local",
+        "path": "./legal_review"
+      }
+    },
+    {
+      "name": "meeting_summary",
+      "source": {
+        "source": "local",
+        "path": "./meeting_summary"
+      }
+    },
+    {
+      "name": "slides_maker",
+      "source": {
+        "source": "local",
+        "path": "./slides_maker"
+      }
+    },
+    {
+      "name": "spreadsheet_helper",
+      "source": {
+        "source": "local",
+        "path": "./spreadsheet_helper"
+      }
+    }
+  ]
 }

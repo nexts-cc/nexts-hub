@@ -36,6 +36,6 @@ assistants/
 ## 约定
 
 - 目录名 == `id`;`templates/`、`.agents/` 与 `_` 开头目录不作为内容加载。注册表 `.agents/assistants/marketplace.json` 由 `npm run sync` 生成。
-- 内置助手(cowork、legal_review、hr_screen、meeting_summary、doc_writer、slides_maker、spreadsheet_helper、data_dashboard、diagram_drawer)将从 `assistants.rs` 逐个抽取到这里;抽取完成前,app 仍以 Rust 内置为准。
+- 内置助手(cowork、legal_review、hr_screen、meeting_summary、doc_writer、slides_maker、spreadsheet_helper、data_dashboard、diagram_drawer)已由 Nexts 的 `dump_builtin_presets_to_hub_json` 测试从 `assistants.rs` 自动导出到这里(编译器序列化,非手抄);app 侧加载切换完成前,运行时仍以 Rust 内置为准。
 - 用户在 app 里自建的助手也落在数据目录同结构下,更新拉取不得覆盖。
 - 文件编码 UTF-8 无 BOM。

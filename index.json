@@ -6,25 +6,29 @@
       "version": 1,
       "path": "./skills/skills",
       "registry": "./skills/.agents/skills/marketplace.json",
-      "installTo": "skills"
+      "installTo": "skills",
+      "hash": "sha256:8b2565decd4e9839ffb6b4f077718cbda4504f21523635d6dbb01dd3b7d73335"
     },
     "plugins": {
       "version": 1,
       "path": "./plugins/plugins",
       "registry": "./plugins/.agents/plugins/marketplace.json",
-      "installTo": "plugins"
+      "installTo": "plugins",
+      "hash": "sha256:b2e232a2e027ccac168c8aaa8cd2a76dd56b7d3fe4dc269cf96cdda53a0446b7"
     },
     "assistants": {
       "version": 1,
       "path": "./assistants",
       "registry": "./assistants/.agents/assistants/marketplace.json",
-      "installTo": "assistants"
+      "installTo": "assistants",
+      "hash": "sha256:9ab0f6a171907203845868491d31f3a035ee107ae38d60c6136080950e44c976"
     },
     "mcp": {
       "version": 1,
       "path": "./mcp",
       "registry": "./mcp/.agents/mcp/marketplace.json",
-      "installTo": "mcp"
+      "installTo": "mcp",
+      "hash": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     }
   }
 }

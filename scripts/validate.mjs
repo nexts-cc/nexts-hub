@@ -6,6 +6,7 @@ import { spawnSync } from "node:child_process";
 import process from "node:process";
 import {
   buildAllRegistries,
+  buildTopLevelIndex,
   checkPluginsMarketplace,
   hasBom,
   readJsonFile,
@@ -124,7 +125,7 @@ function validateJsonCategory(category, manifestName, requiredFields) {
 }
 
 function validateRegistriesCurrent() {
-  for (const result of buildAllRegistries(root)) {
+  for (const result of [...buildAllRegistries(root), buildTopLevelIndex(root)]) {
     const relative = toSlash(result.filePath.slice(root.length + 1));
     if (!existsSync(result.filePath)) {
       errors.push(`${relative} is missing; run npm run sync`);

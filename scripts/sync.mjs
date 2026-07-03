@@ -9,6 +9,7 @@
 // script only checks it for consistency against the plugins on disk.
 
 import { existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
+import { createHash } from "node:crypto";
 import { dirname, join } from "node:path";
 import process from "node:process";
 
@@ -74,6 +75,78 @@ export function toSlash(value) {
   return value.replaceAll("\\", "/");
 }
 
+// Per-category content hashes. Computed from the category's source-of-truth
+// files, so any content change flips the hash automatically — the app compares
+// these against its locally recorded state to decide whether to update, and
+// nobody has to remember to bump a version by hand.
+export function computeCategoryHashes(baseDir = root) {
+  return {
+    skills: hashPaths(baseDir, [join("skills", "skills")]),
+    plugins: hashPaths(baseDir, [
+      join("plugins", "plugins"),
+      join("plugins", ".agents", "plugins", "marketplace.json"),
+    ]),
+    assistants: hashPaths(baseDir, contentDirs(baseDir, "assistants")),
+    mcp: hashPaths(baseDir, contentDirs(baseDir, "mcp")),
+  };
+}
+
+function contentDirs(baseDir, category) {
+  return listDirectories(join(baseDir, category))
+    .filter(
+      (directoryName) =>
+        !directoryName.startsWith("_") &&
+        directoryName !== ".agents" &&
+        directoryName !== "templates"
+    )
+    .map((directoryName) => join(category, directoryName));
+}
+
+function hashPaths(baseDir, relativePaths) {
+  const files = [];
+  for (const relativePath of relativePaths) {
+    collectFiles(baseDir, relativePath, files);
+  }
+  files.sort();
+
+  const digest = createHash("sha256");
+  for (const relativeFile of files) {
+    const bytes = readFileSync(join(baseDir, relativeFile));
+    digest.update(relativeFile);
+    digest.update("\0");
+    digest.update(String(bytes.length));
+    digest.update("\0");
+    digest.update(bytes);
+  }
+  return `sha256:${digest.digest("hex")}`;
+}
+
+function collectFiles(baseDir, relativePath, out) {
+  const fullPath = join(baseDir, relativePath);
+  if (!existsSync(fullPath)) {
+    return;
+  }
+  if (statSync(fullPath).isFile()) {
+    out.push(toSlash(relativePath));
+    return;
+  }
+  for (const entry of readdirSync(fullPath)) {
+    collectFiles(baseDir, join(relativePath, entry), out);
+  }
+}
+
+export function buildTopLevelIndex(baseDir = root) {
+  const indexPath = join(baseDir, "index.json");
+  const index = JSON.parse(readUtf8NoBom(indexPath));
+  const hashes = computeCategoryHashes(baseDir);
+  for (const [category, hash] of Object.entries(hashes)) {
+    if (index.categories?.[category]) {
+      index.categories[category].hash = hash;
+    }
+  }
+  return { filePath: indexPath, content: stableJson(index) };
+}
+
 function buildSkillsRegistry(baseDir) {
   const entries = listDirectories(join(baseDir, "skills", "skills"))
     .map((directoryName) => ({
@@ -134,8 +207,9 @@ function compareByName(left, right) {
 function main() {
   const checkOnly = process.argv.includes("--check");
   const mismatches = [];
+  const outputs = [...buildAllRegistries(root), buildTopLevelIndex(root)];
 
-  for (const result of buildAllRegistries(root)) {
+  for (const result of outputs) {
     const relative = toSlash(result.filePath.slice(root.length + 1));
     if (checkOnly) {
       const current = existsSync(result.filePath) ? readFileSync(result.filePath, "utf8") : "";
