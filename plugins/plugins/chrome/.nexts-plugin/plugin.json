@@ -1,6 +1,6 @@
 {
   "name": "chrome",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Control the user's real, logged-in Chrome for tasks that depend on existing Chrome state: open tabs, logged-in sessions, cookies, and extensions. Includes a bundled Windows native host executable under extension-host/windows/x64/host.exe and drives Chrome through the local Chrome Control bridge. Prefer purpose-built connectors, APIs, or CLIs; use Chrome when the task needs the user's own browser state or the user explicitly asks for Chrome.",
   "homepage": "https://chromewebstore.google.com/detail/nexts-ai/ldgomdocohcifomdiadgchoegehldnah",
   "author": {
