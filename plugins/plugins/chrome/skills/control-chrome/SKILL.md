@@ -1,6 +1,6 @@
 ---
 name: control-chrome
-description: Control the user's real, logged-in Chrome through the Chrome Control bridge. Trigger when the user asks to open, inspect, click, type in, fill, search, or screenshot a web page using their own Chrome (logged-in sites, current tabs, cookies). Prefer purpose-built connectors, APIs, or CLIs; use Chrome when the task needs the user's own browser state or the user explicitly asks for Chrome. Operate text/ref first; screenshots are a fallback.
+description: Control the user's real, logged-in Chrome through the Chrome Control bridge. Trigger when the user asks to open, inspect, click, type in, fill, search, or screenshot a web page using their own Chrome (logged-in sites, current tabs, cookies). The plugin includes a bundled Windows native host at extension-host/windows/x64/host.exe; use Chrome when the task needs the user's own browser state or the user explicitly asks for Chrome. Operate text/ref first; screenshots are a fallback.
 ---
 
 # Chrome — Chrome Control bridge
@@ -10,6 +10,8 @@ Drive the user's real, logged-in Chrome. The Chrome extension contains no model 
 ```text
 Agent -> 127.0.0.1:18765 /rpc -> native host -> Chrome Control extension -> Chrome (CDP)
 ```
+
+Windows plugin bundles include `extension-host/windows/x64/host.exe`. The Windows installer registers that native host and writes the Native Messaging manifest, so end-user machines do not need Python; source checkouts can still fall back to `native/host.py` for development.
 
 Use Chrome when the task needs the user's existing Chrome state (open tabs, logged-in sessions, cookies) or the user explicitly asks for Chrome. Do not switch to Chrome just because another connector's auth expired — ask the user to fix auth or approve Chrome as a fallback. This bridge controls the user's local Chrome; do not use it for public web research.
 
