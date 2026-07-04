@@ -14,7 +14,7 @@
       "path": "./plugins/plugins",
       "registry": "./plugins/.agents/plugins/marketplace.json",
       "installTo": "plugins",
-      "hash": "sha256:348dc3aa6532167b25936486b830775f46aa96258a6b839f20fd1e39217d45cc"
+      "hash": "sha256:63f3e355b9912c9a55e1160e1314d43c865255f33345d8ac98e48c26759e9a81"
     },
     "assistants": {
       "version": 1,

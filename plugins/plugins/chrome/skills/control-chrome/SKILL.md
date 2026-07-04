@@ -15,7 +15,7 @@ Windows plugin bundles include `extension-host/windows/x64/host.exe`. The Window
 
 Use Chrome when the task needs the user's existing Chrome state (open tabs, logged-in sessions, cookies) or the user explicitly asks for Chrome. Do not switch to Chrome just because another connector's auth expired — ask the user to fix auth or approve Chrome as a fallback. This bridge controls the user's local Chrome; do not use it for public web research.
 
-The bridge auto-connects (permissions pre-granted). If `/health` is unreachable, the Chrome Control extension is not loaded in Chrome — ask the user to load/enable it; do not walk them through install steps.
+The bridge auto-connects (permissions pre-granted). If `/health` is unreachable, use the Connect recovery step below.
 
 ## Connect
 
@@ -24,6 +24,8 @@ Health (no auth):
 ```bash
 curl -sS http://127.0.0.1:18765/health
 ```
+
+If `/health` is unreachable on Windows, first run `node scripts/install-host.js`; it idempotently writes the token env file, native-host wrapper, Chrome Native Messaging manifest, and HKCU registry entry without administrator rights. Ask the user to fully restart Chrome, then try health again. If it still fails, ask them to confirm the Chrome Control extension is enabled.
 
 When `ok` and `extensionReady` are true, call JSON-RPC. If `/health` reports `authRequired: true`, add `Authorization: Bearer $BROWSER_AGENT_BRIDGE_TOKEN`; the bundled clients load the token automatically:
 
