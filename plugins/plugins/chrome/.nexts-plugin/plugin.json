@@ -15,7 +15,7 @@
   ],
   "skills": "./skills/",
   "interface": {
-    "displayName": "Nexts AI",
+    "displayName": "Chrome",
     "shortDescription": "Control your real Chrome with nexts-ai",
     "longDescription": "nexts-ai uses your real, logged-in Chrome for tasks that need your existing browser state: open tabs, page content, and sites you're already signed into. It includes a bundled Windows native host executable, installs the Chrome Native Messaging manifest, and exposes a local Chrome Control bridge at 127.0.0.1:18765. It can navigate, view, click, type, fill, search, and take screenshots while working. You stay in control: nexts-ai confirms before sensitive actions, you can stop at any time, and you can manage or remove Chrome access in settings. Browser content may include sensitive information from logged-in sites.",
     "developerName": "Nexts AI",
