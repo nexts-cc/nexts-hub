@@ -11,7 +11,7 @@
         "path": "./plugins/pdf"
       },
       "policy": {
-        "installation": "NOT_AVAILABLE",
+        "installation": "AVAILABLE",
         "authentication": "NONE"
       },
       "category": "Documents"
@@ -23,7 +23,7 @@
         "path": "./plugins/documents"
       },
       "policy": {
-        "installation": "NOT_AVAILABLE",
+        "installation": "AVAILABLE",
         "authentication": "NONE"
       },
       "category": "Documents"
@@ -35,7 +35,7 @@
         "path": "./plugins/spreadsheets"
       },
       "policy": {
-        "installation": "NOT_AVAILABLE",
+        "installation": "AVAILABLE",
         "authentication": "NONE"
       },
       "category": "Documents"
@@ -47,7 +47,7 @@
         "path": "./plugins/presentations"
       },
       "policy": {
-        "installation": "NOT_AVAILABLE",
+        "installation": "AVAILABLE",
         "authentication": "NONE"
       },
       "category": "Documents"
@@ -113,30 +113,6 @@
       "category": "Communication"
     },
     {
-      "name": "google-calendar",
-      "source": {
-        "source": "local",
-        "path": "./plugins/google-calendar"
-      },
-      "policy": {
-        "installation": "NOT_AVAILABLE",
-        "authentication": "ON_INSTALL"
-      },
-      "category": "Communication"
-    },
-    {
-      "name": "outlook-email",
-      "source": {
-        "source": "local",
-        "path": "./plugins/outlook-email"
-      },
-      "policy": {
-        "installation": "NOT_AVAILABLE",
-        "authentication": "ON_INSTALL"
-      },
-      "category": "Communication"
-    },
-    {
       "name": "superpowers",
       "source": {
         "source": "local",
@@ -147,18 +123,6 @@
         "authentication": "NONE"
       },
       "category": "Developer Tools"
-    },
-    {
-      "name": "universal-email",
-      "source": {
-        "source": "local",
-        "path": "./plugins/universal-email"
-      },
-      "policy": {
-        "installation": "AVAILABLE",
-        "authentication": "ON_INSTALL"
-      },
-      "category": "Communication"
     }
   ]
 }
