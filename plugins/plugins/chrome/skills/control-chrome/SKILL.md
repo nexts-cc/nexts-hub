@@ -25,7 +25,7 @@ Health (no auth):
 curl -sS http://127.0.0.1:18765/health
 ```
 
-If `/health` is unreachable on Windows, first run `node scripts/install-host.js`; it idempotently writes the token env file, native-host wrapper, Chrome Native Messaging manifest, and HKCU registry entry without administrator rights. Ask the user to fully restart Chrome, then try health again. If it still fails, ask them to confirm the Chrome Control extension is enabled.
+If `/health` is unreachable, run `node scripts/ensure-chrome.js`; it starts Chrome if it is not running and waits for the bridge. Follow its printed advice: it will tell you when to run `node scripts/install-host.js` (first-time setup; then ask the user to fully restart Chrome) or to ask the user to enable the extension.
 
 When `ok` and `extensionReady` are true, call JSON-RPC. If `/health` reports `authRequired: true`, add `Authorization: Bearer $BROWSER_AGENT_BRIDGE_TOKEN`; the bundled clients load the token automatically:
 
