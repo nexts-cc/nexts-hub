@@ -27,8 +27,7 @@ Helpers:
 scripts/rpc.sh '{"jsonrpc":"2.0","id":"1","method":"session.start","params":{"url":"https://example.com"}}'
 scripts/ws-rpc.js '{"jsonrpc":"2.0","id":"2","method":"extension.info","params":{}}'
 scripts/ws-rpc.js --listen
-scripts/browser_bridge_client.py rpc session.get '{"sessionId":"SESSION_ID"}'
-scripts/doctor.py
+scripts/browser-client.js rpc session.get '{"sessionId":"SESSION_ID"}'
 ```
 
 The WebSocket helper writes newline-delimited JSON. Ignore notification lines when waiting for a response; match responses by `id`.
@@ -176,28 +175,6 @@ Parameters:
 Lists tabs only inside an Agent-managed tab group. `query.groupId` is required
 and must refer to an Agent-managed group. Other Chrome `tabs.query` options may
 be included, but unscoped tab listing is rejected.
-
-### `tabs.findUserTabs`
-
-Returns policy-allowed Chrome tabs that are not already in an Agent-managed tab
-group. Use this before opening a duplicate tab when the user may already have the
-target page open. The result is a safe tab summary only; page/locator methods
-still cannot target the tab until it is claimed.
-
-```json
-{"query":{"currentWindow":true}}
-```
-
-### `tabs.claimUserTab`
-
-Moves a user tab into an existing Agent session group and records it in that
-session. Use this only after selecting a tab returned by `tabs.findUserTabs`.
-The target URL is checked against policy before grouping, and the tab must be in
-the same Chrome window as the session group.
-
-```json
-{"sessionId":"uuid","tabId":123}
-```
 
 ### `tabs.create`
 

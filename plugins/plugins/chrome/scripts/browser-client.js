@@ -97,8 +97,21 @@ async function main() {
     }
     let params = {};
     if (paramsArg) {
+      // On Windows, PowerShell's argument marshaling to external (non-PowerShell)
+      // executables mangles embedded double-quote characters no matter how they're
+      // escaped (backtick, doubled '""', or backslash) — the quotes get stripped or
+      // corrupted before node ever sees them. `@<path>` sidesteps this entirely:
+      // write the JSON to a file with Set-Content (a pure PowerShell string write,
+      // no argv involved) and pass the file path instead of inline JSON.
+      let raw = paramsArg;
+      if (paramsArg.startsWith("@")) {
+        raw = fs.readFileSync(paramsArg.slice(1), "utf8");
+        // Windows PowerShell 5.1's `Set-Content -Encoding utf8` always writes a
+        // UTF-8 BOM; strip it (U+FEFF) so JSON.parse doesn't choke on it.
+        if (raw.charCodeAt(0) === 0xfeff) raw = raw.slice(1);
+      }
       try {
-        params = JSON.parse(paramsArg);
+        params = JSON.parse(raw);
       } catch (error) {
         process.stderr.write(`Invalid params JSON: ${error.message}\n`);
         process.exit(2);
