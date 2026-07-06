@@ -1,13 +1,13 @@
 {
   "name": "pdf",
-  "version": "26.623.12021",
+  "version": "1.0.0",
   "description": "Read, create, inspect, render, and verify PDF files in Nexts.",
   "author": {
-    "name": "OpenAI",
+    "name": "Nexts AI",
     "email": "support@openai.com",
-    "url": "https://openai.com/"
+    "url": "https://nexts.cc/"
   },
-  "homepage": "https://openai.com/",
+  "homepage": "https://nexts.cc/",
   "repository": "https://github.com/openai/openai",
   "license": "MIT",
   "keywords": [
@@ -29,15 +29,15 @@
     "displayName": "PDF",
     "shortDescription": "Read, create, and verify PDF files",
     "longDescription": "Read, create, inspect, render, verify, and extract content from PDF files locally. Use PDF when the durable output or target is a PDF file and visual layout fidelity matters.",
-    "developerName": "OpenAI",
+    "developerName": "Nexts AI",
     "category": "Productivity",
     "capabilities": [
       "Interactive",
       "Write"
     ],
-    "websiteURL": "https://openai.com/",
-    "privacyPolicyURL": "https://openai.com/policies/privacy-policy/",
-    "termsOfServiceURL": "https://openai.com/policies/terms-of-use/",
+    "websiteURL": "https://nexts.cc/",
+    "privacyPolicyURL": "https://nexts.cc/policies/privacy-policy/",
+    "termsOfServiceURL": "https://nexts.cc/policies/terms-of-use/",
     "composerIcon": "./assets/icon.png",
     "logo": "./assets/logo.png",
     "defaultPrompt": [

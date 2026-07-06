@@ -1,13 +1,13 @@
 {
   "name": "spreadsheets",
-  "version": "26.623.12021",
+  "version": "1.0.0",
   "description": "Create, edit, analyze, visualize, render, and export spreadsheets or Google Sheets-ready workbooks in Nexts.",
   "author": {
-    "name": "OpenAI",
+    "name": "Nexts AI",
     "email": "support@openai.com",
-    "url": "https://openai.com/"
+    "url": "https://nexts.cc/"
   },
-  "homepage": "https://openai.com/",
+  "homepage": "https://nexts.cc/",
   "repository": "https://github.com/openai/openai",
   "license": "MIT",
   "keywords": [
@@ -28,15 +28,15 @@
     "displayName": "Spreadsheets",
     "shortDescription": "Create and edit spreadsheet files",
     "longDescription": "Create, edit, inspect, render, verify, and export XLSX, CSV, and TSV spreadsheets locally, including local XLSX authoring for native Google Sheets handoff. Use Spreadsheets when the durable output or target is a spreadsheet, workbook, sheet, Google Sheet, or CSV file.",
-    "developerName": "OpenAI",
+    "developerName": "Nexts AI",
     "category": "Productivity",
     "capabilities": [
       "Interactive",
       "Write"
     ],
-    "websiteURL": "https://openai.com/",
-    "privacyPolicyURL": "https://openai.com/policies/privacy-policy/",
-    "termsOfServiceURL": "https://openai.com/policies/terms-of-use/",
+    "websiteURL": "https://nexts.cc/",
+    "privacyPolicyURL": "https://nexts.cc/policies/privacy-policy/",
+    "termsOfServiceURL": "https://nexts.cc/policies/terms-of-use/",
     "composerIcon": "./assets/icon.png",
     "logo": "./assets/logo.png",
     "defaultPrompt": [

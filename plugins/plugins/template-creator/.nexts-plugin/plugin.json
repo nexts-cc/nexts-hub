@@ -1,13 +1,13 @@
 {
   "name": "template-creator",
-  "version": "26.623.12021",
+  "version": "1.0.0",
   "description": "Create and update personal artifact template skills.",
   "author": {
-    "name": "OpenAI",
+    "name": "Nexts AI",
     "email": "support@openai.com",
-    "url": "https://openai.com/"
+    "url": "https://nexts.cc/"
   },
-  "homepage": "https://openai.com/",
+  "homepage": "https://nexts.cc/",
   "repository": "https://github.com/openai/openai",
   "license": "Proprietary",
   "keywords": [
@@ -22,15 +22,15 @@
     "displayName": "Template Creator",
     "shortDescription": "Create or update personal artifact templates",
     "longDescription": "Turn DOCX, PPTX, and XLSX references into reusable personal template skills, or update an existing personal artifact template.",
-    "developerName": "OpenAI",
+    "developerName": "Nexts AI",
     "category": "Productivity",
     "capabilities": [
       "Interactive",
       "Write"
     ],
-    "websiteURL": "https://openai.com/",
-    "privacyPolicyURL": "https://openai.com/policies/row-privacy-policy/",
-    "termsOfServiceURL": "https://openai.com/policies/row-terms-of-use/",
+    "websiteURL": "https://nexts.cc/",
+    "privacyPolicyURL": "https://nexts.cc/policies/row-privacy-policy/",
+    "termsOfServiceURL": "https://nexts.cc/policies/row-terms-of-use/",
     "defaultPrompt": [
       "Create a personal template from this document",
       "Create a personal template from this presentation",

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) OpenAI. All rights reserved.
+# Copyright (c) Nexts AI. All rights reserved.
 import argparse
 import json
 import re

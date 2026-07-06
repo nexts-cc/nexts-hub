@@ -1,11 +1,11 @@
 {
   "name": "computer-use",
-  "version": "26.616.81150",
+  "version": "1.0.0",
   "description": "Control desktop apps on Windows from Nexts through Computer Use.",
   "author": {
-    "name": "OpenAI",
+    "name": "Nexts AI",
     "email": "support@openai.com",
-    "url": "https://openai.com/"
+    "url": "https://nexts.cc/"
   },
   "homepage": "https://github.com/openai/openai/tree/master/project/cua/sky_js/plugin",
   "repository": "https://github.com/openai/openai/tree/master/project/cua/sky_js/plugin",
@@ -23,16 +23,16 @@
     "displayName": "Computer Use",
     "shortDescription": "Control Windows apps from Nexts",
     "longDescription": "Windows Computer Use lets Nexts use any app on your computer, including your web browsers and files you allow it to access. It may take screenshots or page content while working. You stay in control: you choose which apps to allow Nexts to access, you can stop actions at any time, and control whether we use screenshots for training.",
-    "developerName": "OpenAI",
+    "developerName": "Nexts AI",
     "category": "Productivity",
     "capabilities": [
       "Interactive",
       "Read",
       "Write"
     ],
-    "websiteURL": "https://openai.com/",
-    "privacyPolicyURL": "https://openai.com/policies/row-privacy-policy/",
-    "termsOfServiceURL": "https://openai.com/policies/row-terms-of-use/",
+    "websiteURL": "https://nexts.cc/",
+    "privacyPolicyURL": "https://nexts.cc/policies/row-privacy-policy/",
+    "termsOfServiceURL": "https://nexts.cc/policies/row-terms-of-use/",
     "logo": "./assets/app-icon.png",
     "defaultPrompt": [
       "Play a playlist to help me lock in",

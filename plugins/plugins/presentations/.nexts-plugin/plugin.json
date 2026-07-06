@@ -1,13 +1,13 @@
 {
   "name": "presentations",
-  "version": "26.623.12021",
+  "version": "1.0.0",
   "description": "Create, edit, render, verify, and export presentation slide decks. Use when Nexts needs to build or modify a deck, slidedeck, presentation deck, slide deck, slides, PowerPoint, Google Slides, PPT, PPTX, .ppt, or .pptx file.",
   "author": {
-    "name": "OpenAI",
+    "name": "Nexts AI",
     "email": "support@openai.com",
-    "url": "https://openai.com/"
+    "url": "https://nexts.cc/"
   },
-  "homepage": "https://openai.com/",
+  "homepage": "https://nexts.cc/",
   "repository": "https://github.com/openai/openai",
   "license": "MIT",
   "keywords": [
@@ -27,15 +27,15 @@
     "displayName": "Presentations",
     "shortDescription": "Create and edit presentations",
     "longDescription": "Create, edit, inspect, render, verify, and export presentation slide decks locally, including PPTX authoring and native Google Slides handoff guidance. Use Presentations when the durable output or target is a deck, slidedeck, presentation deck, slide deck, slides, PowerPoint, Google Slides, presentation, speaker notes, or visual deck repair.",
-    "developerName": "OpenAI",
+    "developerName": "Nexts AI",
     "category": "Productivity",
     "capabilities": [
       "Interactive",
       "Write"
     ],
-    "websiteURL": "https://openai.com/",
-    "privacyPolicyURL": "https://openai.com/policies/privacy-policy/",
-    "termsOfServiceURL": "https://openai.com/policies/terms-of-use/",
+    "websiteURL": "https://nexts.cc/",
+    "privacyPolicyURL": "https://nexts.cc/policies/privacy-policy/",
+    "termsOfServiceURL": "https://nexts.cc/policies/terms-of-use/",
     "composerIcon": "./assets/icon.png",
     "logo": "./assets/logo.png",
     "defaultPrompt": [

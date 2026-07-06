@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) OpenAI. All rights reserved.
+# Copyright (c) Nexts AI. All rights reserved.
 """Helpers for public container_tools scripts to resolve Nexts runtime dependencies."""
 
 from __future__ import annotations
