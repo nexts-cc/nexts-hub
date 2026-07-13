@@ -95,7 +95,7 @@
         "path": "./plugins/computer-use"
       },
       "policy": {
-        "installation": "NOT_AVAILABLE",
+        "installation": "AVAILABLE",
         "authentication": "NONE"
       },
       "category": "Automation"

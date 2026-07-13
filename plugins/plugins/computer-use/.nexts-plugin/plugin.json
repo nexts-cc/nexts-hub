@@ -4,12 +4,12 @@
   "description": "Control desktop apps on Windows from Nexts through Computer Use.",
   "author": {
     "name": "Nexts AI",
-    "email": "support@openai.com",
+    "email": "support@nexts.cc",
     "url": "https://nexts.cc/"
   },
-  "homepage": "https://github.com/openai/openai/tree/master/project/cua/sky_js/plugin",
-  "repository": "https://github.com/openai/openai/tree/master/project/cua/sky_js/plugin",
-  "license": "Proprietary",
+  "homepage": "https://nexts.cc/",
+  "repository": "https://nexts.cc/",
+  "license": "Nexts Proprietary",
   "keywords": [
     "computer-use",
     "desktop-control",
@@ -22,7 +22,7 @@
   "interface": {
     "displayName": "Computer Use",
     "shortDescription": "Control Windows apps from Nexts",
-    "longDescription": "Windows Computer Use lets Nexts use any app on your computer, including your web browsers and files you allow it to access. It may take screenshots or page content while working. You stay in control: you choose which apps to allow Nexts to access, you can stop actions at any time, and control whether we use screenshots for training.",
+    "longDescription": "Windows Computer Use lets Nexts inspect and control local desktop apps through host-approved tools. It may capture screenshots while working, but screenshots stay local and are used only for the current task. You stay in control: access is requested per session, input actions require confirmation, and you can stop actions at any time.",
     "developerName": "Nexts AI",
     "category": "Productivity",
     "capabilities": [
@@ -41,5 +41,477 @@
     ],
     "brandColor": "#2563EB",
     "screenshots": []
-  }
+  },
+  "tools": [
+    {
+      "name": "request_access",
+      "description": "Request user-approved access to inspect and control the local desktop for this agent session.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "reason": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "reason"
+        ]
+      },
+      "requires_confirmation": true
+    },
+    {
+      "name": "get_state",
+      "description": "Return Computer Use availability, foreground window, cursor position, and visible window count after access is granted.",
+      "parameters": {
+        "type": "object",
+        "properties": {}
+      },
+      "requires_confirmation": false
+    },
+    {
+      "name": "list_apps",
+      "description": "List running desktop apps grouped from visible windows after access is granted.",
+      "parameters": {
+        "type": "object",
+        "properties": {}
+      },
+      "requires_confirmation": false
+    },
+    {
+      "name": "get_window",
+      "description": "Return a currently visible window by id after access is granted.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "requires_confirmation": false
+    },
+    {
+      "name": "launch_app",
+      "description": "Launch a Windows app by app id, executable name, URI, or executable path after Computer Use access is granted. Shell, terminal, and script host apps require explicit risky confirmation.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "app": {
+            "type": "string",
+            "description": "App id, executable name, URI, or executable path, for example mspaint, notepad, calc, or ms-settings:."
+          },
+          "allow_risky": {
+            "type": "boolean",
+            "description": "Set true only after the user explicitly confirms launching a shell, terminal, or script host app. Normal app launches should omit this or set false.",
+            "default": false
+          }
+        },
+        "required": [
+          "app"
+        ]
+      },
+      "requires_confirmation": true,
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "app": {
+            "type": "string",
+            "description": "App id, executable name, URI, or executable path, for example mspaint, notepad, calc, or ms-settings:."
+          },
+          "allow_risky": {
+            "type": "boolean",
+            "description": "Set true only after the user explicitly confirms launching a shell, terminal, or script host app. Normal app launches should omit this or set false.",
+            "default": false
+          }
+        },
+        "required": [
+          "app"
+        ]
+      }
+    },
+    {
+      "name": "get_window_state",
+      "description": "Return a window-level state snapshot with cursor and optional screenshot after access is granted.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "window_id": {
+            "type": "integer"
+          },
+          "include_screenshot": {
+            "type": "boolean"
+          }
+        }
+      },
+      "requires_confirmation": false
+    },
+    {
+      "name": "screenshot",
+      "description": "Capture a PNG screenshot of the current desktop after access is granted.",
+      "parameters": {
+        "type": "object",
+        "properties": {}
+      },
+      "requires_confirmation": false
+    },
+    {
+      "name": "list_windows",
+      "description": "List visible desktop windows after access is granted.",
+      "parameters": {
+        "type": "object",
+        "properties": {}
+      },
+      "requires_confirmation": false
+    },
+    {
+      "name": "get_foreground_window",
+      "description": "Return the current foreground desktop window after access is granted.",
+      "parameters": {
+        "type": "object",
+        "properties": {}
+      },
+      "requires_confirmation": false
+    },
+    {
+      "name": "get_cursor_position",
+      "description": "Return the current mouse cursor position after access is granted.",
+      "parameters": {
+        "type": "object",
+        "properties": {}
+      },
+      "requires_confirmation": false
+    },
+    {
+      "name": "get_accessibility_tree",
+      "description": "Return an indexed Windows UI Automation control tree for a target window after access is granted. Falls back to visible-window pseudo-elements if UIA is unavailable.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "window_id": {
+            "type": "integer"
+          }
+        }
+      },
+      "requires_confirmation": false
+    },
+    {
+      "name": "click_element",
+      "description": "Click the center of an indexed UI Automation element after access is granted. If UIA is unavailable, this falls back to the center of a visible-window pseudo-element.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "element_index": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "element_index"
+        ]
+      },
+      "requires_confirmation": true
+    },
+    {
+      "name": "run_sequence",
+      "description": "Run a short batch of stable Computer Use input actions after access is granted, then verify with a later observation tool.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "actions": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 100,
+            "items": {
+              "type": "object",
+              "properties": {
+                "tool": {
+                  "type": "string",
+                  "enum": [
+                    "move_mouse",
+                    "left_click",
+                    "right_click",
+                    "middle_click",
+                    "double_click",
+                    "scroll",
+                    "drag",
+                    "key_press",
+                    "type_text",
+                    "wait"
+                  ]
+                },
+                "coordinate": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "minItems": 2,
+                  "maxItems": 2
+                },
+                "x": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "y": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "from_x": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "from_y": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "to_x": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "to_y": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "scroll_x": {
+                  "type": "integer"
+                },
+                "scroll_y": {
+                  "type": "integer"
+                },
+                "key": {
+                  "type": "string"
+                },
+                "text": {
+                  "type": "string"
+                },
+                "ms": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 10000
+                }
+              },
+              "required": [
+                "tool"
+              ]
+            }
+          }
+        },
+        "required": [
+          "actions"
+        ]
+      },
+      "requires_confirmation": true
+    },
+    {
+      "name": "move_mouse",
+      "description": "Move the mouse cursor to a non-negative screen coordinate after access is granted.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "coordinate": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "minItems": 2,
+            "maxItems": 2,
+            "description": "Screen coordinate as [x, y]."
+          }
+        },
+        "required": [
+          "coordinate"
+        ]
+      },
+      "requires_confirmation": true
+    },
+    {
+      "name": "left_click",
+      "description": "Left-click a non-negative screen coordinate after access is granted.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "coordinate": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "minItems": 2,
+            "maxItems": 2,
+            "description": "Screen coordinate as [x, y]."
+          }
+        },
+        "required": [
+          "coordinate"
+        ]
+      },
+      "requires_confirmation": true
+    },
+    {
+      "name": "right_click",
+      "description": "Right-click a non-negative screen coordinate after access is granted.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "coordinate": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "minItems": 2,
+            "maxItems": 2,
+            "description": "Screen coordinate as [x, y]."
+          }
+        },
+        "required": [
+          "coordinate"
+        ]
+      },
+      "requires_confirmation": true
+    },
+    {
+      "name": "middle_click",
+      "description": "Middle-click a non-negative screen coordinate after access is granted.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "coordinate": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "minItems": 2,
+            "maxItems": 2,
+            "description": "Screen coordinate as [x, y]."
+          }
+        },
+        "required": [
+          "coordinate"
+        ]
+      },
+      "requires_confirmation": true
+    },
+    {
+      "name": "double_click",
+      "description": "Double-click a non-negative screen coordinate after access is granted.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "coordinate": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "minItems": 2,
+            "maxItems": 2,
+            "description": "Screen coordinate as [x, y]."
+          }
+        },
+        "required": [
+          "coordinate"
+        ]
+      },
+      "requires_confirmation": true
+    },
+    {
+      "name": "scroll",
+      "description": "Scroll from a screen coordinate after access is granted. Positive scroll_y scrolls down.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "x": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "y": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "scroll_x": {
+            "type": "integer"
+          },
+          "scroll_y": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "x",
+          "y"
+        ]
+      },
+      "requires_confirmation": true
+    },
+    {
+      "name": "drag",
+      "description": "Drag from one screen coordinate to another after access is granted.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "from_x": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "from_y": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "to_x": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "to_y": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "from_x",
+          "from_y",
+          "to_x",
+          "to_y"
+        ]
+      },
+      "requires_confirmation": true
+    },
+    {
+      "name": "key_press",
+      "description": "Press a non-system keyboard key or safe key chord after access is granted.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": "Key or chord such as Enter, Escape, Tab, Ctrl+A."
+          }
+        },
+        "required": [
+          "key"
+        ]
+      },
+      "requires_confirmation": true
+    },
+    {
+      "name": "type_text",
+      "description": "Type text into the focused desktop application after access is granted.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "text"
+        ]
+      },
+      "requires_confirmation": true
+    }
+  ]
 }
