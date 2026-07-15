@@ -19,6 +19,13 @@
       }
     },
     {
+      "name": "imap-smtp-email",
+      "source": {
+        "source": "local",
+        "path": "./skills/imap-smtp-email"
+      }
+    },
+    {
       "name": "meeting-minutes",
       "source": {
         "source": "local",
