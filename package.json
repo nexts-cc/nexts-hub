@@ -12,6 +12,7 @@
     "new:mcp": "node scripts/new.mjs mcp",
     "sync": "node scripts/sync.mjs",
     "validate": "node scripts/validate.mjs",
+    "test:hashes": "node scripts/test-sync-hashes.mjs",
     "build:mcp": "node scripts/build-mcp-adapter.mjs"
   },
   "devDependencies": {

@@ -87,7 +87,9 @@ export function computeCategoryHashes(baseDir = root) {
       join("plugins", ".agents", "plugins", "marketplace.json"),
     ]),
     assistants: hashPaths(baseDir, contentDirs(baseDir, "assistants")),
-    mcp: hashPaths(baseDir, [...contentDirs(baseDir, "mcp"), join("mcp", "_adapters")]),
+    // Adapter source is validated separately and is not a marketplace item.
+    // Excluding it keeps registry validation fast and platform-neutral.
+    mcp: hashPaths(baseDir, contentDirs(baseDir, "mcp")),
   };
 }
 
@@ -102,7 +104,7 @@ function contentDirs(baseDir, category) {
     .map((directoryName) => join(category, directoryName));
 }
 
-function hashPaths(baseDir, relativePaths) {
+export function hashPaths(baseDir, relativePaths) {
   const files = [];
   for (const relativePath of relativePaths) {
     collectFiles(baseDir, relativePath, files);
@@ -111,7 +113,10 @@ function hashPaths(baseDir, relativePaths) {
 
   const digest = createHash("sha256");
   for (const relativeFile of files) {
-    const bytes = readFileSync(join(baseDir, relativeFile));
+    const rawBytes = readFileSync(join(baseDir, relativeFile));
+    // Git can check text out as CRLF on Windows and LF on Linux. Hash a
+    // canonical LF representation so generated indexes are reproducible.
+    const bytes = canonicalHashBytes(relativeFile, rawBytes);
     digest.update(relativeFile);
     digest.update("\0");
     digest.update(String(bytes.length));
@@ -119,6 +124,15 @@ function hashPaths(baseDir, relativePaths) {
     digest.update(bytes);
   }
   return `sha256:${digest.digest("hex")}`;
+}
+
+function canonicalHashBytes(relativeFile, bytes) {
+  if (!isTextFile(relativeFile) || bytes.includes(0)) return bytes;
+  return Buffer.from(bytes.toString("utf8").replaceAll("\r\n", "\n"), "utf8");
+}
+
+function isTextFile(filePath) {
+  return /\.(?:css|html|js|json|jsx|md|mdx|mjs|ts|tsx|txt|yaml|yml)$/i.test(filePath);
 }
 
 function collectFiles(baseDir, relativePath, out) {
