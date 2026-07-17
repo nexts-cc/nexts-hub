@@ -1,0 +1,1903 @@
+{
+  "service": "polygon_io",
+  "displayName": "Massive (Polygon.io)",
+  "categories": [
+    "Finance",
+    "Data"
+  ],
+  "authTypes": [
+    "api_key"
+  ],
+  "auth": [
+    {
+      "type": "api_key",
+      "label": "API Key",
+      "placeholder": "POLYGON_IO_API_KEY",
+      "description": "Massive (formerly Polygon.io) REST API key passed as the apiKey query parameter. Get it from your dashboard keys page: https://massive.com/dashboard/keys.",
+      "extraFields": []
+    }
+  ],
+  "homepageUrl": "https://massive.com/",
+  "actions": [
+    {
+      "id": "polygon_io.get_aggregate_bars",
+      "service": "polygon_io",
+      "name": "get_aggregate_bars",
+      "description": "Get historical OHLC aggregate bars for a stock ticker over a custom range.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "ticker": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The case-sensitive ticker symbol, for example AAPL."
+          },
+          "multiplier": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "The size multiplier for the timespan."
+          },
+          "timespan": {
+            "type": "string",
+            "enum": [
+              "second",
+              "minute",
+              "hour",
+              "day",
+              "week",
+              "month",
+              "quarter",
+              "year"
+            ],
+            "description": "The aggregate bar time window."
+          },
+          "from": {
+            "type": "string",
+            "minLength": 1,
+            "description": "A date in YYYY-MM-DD format or a millisecond timestamp."
+          },
+          "to": {
+            "type": "string",
+            "minLength": 1,
+            "description": "A date in YYYY-MM-DD format or a millisecond timestamp."
+          },
+          "adjusted": {
+            "type": "boolean",
+            "description": "Whether the results should be adjusted for splits."
+          },
+          "sort": {
+            "type": "string",
+            "enum": [
+              "asc",
+              "desc"
+            ],
+            "description": "The order used when sorting returned results."
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50000,
+            "description": "The maximum number of results to return."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "ticker",
+          "multiplier",
+          "timespan",
+          "from",
+          "to"
+        ],
+        "description": "Input parameters for retrieving custom aggregate stock bars."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "meta": {
+            "type": "object",
+            "properties": {
+              "status": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The response status returned by Polygon.io."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "requestId": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The request identifier assigned by Polygon.io."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "count": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "description": "The count value returned by Polygon.io when present."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "additionalProperties": false,
+            "description": "Common response metadata returned by the Polygon.io REST API."
+          },
+          "ticker": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "The ticker symbol returned by Polygon.io."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "adjusted": {
+            "anyOf": [
+              {
+                "type": "boolean",
+                "description": "Whether the response was adjusted for splits."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "queryCount": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "description": "The number of base aggregates queried."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "resultsCount": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "description": "The total number of results for the request."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "bars": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "ticker": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The ticker symbol for this aggregate bar when present."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "open": {
+                  "anyOf": [
+                    {
+                      "type": "number",
+                      "description": "The open price for the aggregate window."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "high": {
+                  "anyOf": [
+                    {
+                      "type": "number",
+                      "description": "The high price for the aggregate window."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "low": {
+                  "anyOf": [
+                    {
+                      "type": "number",
+                      "description": "The low price for the aggregate window."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "close": {
+                  "anyOf": [
+                    {
+                      "type": "number",
+                      "description": "The close price for the aggregate window."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "volume": {
+                  "anyOf": [
+                    {
+                      "type": "number",
+                      "description": "The trading volume for the aggregate window."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "vwap": {
+                  "anyOf": [
+                    {
+                      "type": "number",
+                      "description": "The volume weighted average price."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "timestamp": {
+                  "anyOf": [
+                    {
+                      "type": "integer",
+                      "description": "The Unix millisecond timestamp for the aggregate window."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "transactions": {
+                  "anyOf": [
+                    {
+                      "type": "integer",
+                      "description": "The transaction count for the aggregate window."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "otc": {
+                  "anyOf": [
+                    {
+                      "type": "boolean",
+                      "description": "Whether the aggregate is for an OTC ticker when reported."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "raw": {
+                  "type": "object",
+                  "properties": {},
+                  "additionalProperties": true,
+                  "description": "The raw aggregate bar object returned by Polygon.io."
+                }
+              },
+              "additionalProperties": false,
+              "description": "A normalized OHLC aggregate bar returned by Polygon.io."
+            },
+            "description": "The aggregate bars returned by Polygon.io."
+          },
+          "page": {
+            "type": "object",
+            "properties": {
+              "nextUrl": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The next page URL returned by Polygon.io when present."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "nextCursor": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The cursor extracted from nextUrl when present."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "additionalProperties": false,
+            "description": "Cursor pagination information returned by Polygon.io."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The response returned for Polygon.io aggregate bars."
+      }
+    },
+    {
+      "id": "polygon_io.get_market_status",
+      "service": "polygon_io",
+      "name": "get_market_status",
+      "description": "Get the current Polygon.io market status for stocks, currencies, and indices.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false,
+        "description": "The input payload for retrieving Polygon.io market status."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "meta": {
+            "type": "object",
+            "properties": {
+              "status": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The response status returned by Polygon.io."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "requestId": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The request identifier assigned by Polygon.io."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "count": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "description": "The count value returned by Polygon.io when present."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "additionalProperties": false,
+            "description": "Common response metadata returned by the Polygon.io REST API."
+          },
+          "market": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "The overall market status."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "serverTime": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "The server time returned by Polygon.io."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "afterHours": {
+            "anyOf": [
+              {
+                "type": "boolean",
+                "description": "Whether the market is in post-market hours."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "earlyHours": {
+            "anyOf": [
+              {
+                "type": "boolean",
+                "description": "Whether the market is in pre-market hours."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "exchanges": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string",
+              "description": "A market status value."
+            },
+            "description": "Status values keyed by exchange name."
+          },
+          "currencies": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string",
+              "description": "A market status value."
+            },
+            "description": "Status values keyed by currency market name."
+          },
+          "indicesGroups": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string",
+              "description": "A market status value."
+            },
+            "description": "Status values keyed by index group name."
+          },
+          "raw": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true,
+            "description": "The raw market status object returned by Polygon.io."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The current market status returned by Polygon.io."
+      }
+    },
+    {
+      "id": "polygon_io.get_previous_day_bar",
+      "service": "polygon_io",
+      "name": "get_previous_day_bar",
+      "description": "Get the previous trading day's OHLC aggregate bar for a stock ticker.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "ticker": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The case-sensitive ticker symbol, for example AAPL."
+          },
+          "adjusted": {
+            "type": "boolean",
+            "description": "Whether the results should be adjusted for splits."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "ticker"
+        ],
+        "description": "Input parameters for retrieving a previous day stock bar."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "meta": {
+            "type": "object",
+            "properties": {
+              "status": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The response status returned by Polygon.io."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "requestId": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The request identifier assigned by Polygon.io."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "count": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "description": "The count value returned by Polygon.io when present."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "additionalProperties": false,
+            "description": "Common response metadata returned by the Polygon.io REST API."
+          },
+          "ticker": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "The ticker symbol returned by Polygon.io."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "adjusted": {
+            "anyOf": [
+              {
+                "type": "boolean",
+                "description": "Whether the response was adjusted for splits."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "queryCount": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "description": "The number of base aggregates queried."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "resultsCount": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "description": "The total number of results for the request."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "bars": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "ticker": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The ticker symbol for this aggregate bar when present."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "open": {
+                  "anyOf": [
+                    {
+                      "type": "number",
+                      "description": "The open price for the aggregate window."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "high": {
+                  "anyOf": [
+                    {
+                      "type": "number",
+                      "description": "The high price for the aggregate window."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "low": {
+                  "anyOf": [
+                    {
+                      "type": "number",
+                      "description": "The low price for the aggregate window."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "close": {
+                  "anyOf": [
+                    {
+                      "type": "number",
+                      "description": "The close price for the aggregate window."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "volume": {
+                  "anyOf": [
+                    {
+                      "type": "number",
+                      "description": "The trading volume for the aggregate window."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "vwap": {
+                  "anyOf": [
+                    {
+                      "type": "number",
+                      "description": "The volume weighted average price."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "timestamp": {
+                  "anyOf": [
+                    {
+                      "type": "integer",
+                      "description": "The Unix millisecond timestamp for the aggregate window."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "transactions": {
+                  "anyOf": [
+                    {
+                      "type": "integer",
+                      "description": "The transaction count for the aggregate window."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "otc": {
+                  "anyOf": [
+                    {
+                      "type": "boolean",
+                      "description": "Whether the aggregate is for an OTC ticker when reported."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "raw": {
+                  "type": "object",
+                  "properties": {},
+                  "additionalProperties": true,
+                  "description": "The raw aggregate bar object returned by Polygon.io."
+                }
+              },
+              "additionalProperties": false,
+              "description": "A normalized OHLC aggregate bar returned by Polygon.io."
+            },
+            "description": "The aggregate bars returned by Polygon.io."
+          },
+          "page": {
+            "type": "object",
+            "properties": {
+              "nextUrl": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The next page URL returned by Polygon.io when present."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "nextCursor": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The cursor extracted from nextUrl when present."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "additionalProperties": false,
+            "description": "Cursor pagination information returned by Polygon.io."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The response returned for Polygon.io aggregate bars."
+      }
+    },
+    {
+      "id": "polygon_io.get_ticker_details",
+      "service": "polygon_io",
+      "name": "get_ticker_details",
+      "description": "Get comprehensive details for a single Polygon.io ticker.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "ticker": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The case-sensitive ticker symbol, for example AAPL."
+          },
+          "date": {
+            "type": "string",
+            "description": "Retrieve ticker details available on this date.",
+            "format": "date"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "ticker"
+        ],
+        "description": "Input parameters for retrieving Polygon.io ticker details."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "meta": {
+            "type": "object",
+            "properties": {
+              "status": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The response status returned by Polygon.io."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "requestId": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The request identifier assigned by Polygon.io."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "count": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "description": "The count value returned by Polygon.io when present."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "additionalProperties": false,
+            "description": "Common response metadata returned by the Polygon.io REST API."
+          },
+          "ticker": {
+            "type": "object",
+            "properties": {
+              "ticker": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The exchange symbol that this asset is traded under."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "name": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The asset name returned by Polygon.io."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "market": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The market type for the asset."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "locale": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The locale for the asset."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "active": {
+                "anyOf": [
+                  {
+                    "type": "boolean",
+                    "description": "Whether the asset is actively traded."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "type": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The ticker type code."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "currencyName": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The currency name returned by Polygon.io."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "cik": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The Central Index Key for this ticker when present."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "compositeFigi": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The composite OpenFIGI identifier."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "shareClassFigi": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The share class OpenFIGI identifier."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "primaryExchange": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The primary exchange MIC for this asset."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "description": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The company or asset description."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "homepageUrl": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The company's homepage URL."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "listDate": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The date that the symbol was first publicly listed."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "marketCap": {
+                "anyOf": [
+                  {
+                    "type": "number",
+                    "description": "The market capitalization value when present."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "phoneNumber": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The company phone number."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "roundLot": {
+                "anyOf": [
+                  {
+                    "type": "number",
+                    "description": "The round lot size for this security."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "shareClassSharesOutstanding": {
+                "anyOf": [
+                  {
+                    "type": "number",
+                    "description": "The outstanding share count for this share class."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "sicCode": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The Standard Industrial Classification code."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "sicDescription": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The Standard Industrial Classification description."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "tickerRoot": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The root symbol for tickers with suffixes."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "tickerSuffix": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The ticker suffix when present."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "totalEmployees": {
+                "anyOf": [
+                  {
+                    "type": "number",
+                    "description": "The approximate employee count."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "weightedSharesOutstanding": {
+                "anyOf": [
+                  {
+                    "type": "number",
+                    "description": "The weighted shares outstanding value."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "address": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "address1": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "description": "The first address line."
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "city": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "description": "The city name."
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "state": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "description": "The state value."
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "postalCode": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "description": "The postal code."
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      }
+                    },
+                    "additionalProperties": false,
+                    "description": "Company headquarters address details returned by Polygon.io."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "branding": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "iconUrl": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "description": "The company icon URL."
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "logoUrl": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "description": "The company logo URL."
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      }
+                    },
+                    "additionalProperties": false,
+                    "description": "Company branding asset URLs returned by Polygon.io."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "raw": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": true,
+                "description": "The raw ticker details object returned by Polygon.io."
+              }
+            },
+            "additionalProperties": false,
+            "description": "Detailed ticker information returned by Polygon.io."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The response returned for Polygon.io ticker details."
+      }
+    },
+    {
+      "id": "polygon_io.list_exchanges",
+      "service": "polygon_io",
+      "name": "list_exchanges",
+      "description": "List known exchanges available through Polygon.io.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "assetClass": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Filter by asset class such as stocks, options, crypto, fx, or futures."
+          },
+          "locale": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Filter by exchange locale such as us or global."
+          }
+        },
+        "additionalProperties": false,
+        "description": "Input parameters for listing Polygon.io exchanges."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "meta": {
+            "type": "object",
+            "properties": {
+              "status": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The response status returned by Polygon.io."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "requestId": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The request identifier assigned by Polygon.io."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "count": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "description": "The count value returned by Polygon.io when present."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "additionalProperties": false,
+            "description": "Common response metadata returned by the Polygon.io REST API."
+          },
+          "exchanges": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "anyOf": [
+                    {
+                      "type": "integer",
+                      "description": "The Polygon.io exchange identifier."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "type": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The exchange type returned by Polygon.io."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "assetClass": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The asset class for this exchange."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "locale": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The locale for this exchange."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "name": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The exchange name."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "acronym": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The exchange acronym."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "mic": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The Market Identifier Code for this exchange."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "operatingMic": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The MIC for the entity that operates this exchange."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "participantId": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The participant identifier used by SIPs."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "url": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The exchange website URL when present."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "raw": {
+                  "type": "object",
+                  "properties": {},
+                  "additionalProperties": true,
+                  "description": "The raw exchange object returned by Polygon.io."
+                }
+              },
+              "additionalProperties": false,
+              "description": "A normalized exchange returned by Polygon.io."
+            },
+            "description": "The exchanges returned by Polygon.io."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The response returned when listing Polygon.io exchanges."
+      }
+    },
+    {
+      "id": "polygon_io.list_ticker_types",
+      "service": "polygon_io",
+      "name": "list_ticker_types",
+      "description": "List ticker type codes supported by Polygon.io.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "assetClass": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Filter by asset class such as stocks, options, crypto, fx, or indices."
+          },
+          "locale": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Filter by ticker type locale such as us or global."
+          }
+        },
+        "additionalProperties": false,
+        "description": "Input parameters for listing Polygon.io ticker types."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "meta": {
+            "type": "object",
+            "properties": {
+              "status": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The response status returned by Polygon.io."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "requestId": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The request identifier assigned by Polygon.io."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "count": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "description": "The count value returned by Polygon.io when present."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "additionalProperties": false,
+            "description": "Common response metadata returned by the Polygon.io REST API."
+          },
+          "tickerTypes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The ticker type code used by Polygon.io."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "description": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The ticker type description."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "assetClass": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The asset class for this ticker type."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "locale": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The locale for this ticker type."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "raw": {
+                  "type": "object",
+                  "properties": {},
+                  "additionalProperties": true,
+                  "description": "The raw ticker type object returned by Polygon.io."
+                }
+              },
+              "additionalProperties": false,
+              "description": "A normalized ticker type returned by Polygon.io."
+            },
+            "description": "The ticker types returned by Polygon.io."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The response returned when listing Polygon.io ticker types."
+      }
+    },
+    {
+      "id": "polygon_io.list_tickers",
+      "service": "polygon_io",
+      "name": "list_tickers",
+      "description": "List ticker symbols supported by Polygon.io with optional filters.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "ticker": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Filter by an exact ticker symbol."
+          },
+          "type": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Filter by ticker type such as CS or ETF."
+          },
+          "market": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Filter by market type such as stocks, crypto, fx, otc, or indices."
+          },
+          "exchange": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Filter by primary exchange Market Identifier Code."
+          },
+          "cusip": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Filter by CUSIP code. Polygon.io does not return CUSIP in responses."
+          },
+          "cik": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Filter by Central Index Key."
+          },
+          "date": {
+            "type": "string",
+            "description": "Retrieve tickers available on this date.",
+            "format": "date"
+          },
+          "search": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Search terms within the ticker and company name."
+          },
+          "active": {
+            "type": "boolean",
+            "description": "Whether returned tickers should be actively traded on the queried date."
+          },
+          "tickerGte": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Return tickers greater than or equal to this ticker."
+          },
+          "tickerGt": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Return tickers greater than this ticker."
+          },
+          "tickerLte": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Return tickers less than or equal to this ticker."
+          },
+          "tickerLt": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Return tickers less than this ticker."
+          },
+          "order": {
+            "type": "string",
+            "enum": [
+              "asc",
+              "desc"
+            ],
+            "description": "The order used when sorting returned results."
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1000,
+            "description": "The maximum number of ticker results to return."
+          },
+          "sort": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Sort field used for ordering."
+          },
+          "cursor": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Pagination cursor extracted from a previous response nextCursor value."
+          }
+        },
+        "additionalProperties": false,
+        "description": "Input parameters for listing Polygon.io tickers."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "meta": {
+            "type": "object",
+            "properties": {
+              "status": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The response status returned by Polygon.io."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "requestId": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The request identifier assigned by Polygon.io."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "count": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "description": "The count value returned by Polygon.io when present."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "additionalProperties": false,
+            "description": "Common response metadata returned by the Polygon.io REST API."
+          },
+          "tickers": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "ticker": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The exchange symbol that this asset is traded under."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "name": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The asset name returned by Polygon.io."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "market": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The market type for the asset."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "locale": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The locale for the asset."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "active": {
+                  "anyOf": [
+                    {
+                      "type": "boolean",
+                      "description": "Whether the asset is actively traded."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "type": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The ticker type code."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "currencyName": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The currency name returned by Polygon.io."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "currencySymbol": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The currency symbol returned by Polygon.io."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "baseCurrencyName": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The base currency name for crypto or FX assets."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "baseCurrencySymbol": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The base currency symbol for crypto or FX assets."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "cik": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The Central Index Key for this ticker when present."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "compositeFigi": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The composite OpenFIGI identifier."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "shareClassFigi": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The share class OpenFIGI identifier."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "primaryExchange": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The primary exchange MIC for this asset."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "lastUpdatedUtc": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The timestamp through which this ticker information is accurate."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "delistedUtc": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The last date that the asset was traded when present."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "raw": {
+                  "type": "object",
+                  "properties": {},
+                  "additionalProperties": true,
+                  "description": "The raw ticker object returned by Polygon.io."
+                }
+              },
+              "additionalProperties": false,
+              "description": "A normalized ticker summary returned by Polygon.io."
+            },
+            "description": "The tickers returned by Polygon.io."
+          },
+          "page": {
+            "type": "object",
+            "properties": {
+              "nextUrl": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The next page URL returned by Polygon.io when present."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "nextCursor": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The cursor extracted from nextUrl when present."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "additionalProperties": false,
+            "description": "Cursor pagination information returned by Polygon.io."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The response returned when listing Polygon.io tickers."
+      }
+    }
+  ]
+}

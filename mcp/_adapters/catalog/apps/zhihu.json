@@ -1,0 +1,506 @@
+{
+  "service": "zhihu",
+  "displayName": "Zhihu",
+  "categories": [
+    "AI",
+    "Data"
+  ],
+  "authTypes": [
+    "api_key"
+  ],
+  "auth": [
+    {
+      "type": "api_key",
+      "label": "Access Secret",
+      "placeholder": "zhihu_access_secret",
+      "description": "Zhihu Open Platform Access Secret sent with the Authorization: Bearer header. View it in the Zhihu Open Platform profile page: https://developer.zhihu.com/profile."
+    }
+  ],
+  "homepageUrl": "https://www.zhihu.com",
+  "actions": [
+    {
+      "id": "zhihu.global_search",
+      "service": "zhihu",
+      "name": "global_search",
+      "description": "Search the global web index exposed by Zhihu Open Platform.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The search query keyword."
+          },
+          "count": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 20,
+            "description": "The number of global search results to return, up to 20."
+          },
+          "filter": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Advanced filter expression for host or publish_time constraints."
+          },
+          "searchDB": {
+            "type": "string",
+            "enum": [
+              "all",
+              "realtime",
+              "static"
+            ],
+            "description": "The search index database to query."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "query"
+        ],
+        "description": "Input parameters for a Zhihu global search request."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "Code": {
+            "type": "integer",
+            "description": "The upstream response code."
+          },
+          "Message": {
+            "type": "string",
+            "description": "The upstream response message."
+          },
+          "Data": {
+            "type": "object",
+            "properties": {
+              "HasMore": {
+                "type": "boolean",
+                "description": "Whether more results are available."
+              },
+              "Items": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "Title": {
+                      "type": "string",
+                      "description": "The content title."
+                    },
+                    "ContentType": {
+                      "type": "string",
+                      "description": "The content type, such as Answer or Article."
+                    },
+                    "ContentID": {
+                      "type": "string",
+                      "description": "The content identifier."
+                    },
+                    "ContentText": {
+                      "type": "string",
+                      "description": "The content excerpt. Highlighted fragments may include em tags."
+                    },
+                    "Url": {
+                      "type": "string",
+                      "description": "The source URL with Zhihu Open Platform attribution parameters.",
+                      "format": "uri"
+                    },
+                    "CommentCount": {
+                      "type": "integer",
+                      "description": "The number of comments."
+                    },
+                    "VoteUpCount": {
+                      "type": "integer",
+                      "description": "The number of upvotes."
+                    },
+                    "AuthorName": {
+                      "type": "string",
+                      "description": "The author display name."
+                    },
+                    "AuthorAvatar": {
+                      "type": "string",
+                      "description": "The author avatar URL."
+                    },
+                    "AuthorBadge": {
+                      "type": "string",
+                      "description": "The author certification badge image URL."
+                    },
+                    "AuthorBadgeText": {
+                      "type": "string",
+                      "description": "The author certification badge text."
+                    },
+                    "EditTime": {
+                      "type": "integer",
+                      "description": "The published or last edited Unix timestamp in seconds."
+                    },
+                    "CommentInfoList": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "Content": {
+                            "type": "string",
+                            "description": "The comment content."
+                          }
+                        },
+                        "additionalProperties": true,
+                        "description": "A selected comment returned with a content item."
+                      },
+                      "description": "Selected comments returned for this content item."
+                    },
+                    "AuthorityLevel": {
+                      "type": "string",
+                      "description": "The content authority level from 1 to 4."
+                    },
+                    "RankingScore": {
+                      "type": "number",
+                      "description": "The ranking score returned by Zhihu Search."
+                    }
+                  },
+                  "additionalProperties": true,
+                  "description": "A Zhihu content search result item."
+                },
+                "description": "Search result items."
+              }
+            },
+            "additionalProperties": true,
+            "description": "The Zhihu global search response data."
+          }
+        },
+        "additionalProperties": true,
+        "description": "A Zhihu global search response."
+      }
+    },
+    {
+      "id": "zhihu.hot_list",
+      "service": "zhihu",
+      "name": "hot_list",
+      "description": "Get the current Zhihu hot list with titles, links, thumbnails, and summaries.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 30,
+            "description": "The number of hot list items to return, up to 30."
+          }
+        },
+        "additionalProperties": false,
+        "description": "Input parameters for a Zhihu hot list request."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "Code": {
+            "type": "integer",
+            "description": "The upstream response code."
+          },
+          "Message": {
+            "type": "string",
+            "description": "The upstream response message."
+          },
+          "Data": {
+            "type": "object",
+            "properties": {
+              "Total": {
+                "type": "integer",
+                "description": "The number of returned hot list items."
+              },
+              "Items": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "Title": {
+                      "type": "string",
+                      "description": "The hot list title."
+                    },
+                    "Url": {
+                      "type": "string",
+                      "description": "The Zhihu URL for the hot list item.",
+                      "format": "uri"
+                    },
+                    "ThumbnailUrl": {
+                      "type": "string",
+                      "description": "The thumbnail image URL, or an empty string when no image is available."
+                    },
+                    "Summary": {
+                      "type": "string",
+                      "description": "The item summary, or an empty string when no summary is available."
+                    }
+                  },
+                  "additionalProperties": true,
+                  "description": "A Zhihu hot list item."
+                },
+                "description": "Hot list items."
+              }
+            },
+            "additionalProperties": true,
+            "description": "The Zhihu hot list response data."
+          }
+        },
+        "additionalProperties": true,
+        "description": "A Zhihu hot list response."
+      }
+    },
+    {
+      "id": "zhihu.zhida",
+      "service": "zhihu",
+      "name": "zhida",
+      "description": "Create a non-streaming Zhihu Zhida chat completion.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "model": {
+            "type": "string",
+            "enum": [
+              "zhida-fast-1p5",
+              "zhida-thinking-1p5",
+              "zhida-agent"
+            ],
+            "description": "The Zhida model tier."
+          },
+          "messages": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "role": {
+                  "type": "string",
+                  "enum": [
+                    "system",
+                    "user",
+                    "assistant"
+                  ],
+                  "description": "The message role."
+                },
+                "content": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "The message content."
+                }
+              },
+              "additionalProperties": false,
+              "description": "A message in a Zhida chat completion request."
+            },
+            "description": "Conversation messages to send to Zhida.",
+            "minItems": 1
+          }
+        },
+        "additionalProperties": false,
+        "description": "Input parameters for a non-streaming Zhida chat completion request."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The completion identifier."
+          },
+          "object": {
+            "type": "string",
+            "description": "The response object type."
+          },
+          "created": {
+            "type": "integer",
+            "description": "The creation Unix timestamp in seconds."
+          },
+          "model": {
+            "type": "string",
+            "description": "The model that produced the response."
+          },
+          "choices": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "index": {
+                  "type": "integer",
+                  "description": "The choice index."
+                },
+                "message": {
+                  "type": "object",
+                  "properties": {
+                    "role": {
+                      "type": "string",
+                      "description": "The returned message role."
+                    },
+                    "reasoning_content": {
+                      "type": "string",
+                      "description": "The model reasoning content when returned."
+                    },
+                    "content": {
+                      "type": "string",
+                      "description": "The final answer content."
+                    }
+                  },
+                  "additionalProperties": true,
+                  "description": "The assistant message returned by Zhida."
+                },
+                "finish_reason": {
+                  "type": "string",
+                  "description": "The reason the choice finished."
+                }
+              },
+              "additionalProperties": true,
+              "description": "A Zhida completion choice."
+            },
+            "description": "Completion choices."
+          }
+        },
+        "additionalProperties": true,
+        "description": "A non-streaming Zhida chat completion response."
+      }
+    },
+    {
+      "id": "zhihu.zhihu_search",
+      "service": "zhihu",
+      "name": "zhihu_search",
+      "description": "Search Zhihu content and return matching questions, answers, and articles.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The search query keyword."
+          },
+          "count": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 10,
+            "description": "The number of Zhihu search results to return, up to 10."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "query"
+        ],
+        "description": "Input parameters for a Zhihu site search request."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "Code": {
+            "type": "integer",
+            "description": "The upstream response code."
+          },
+          "Message": {
+            "type": "string",
+            "description": "The upstream response message."
+          },
+          "Data": {
+            "type": "object",
+            "properties": {
+              "HasMore": {
+                "type": "boolean",
+                "description": "Whether more results are available. Zhihu currently returns false."
+              },
+              "SearchHashId": {
+                "type": "string",
+                "description": "The search request identifier."
+              },
+              "Items": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "Title": {
+                      "type": "string",
+                      "description": "The content title."
+                    },
+                    "ContentType": {
+                      "type": "string",
+                      "description": "The content type, such as Answer or Article."
+                    },
+                    "ContentID": {
+                      "type": "string",
+                      "description": "The content identifier."
+                    },
+                    "ContentText": {
+                      "type": "string",
+                      "description": "The content excerpt. Highlighted fragments may include em tags."
+                    },
+                    "Url": {
+                      "type": "string",
+                      "description": "The source URL with Zhihu Open Platform attribution parameters.",
+                      "format": "uri"
+                    },
+                    "CommentCount": {
+                      "type": "integer",
+                      "description": "The number of comments."
+                    },
+                    "VoteUpCount": {
+                      "type": "integer",
+                      "description": "The number of upvotes."
+                    },
+                    "AuthorName": {
+                      "type": "string",
+                      "description": "The author display name."
+                    },
+                    "AuthorAvatar": {
+                      "type": "string",
+                      "description": "The author avatar URL."
+                    },
+                    "AuthorBadge": {
+                      "type": "string",
+                      "description": "The author certification badge image URL."
+                    },
+                    "AuthorBadgeText": {
+                      "type": "string",
+                      "description": "The author certification badge text."
+                    },
+                    "EditTime": {
+                      "type": "integer",
+                      "description": "The published or last edited Unix timestamp in seconds."
+                    },
+                    "CommentInfoList": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "Content": {
+                            "type": "string",
+                            "description": "The comment content."
+                          }
+                        },
+                        "additionalProperties": true,
+                        "description": "A selected comment returned with a content item."
+                      },
+                      "description": "Selected comments returned for this content item."
+                    },
+                    "AuthorityLevel": {
+                      "type": "string",
+                      "description": "The content authority level from 1 to 4."
+                    },
+                    "RankingScore": {
+                      "type": "number",
+                      "description": "The ranking score returned by Zhihu Search."
+                    }
+                  },
+                  "additionalProperties": true,
+                  "description": "A Zhihu content search result item."
+                },
+                "description": "Search result items."
+              },
+              "EmptyReason": {
+                "type": "string",
+                "description": "The reason returned when the result set is empty."
+              }
+            },
+            "additionalProperties": true,
+            "description": "The Zhihu site search response data."
+          }
+        },
+        "additionalProperties": true,
+        "description": "A Zhihu site search response."
+      }
+    }
+  ]
+}

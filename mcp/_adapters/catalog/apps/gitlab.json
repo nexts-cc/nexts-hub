@@ -1,0 +1,1157 @@
+{
+  "service": "gitlab",
+  "displayName": "GitLab",
+  "categories": [
+    "Developer Tools"
+  ],
+  "authTypes": [
+    "api_key"
+  ],
+  "auth": [
+    {
+      "type": "api_key",
+      "label": "Personal access token",
+      "placeholder": "glpat-xxxxxxxxxxxxxxxxxxxx",
+      "description": "GitLab personal access token sent with the PRIVATE-TOKEN header. Create one in GitLab user preferences under Access tokens."
+    }
+  ],
+  "homepageUrl": "https://gitlab.com",
+  "actions": [
+    {
+      "id": "gitlab.create_project_issue",
+      "service": "gitlab",
+      "name": "create_project_issue",
+      "description": "Create a new issue in a GitLab project.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "projectId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The GitLab project ID or URL-encoded path with namespace, such as 123 or group%2Fproject."
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The issue title."
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The issue description."
+          },
+          "labels": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Comma-separated label names to attach to the issue."
+          },
+          "assigneeIds": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "description": "A GitLab user ID."
+            },
+            "description": "User IDs to assign to the issue."
+          },
+          "confidential": {
+            "type": "boolean",
+            "description": "Whether the issue should be confidential."
+          },
+          "dueDate": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The issue due date in YYYY-MM-DD format."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "projectId",
+          "title"
+        ],
+        "description": "GitLab action input."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "The issue ID."
+          },
+          "iid": {
+            "type": "integer",
+            "description": "The internal issue ID within the project."
+          },
+          "project_id": {
+            "type": "integer",
+            "description": "The project ID."
+          },
+          "title": {
+            "type": "string",
+            "description": "The issue title."
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "The issue description."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "state": {
+            "type": "string",
+            "description": "The issue state."
+          },
+          "web_url": {
+            "type": "string",
+            "description": "The issue URL."
+          },
+          "confidential": {
+            "type": "boolean",
+            "description": "Whether the issue is confidential."
+          },
+          "discussion_locked": {
+            "anyOf": [
+              {
+                "type": "boolean",
+                "description": "Whether discussions are locked."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "issue_type": {
+            "type": "string",
+            "description": "The GitLab issue type."
+          },
+          "author": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "description": "The GitLab user ID."
+              },
+              "username": {
+                "type": "string",
+                "description": "The GitLab username."
+              },
+              "name": {
+                "type": "string",
+                "description": "The display name."
+              },
+              "state": {
+                "type": "string",
+                "description": "The user state."
+              },
+              "avatar_url": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The avatar URL."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "web_url": {
+                "type": "string",
+                "description": "The GitLab profile URL."
+              },
+              "email": {
+                "type": "string",
+                "description": "The email address when visible."
+              },
+              "public_email": {
+                "type": "string",
+                "description": "The public email address when visible."
+              }
+            },
+            "additionalProperties": true,
+            "description": "A GitLab user record."
+          },
+          "assignees": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer",
+                  "description": "The GitLab user ID."
+                },
+                "username": {
+                  "type": "string",
+                  "description": "The GitLab username."
+                },
+                "name": {
+                  "type": "string",
+                  "description": "The display name."
+                },
+                "state": {
+                  "type": "string",
+                  "description": "The user state."
+                },
+                "avatar_url": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The avatar URL."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "web_url": {
+                  "type": "string",
+                  "description": "The GitLab profile URL."
+                },
+                "email": {
+                  "type": "string",
+                  "description": "The email address when visible."
+                },
+                "public_email": {
+                  "type": "string",
+                  "description": "The public email address when visible."
+                }
+              },
+              "additionalProperties": true,
+              "description": "A GitLab user record."
+            },
+            "description": "Users assigned to the issue."
+          },
+          "labels": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "A label name."
+            },
+            "description": "Labels attached to the issue."
+          },
+          "milestone": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer",
+                    "description": "The milestone ID."
+                  },
+                  "iid": {
+                    "type": "integer",
+                    "description": "The internal milestone ID within the project."
+                  },
+                  "title": {
+                    "type": "string",
+                    "description": "The milestone title."
+                  },
+                  "description": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "description": "The milestone description."
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "state": {
+                    "type": "string",
+                    "description": "The milestone state."
+                  },
+                  "due_date": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "description": "The milestone due date."
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "start_date": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "description": "The milestone start date."
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "web_url": {
+                    "type": "string",
+                    "description": "The milestone URL."
+                  }
+                },
+                "additionalProperties": true,
+                "description": "A GitLab milestone record."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "created_at": {
+            "type": "string",
+            "description": "The issue creation timestamp."
+          },
+          "updated_at": {
+            "type": "string",
+            "description": "The issue update timestamp."
+          },
+          "closed_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "The timestamp when the issue was closed."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "due_date": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "The issue due date."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "user_notes_count": {
+            "type": "integer",
+            "description": "The number of notes on the issue."
+          }
+        },
+        "additionalProperties": true,
+        "description": "A GitLab issue record."
+      }
+    },
+    {
+      "id": "gitlab.get_current_user",
+      "service": "gitlab",
+      "name": "get_current_user",
+      "description": "Get the current authenticated GitLab user profile.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false,
+        "description": "GitLab action input."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "The GitLab user ID."
+          },
+          "username": {
+            "type": "string",
+            "description": "The GitLab username."
+          },
+          "name": {
+            "type": "string",
+            "description": "The display name."
+          },
+          "state": {
+            "type": "string",
+            "description": "The user state."
+          },
+          "avatar_url": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "The avatar URL."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "web_url": {
+            "type": "string",
+            "description": "The GitLab profile URL."
+          },
+          "email": {
+            "type": "string",
+            "description": "The email address when visible."
+          },
+          "public_email": {
+            "type": "string",
+            "description": "The public email address when visible."
+          }
+        },
+        "additionalProperties": true,
+        "description": "A GitLab user record."
+      }
+    },
+    {
+      "id": "gitlab.get_project",
+      "service": "gitlab",
+      "name": "get_project",
+      "description": "Get a GitLab project by numeric ID or URL-encoded path with namespace.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "projectId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The GitLab project ID or URL-encoded path with namespace, such as 123 or group%2Fproject."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "projectId"
+        ],
+        "description": "GitLab action input."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "The project ID."
+          },
+          "name": {
+            "type": "string",
+            "description": "The project name."
+          },
+          "path": {
+            "type": "string",
+            "description": "The project path."
+          },
+          "path_with_namespace": {
+            "type": "string",
+            "description": "The project path including namespace."
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "The project description."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "default_branch": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "The default branch name."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "visibility": {
+            "type": "string",
+            "description": "The project visibility."
+          },
+          "web_url": {
+            "type": "string",
+            "description": "The project URL."
+          },
+          "ssh_url_to_repo": {
+            "type": "string",
+            "description": "The SSH clone URL."
+          },
+          "http_url_to_repo": {
+            "type": "string",
+            "description": "The HTTPS clone URL."
+          },
+          "readme_url": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "The README URL when returned by GitLab."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "created_at": {
+            "type": "string",
+            "description": "The project creation timestamp."
+          },
+          "last_activity_at": {
+            "type": "string",
+            "description": "The last activity timestamp."
+          },
+          "archived": {
+            "type": "boolean",
+            "description": "Whether the project is archived."
+          },
+          "star_count": {
+            "type": "integer",
+            "description": "The number of stars."
+          },
+          "forks_count": {
+            "type": "integer",
+            "description": "The number of forks."
+          },
+          "open_issues_count": {
+            "type": "integer",
+            "description": "The number of open issues."
+          },
+          "namespace": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "description": "The namespace ID."
+              },
+              "name": {
+                "type": "string",
+                "description": "The namespace name."
+              },
+              "path": {
+                "type": "string",
+                "description": "The namespace path."
+              },
+              "kind": {
+                "type": "string",
+                "description": "The namespace kind."
+              },
+              "full_path": {
+                "type": "string",
+                "description": "The full namespace path."
+              }
+            },
+            "additionalProperties": true,
+            "description": "A GitLab namespace record."
+          }
+        },
+        "additionalProperties": true,
+        "description": "A GitLab project record."
+      }
+    },
+    {
+      "id": "gitlab.list_project_issues",
+      "service": "gitlab",
+      "name": "list_project_issues",
+      "description": "List issues for a GitLab project with common state, label, assignee, and search filters.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "projectId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The GitLab project ID or URL-encoded path with namespace, such as 123 or group%2Fproject."
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "opened",
+              "closed",
+              "all"
+            ],
+            "description": "Issue state filter."
+          },
+          "labels": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Comma-separated label names to filter issues by."
+          },
+          "assigneeId": {
+            "type": "integer",
+            "description": "Filter by assignee user ID."
+          },
+          "search": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Search issues by title or description."
+          },
+          "orderBy": {
+            "type": "string",
+            "enum": [
+              "created_at",
+              "updated_at",
+              "priority",
+              "due_date",
+              "relative_position",
+              "label_priority",
+              "milestone_due",
+              "popularity",
+              "weight"
+            ],
+            "description": "Sort issues by a GitLab-supported field."
+          },
+          "sort": {
+            "type": "string",
+            "enum": [
+              "asc",
+              "desc"
+            ],
+            "description": "Sort direction."
+          },
+          "page": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "The page number to fetch."
+          },
+          "perPage": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100,
+            "description": "The number of results per page."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "projectId"
+        ],
+        "description": "GitLab action input."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "issues": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer",
+                  "description": "The issue ID."
+                },
+                "iid": {
+                  "type": "integer",
+                  "description": "The internal issue ID within the project."
+                },
+                "project_id": {
+                  "type": "integer",
+                  "description": "The project ID."
+                },
+                "title": {
+                  "type": "string",
+                  "description": "The issue title."
+                },
+                "description": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The issue description."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "state": {
+                  "type": "string",
+                  "description": "The issue state."
+                },
+                "web_url": {
+                  "type": "string",
+                  "description": "The issue URL."
+                },
+                "confidential": {
+                  "type": "boolean",
+                  "description": "Whether the issue is confidential."
+                },
+                "discussion_locked": {
+                  "anyOf": [
+                    {
+                      "type": "boolean",
+                      "description": "Whether discussions are locked."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "issue_type": {
+                  "type": "string",
+                  "description": "The GitLab issue type."
+                },
+                "author": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "description": "The GitLab user ID."
+                    },
+                    "username": {
+                      "type": "string",
+                      "description": "The GitLab username."
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "The display name."
+                    },
+                    "state": {
+                      "type": "string",
+                      "description": "The user state."
+                    },
+                    "avatar_url": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "description": "The avatar URL."
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "web_url": {
+                      "type": "string",
+                      "description": "The GitLab profile URL."
+                    },
+                    "email": {
+                      "type": "string",
+                      "description": "The email address when visible."
+                    },
+                    "public_email": {
+                      "type": "string",
+                      "description": "The public email address when visible."
+                    }
+                  },
+                  "additionalProperties": true,
+                  "description": "A GitLab user record."
+                },
+                "assignees": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer",
+                        "description": "The GitLab user ID."
+                      },
+                      "username": {
+                        "type": "string",
+                        "description": "The GitLab username."
+                      },
+                      "name": {
+                        "type": "string",
+                        "description": "The display name."
+                      },
+                      "state": {
+                        "type": "string",
+                        "description": "The user state."
+                      },
+                      "avatar_url": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "description": "The avatar URL."
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "web_url": {
+                        "type": "string",
+                        "description": "The GitLab profile URL."
+                      },
+                      "email": {
+                        "type": "string",
+                        "description": "The email address when visible."
+                      },
+                      "public_email": {
+                        "type": "string",
+                        "description": "The public email address when visible."
+                      }
+                    },
+                    "additionalProperties": true,
+                    "description": "A GitLab user record."
+                  },
+                  "description": "Users assigned to the issue."
+                },
+                "labels": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "A label name."
+                  },
+                  "description": "Labels attached to the issue."
+                },
+                "milestone": {
+                  "anyOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "description": "The milestone ID."
+                        },
+                        "iid": {
+                          "type": "integer",
+                          "description": "The internal milestone ID within the project."
+                        },
+                        "title": {
+                          "type": "string",
+                          "description": "The milestone title."
+                        },
+                        "description": {
+                          "anyOf": [
+                            {
+                              "type": "string",
+                              "description": "The milestone description."
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "state": {
+                          "type": "string",
+                          "description": "The milestone state."
+                        },
+                        "due_date": {
+                          "anyOf": [
+                            {
+                              "type": "string",
+                              "description": "The milestone due date."
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "start_date": {
+                          "anyOf": [
+                            {
+                              "type": "string",
+                              "description": "The milestone start date."
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "web_url": {
+                          "type": "string",
+                          "description": "The milestone URL."
+                        }
+                      },
+                      "additionalProperties": true,
+                      "description": "A GitLab milestone record."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "created_at": {
+                  "type": "string",
+                  "description": "The issue creation timestamp."
+                },
+                "updated_at": {
+                  "type": "string",
+                  "description": "The issue update timestamp."
+                },
+                "closed_at": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The timestamp when the issue was closed."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "due_date": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The issue due date."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "user_notes_count": {
+                  "type": "integer",
+                  "description": "The number of notes on the issue."
+                }
+              },
+              "additionalProperties": true,
+              "description": "A GitLab issue record."
+            },
+            "description": "Issues returned by GitLab."
+          },
+          "total": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "description": "The total number of issues when GitLab returns it."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "nextPage": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "description": "The next page number when another page exists."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "issues",
+          "total",
+          "nextPage"
+        ],
+        "description": "A paginated GitLab issues response."
+      }
+    },
+    {
+      "id": "gitlab.list_projects",
+      "service": "gitlab",
+      "name": "list_projects",
+      "description": "List GitLab projects visible to the authenticated personal access token, with optional search and membership filters.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "search": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Search projects by name or path."
+          },
+          "membership": {
+            "type": "boolean",
+            "description": "Limit results to projects the authenticated user is a member of."
+          },
+          "owned": {
+            "type": "boolean",
+            "description": "Limit results to projects explicitly owned by the authenticated user."
+          },
+          "simple": {
+            "type": "boolean",
+            "description": "Return a simplified project representation from GitLab."
+          },
+          "orderBy": {
+            "type": "string",
+            "enum": [
+              "id",
+              "name",
+              "path",
+              "created_at",
+              "updated_at",
+              "last_activity_at"
+            ],
+            "description": "Sort projects by a GitLab-supported field."
+          },
+          "sort": {
+            "type": "string",
+            "enum": [
+              "asc",
+              "desc"
+            ],
+            "description": "Sort direction."
+          },
+          "page": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "The page number to fetch."
+          },
+          "perPage": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100,
+            "description": "The number of results per page."
+          }
+        },
+        "additionalProperties": false,
+        "description": "GitLab action input."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "projects": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer",
+                  "description": "The project ID."
+                },
+                "name": {
+                  "type": "string",
+                  "description": "The project name."
+                },
+                "path": {
+                  "type": "string",
+                  "description": "The project path."
+                },
+                "path_with_namespace": {
+                  "type": "string",
+                  "description": "The project path including namespace."
+                },
+                "description": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The project description."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "default_branch": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The default branch name."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "visibility": {
+                  "type": "string",
+                  "description": "The project visibility."
+                },
+                "web_url": {
+                  "type": "string",
+                  "description": "The project URL."
+                },
+                "ssh_url_to_repo": {
+                  "type": "string",
+                  "description": "The SSH clone URL."
+                },
+                "http_url_to_repo": {
+                  "type": "string",
+                  "description": "The HTTPS clone URL."
+                },
+                "readme_url": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The README URL when returned by GitLab."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "created_at": {
+                  "type": "string",
+                  "description": "The project creation timestamp."
+                },
+                "last_activity_at": {
+                  "type": "string",
+                  "description": "The last activity timestamp."
+                },
+                "archived": {
+                  "type": "boolean",
+                  "description": "Whether the project is archived."
+                },
+                "star_count": {
+                  "type": "integer",
+                  "description": "The number of stars."
+                },
+                "forks_count": {
+                  "type": "integer",
+                  "description": "The number of forks."
+                },
+                "open_issues_count": {
+                  "type": "integer",
+                  "description": "The number of open issues."
+                },
+                "namespace": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "description": "The namespace ID."
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "The namespace name."
+                    },
+                    "path": {
+                      "type": "string",
+                      "description": "The namespace path."
+                    },
+                    "kind": {
+                      "type": "string",
+                      "description": "The namespace kind."
+                    },
+                    "full_path": {
+                      "type": "string",
+                      "description": "The full namespace path."
+                    }
+                  },
+                  "additionalProperties": true,
+                  "description": "A GitLab namespace record."
+                }
+              },
+              "additionalProperties": true,
+              "description": "A GitLab project record."
+            },
+            "description": "Projects returned by GitLab."
+          },
+          "total": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "description": "The total number of projects when GitLab returns it."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "nextPage": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "description": "The next page number when another page exists."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "projects",
+          "total",
+          "nextPage"
+        ],
+        "description": "A paginated GitLab projects response."
+      }
+    }
+  ]
+}

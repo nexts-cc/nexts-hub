@@ -1,0 +1,2199 @@
+{
+  "service": "dataforseo",
+  "displayName": "DataForSEO",
+  "categories": [
+    "Data",
+    "Marketing"
+  ],
+  "authTypes": [
+    "custom_credential"
+  ],
+  "auth": [
+    {
+      "type": "custom_credential",
+      "fields": [
+        {
+          "key": "login",
+          "label": "API Login",
+          "inputType": "text",
+          "required": true,
+          "secret": false,
+          "placeholder": "DATAFORSEO_LOGIN",
+          "description": "DataForSEO API login used as the Basic Auth username. Find it in the API Access page after signing in: https://app.dataforseo.com/api-access."
+        },
+        {
+          "key": "password",
+          "label": "API Password",
+          "inputType": "password",
+          "required": true,
+          "secret": true,
+          "placeholder": "DATAFORSEO_PASSWORD",
+          "description": "DataForSEO API password used as the Basic Auth password. Generate or view it in the API Access page after signing in: https://app.dataforseo.com/api-access."
+        }
+      ]
+    }
+  ],
+  "homepageUrl": "https://dataforseo.com",
+  "actions": [
+    {
+      "id": "dataforseo.backlinks_anchors_live",
+      "service": "dataforseo",
+      "name": "backlinks_anchors_live",
+      "description": "Retrieve DataForSEO Backlinks anchor text metrics for a domain, subdomain, or page.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "target": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Domain, subdomain, or absolute page URL sent to DataForSEO Backlinks."
+          },
+          "backlinksStatusType": {
+            "type": "string",
+            "enum": [
+              "all",
+              "live",
+              "lost"
+            ],
+            "description": "Backlink status type used for metrics."
+          },
+          "includeSubdomains": {
+            "type": "boolean",
+            "description": "Whether subdomains of the target are included."
+          },
+          "includeIndirectLinks": {
+            "type": "boolean",
+            "description": "Whether indirect links are included."
+          },
+          "excludeInternalBacklinks": {
+            "type": "boolean",
+            "description": "Whether internal backlinks from subdomains are excluded."
+          },
+          "rankScale": {
+            "type": "string",
+            "enum": [
+              "one_hundred",
+              "one_thousand"
+            ],
+            "description": "Scale used for backlink rank metrics."
+          },
+          "tag": {
+            "type": "string",
+            "minLength": 1,
+            "description": "User-defined task tag passed through to DataForSEO."
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1000,
+            "description": "Maximum number of returned items."
+          },
+          "offset": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Offset in the returned results array."
+          },
+          "filters": {
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "description": "A string JSON value."
+                },
+                {
+                  "type": "number",
+                  "description": "A numeric JSON value."
+                },
+                {
+                  "type": "boolean",
+                  "description": "A boolean JSON value."
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "description": "A nested JSON array item."
+                  },
+                  "description": "A nested JSON array value."
+                },
+                {
+                  "type": "object",
+                  "properties": {},
+                  "additionalProperties": true,
+                  "description": "A nested JSON object value."
+                }
+              ],
+              "description": "A JSON value accepted by DataForSEO for filters or options."
+            },
+            "description": "DataForSEO Backlinks filter expression.",
+            "minItems": 1
+          },
+          "orderBy": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "description": "One sorting rule."
+            },
+            "description": "DataForSEO Backlinks sorting rules.",
+            "minItems": 1
+          },
+          "internalListLimit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1000,
+            "description": "Maximum number of elements in internal aggregate arrays."
+          },
+          "backlinksFilters": {
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "description": "A string JSON value."
+                },
+                {
+                  "type": "number",
+                  "description": "A numeric JSON value."
+                },
+                {
+                  "type": "boolean",
+                  "description": "A boolean JSON value."
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "description": "A nested JSON array item."
+                  },
+                  "description": "A nested JSON array value."
+                },
+                {
+                  "type": "object",
+                  "properties": {},
+                  "additionalProperties": true,
+                  "description": "A nested JSON object value."
+                }
+              ],
+              "description": "A JSON value accepted by DataForSEO for filters or options."
+            },
+            "description": "Initial backlinks dataset filter expression.",
+            "minItems": 1
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "target"
+        ],
+        "description": "Input parameters for retrieving DataForSEO Backlinks anchors."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "task": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "DataForSEO task identifier."
+              },
+              "status_code": {
+                "type": "integer",
+                "description": "DataForSEO task status code."
+              },
+              "status_message": {
+                "type": "string",
+                "description": "DataForSEO task status message."
+              },
+              "time": {
+                "type": "string",
+                "description": "Task execution time reported by DataForSEO."
+              },
+              "cost": {
+                "type": "number",
+                "description": "Task cost in USD reported by DataForSEO."
+              },
+              "result_count": {
+                "type": "integer",
+                "description": "Number of result objects returned by the task."
+              }
+            },
+            "additionalProperties": true,
+            "required": [
+              "status_code",
+              "status_message"
+            ],
+            "description": "Metadata for the first DataForSEO task returned by the endpoint."
+          },
+          "results": {
+            "anyOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {},
+                  "additionalProperties": true,
+                  "description": "One result object returned by DataForSEO."
+                },
+                "description": "Result objects returned by DataForSEO for the first task."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "description": "Normalized DataForSEO Backlinks Anchors Live output."
+      }
+    },
+    {
+      "id": "dataforseo.backlinks_list_live",
+      "service": "dataforseo",
+      "name": "backlinks_list_live",
+      "description": "Retrieve DataForSEO Backlinks records for a domain, subdomain, or page.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "target": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Domain, subdomain, or absolute page URL sent to DataForSEO Backlinks."
+          },
+          "backlinksStatusType": {
+            "type": "string",
+            "enum": [
+              "all",
+              "live",
+              "lost"
+            ],
+            "description": "Backlink status type used for metrics."
+          },
+          "includeSubdomains": {
+            "type": "boolean",
+            "description": "Whether subdomains of the target are included."
+          },
+          "includeIndirectLinks": {
+            "type": "boolean",
+            "description": "Whether indirect links are included."
+          },
+          "excludeInternalBacklinks": {
+            "type": "boolean",
+            "description": "Whether internal backlinks from subdomains are excluded."
+          },
+          "rankScale": {
+            "type": "string",
+            "enum": [
+              "one_hundred",
+              "one_thousand"
+            ],
+            "description": "Scale used for backlink rank metrics."
+          },
+          "tag": {
+            "type": "string",
+            "minLength": 1,
+            "description": "User-defined task tag passed through to DataForSEO."
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1000,
+            "description": "Maximum number of returned items."
+          },
+          "offset": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Offset in the returned results array."
+          },
+          "filters": {
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "description": "A string JSON value."
+                },
+                {
+                  "type": "number",
+                  "description": "A numeric JSON value."
+                },
+                {
+                  "type": "boolean",
+                  "description": "A boolean JSON value."
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "description": "A nested JSON array item."
+                  },
+                  "description": "A nested JSON array value."
+                },
+                {
+                  "type": "object",
+                  "properties": {},
+                  "additionalProperties": true,
+                  "description": "A nested JSON object value."
+                }
+              ],
+              "description": "A JSON value accepted by DataForSEO for filters or options."
+            },
+            "description": "DataForSEO Backlinks filter expression.",
+            "minItems": 1
+          },
+          "orderBy": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "description": "One sorting rule."
+            },
+            "description": "DataForSEO Backlinks sorting rules.",
+            "minItems": 1
+          },
+          "mode": {
+            "type": "string",
+            "enum": [
+              "as_is",
+              "one_per_domain",
+              "one_per_anchor"
+            ],
+            "description": "Backlink grouping mode."
+          },
+          "customMode": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true,
+            "description": "Detailed backlink grouping object accepted by DataForSEO."
+          },
+          "searchAfterToken": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Token for subsequent backlinks list requests."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "target"
+        ],
+        "description": "Input parameters for retrieving a DataForSEO Backlinks list."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "task": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "DataForSEO task identifier."
+              },
+              "status_code": {
+                "type": "integer",
+                "description": "DataForSEO task status code."
+              },
+              "status_message": {
+                "type": "string",
+                "description": "DataForSEO task status message."
+              },
+              "time": {
+                "type": "string",
+                "description": "Task execution time reported by DataForSEO."
+              },
+              "cost": {
+                "type": "number",
+                "description": "Task cost in USD reported by DataForSEO."
+              },
+              "result_count": {
+                "type": "integer",
+                "description": "Number of result objects returned by the task."
+              }
+            },
+            "additionalProperties": true,
+            "required": [
+              "status_code",
+              "status_message"
+            ],
+            "description": "Metadata for the first DataForSEO task returned by the endpoint."
+          },
+          "results": {
+            "anyOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {},
+                  "additionalProperties": true,
+                  "description": "One result object returned by DataForSEO."
+                },
+                "description": "Result objects returned by DataForSEO for the first task."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "description": "Normalized DataForSEO Backlinks List Live output."
+      }
+    },
+    {
+      "id": "dataforseo.backlinks_referring_domains_live",
+      "service": "dataforseo",
+      "name": "backlinks_referring_domains_live",
+      "description": "Retrieve DataForSEO Backlinks referring domains for a domain, subdomain, or page.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "target": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Domain, subdomain, or absolute page URL sent to DataForSEO Backlinks."
+          },
+          "backlinksStatusType": {
+            "type": "string",
+            "enum": [
+              "all",
+              "live",
+              "lost"
+            ],
+            "description": "Backlink status type used for metrics."
+          },
+          "includeSubdomains": {
+            "type": "boolean",
+            "description": "Whether subdomains of the target are included."
+          },
+          "includeIndirectLinks": {
+            "type": "boolean",
+            "description": "Whether indirect links are included."
+          },
+          "excludeInternalBacklinks": {
+            "type": "boolean",
+            "description": "Whether internal backlinks from subdomains are excluded."
+          },
+          "rankScale": {
+            "type": "string",
+            "enum": [
+              "one_hundred",
+              "one_thousand"
+            ],
+            "description": "Scale used for backlink rank metrics."
+          },
+          "tag": {
+            "type": "string",
+            "minLength": 1,
+            "description": "User-defined task tag passed through to DataForSEO."
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1000,
+            "description": "Maximum number of returned items."
+          },
+          "offset": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Offset in the returned results array."
+          },
+          "filters": {
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "description": "A string JSON value."
+                },
+                {
+                  "type": "number",
+                  "description": "A numeric JSON value."
+                },
+                {
+                  "type": "boolean",
+                  "description": "A boolean JSON value."
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "description": "A nested JSON array item."
+                  },
+                  "description": "A nested JSON array value."
+                },
+                {
+                  "type": "object",
+                  "properties": {},
+                  "additionalProperties": true,
+                  "description": "A nested JSON object value."
+                }
+              ],
+              "description": "A JSON value accepted by DataForSEO for filters or options."
+            },
+            "description": "DataForSEO Backlinks filter expression.",
+            "minItems": 1
+          },
+          "orderBy": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "description": "One sorting rule."
+            },
+            "description": "DataForSEO Backlinks sorting rules.",
+            "minItems": 1
+          },
+          "internalListLimit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1000,
+            "description": "Maximum number of elements in internal aggregate arrays."
+          },
+          "backlinksFilters": {
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "description": "A string JSON value."
+                },
+                {
+                  "type": "number",
+                  "description": "A numeric JSON value."
+                },
+                {
+                  "type": "boolean",
+                  "description": "A boolean JSON value."
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "description": "A nested JSON array item."
+                  },
+                  "description": "A nested JSON array value."
+                },
+                {
+                  "type": "object",
+                  "properties": {},
+                  "additionalProperties": true,
+                  "description": "A nested JSON object value."
+                }
+              ],
+              "description": "A JSON value accepted by DataForSEO for filters or options."
+            },
+            "description": "Initial backlinks dataset filter expression.",
+            "minItems": 1
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "target"
+        ],
+        "description": "Input parameters for retrieving DataForSEO Backlinks referring domains."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "task": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "DataForSEO task identifier."
+              },
+              "status_code": {
+                "type": "integer",
+                "description": "DataForSEO task status code."
+              },
+              "status_message": {
+                "type": "string",
+                "description": "DataForSEO task status message."
+              },
+              "time": {
+                "type": "string",
+                "description": "Task execution time reported by DataForSEO."
+              },
+              "cost": {
+                "type": "number",
+                "description": "Task cost in USD reported by DataForSEO."
+              },
+              "result_count": {
+                "type": "integer",
+                "description": "Number of result objects returned by the task."
+              }
+            },
+            "additionalProperties": true,
+            "required": [
+              "status_code",
+              "status_message"
+            ],
+            "description": "Metadata for the first DataForSEO task returned by the endpoint."
+          },
+          "results": {
+            "anyOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {},
+                  "additionalProperties": true,
+                  "description": "One result object returned by DataForSEO."
+                },
+                "description": "Result objects returned by DataForSEO for the first task."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "description": "Normalized DataForSEO Backlinks Referring Domains Live output."
+      }
+    },
+    {
+      "id": "dataforseo.backlinks_summary_live",
+      "service": "dataforseo",
+      "name": "backlinks_summary_live",
+      "description": "Retrieve DataForSEO Backlinks summary metrics for a domain, subdomain, or page.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "target": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Domain, subdomain, or absolute page URL sent to DataForSEO Backlinks."
+          },
+          "backlinksStatusType": {
+            "type": "string",
+            "enum": [
+              "all",
+              "live",
+              "lost"
+            ],
+            "description": "Backlink status type used for metrics."
+          },
+          "includeSubdomains": {
+            "type": "boolean",
+            "description": "Whether subdomains of the target are included."
+          },
+          "includeIndirectLinks": {
+            "type": "boolean",
+            "description": "Whether indirect links are included."
+          },
+          "excludeInternalBacklinks": {
+            "type": "boolean",
+            "description": "Whether internal backlinks from subdomains are excluded."
+          },
+          "rankScale": {
+            "type": "string",
+            "enum": [
+              "one_hundred",
+              "one_thousand"
+            ],
+            "description": "Scale used for backlink rank metrics."
+          },
+          "tag": {
+            "type": "string",
+            "minLength": 1,
+            "description": "User-defined task tag passed through to DataForSEO."
+          },
+          "internalListLimit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1000,
+            "description": "Maximum number of elements in internal aggregate arrays."
+          },
+          "backlinksFilters": {
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "description": "A string JSON value."
+                },
+                {
+                  "type": "number",
+                  "description": "A numeric JSON value."
+                },
+                {
+                  "type": "boolean",
+                  "description": "A boolean JSON value."
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "description": "A nested JSON array item."
+                  },
+                  "description": "A nested JSON array value."
+                },
+                {
+                  "type": "object",
+                  "properties": {},
+                  "additionalProperties": true,
+                  "description": "A nested JSON object value."
+                }
+              ],
+              "description": "A JSON value accepted by DataForSEO for filters or options."
+            },
+            "description": "Initial backlinks dataset filter expression.",
+            "minItems": 1
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "target"
+        ],
+        "description": "Input parameters for retrieving a DataForSEO Backlinks summary."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "task": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "DataForSEO task identifier."
+              },
+              "status_code": {
+                "type": "integer",
+                "description": "DataForSEO task status code."
+              },
+              "status_message": {
+                "type": "string",
+                "description": "DataForSEO task status message."
+              },
+              "time": {
+                "type": "string",
+                "description": "Task execution time reported by DataForSEO."
+              },
+              "cost": {
+                "type": "number",
+                "description": "Task cost in USD reported by DataForSEO."
+              },
+              "result_count": {
+                "type": "integer",
+                "description": "Number of result objects returned by the task."
+              }
+            },
+            "additionalProperties": true,
+            "required": [
+              "status_code",
+              "status_message"
+            ],
+            "description": "Metadata for the first DataForSEO task returned by the endpoint."
+          },
+          "results": {
+            "anyOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {},
+                  "additionalProperties": true,
+                  "description": "One result object returned by DataForSEO."
+                },
+                "description": "Result objects returned by DataForSEO for the first task."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "description": "Normalized DataForSEO Backlinks Summary Live output."
+      }
+    },
+    {
+      "id": "dataforseo.get_user_data",
+      "service": "dataforseo",
+      "name": "get_user_data",
+      "description": "Retrieve DataForSEO account details, balance, rates, limits, and usage data.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false,
+        "description": "The input payload for retrieving DataForSEO user data."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "login": {
+            "type": "string",
+            "description": "DataForSEO API login for the account."
+          },
+          "timezone": {
+            "type": "string",
+            "description": "Timezone configured in the DataForSEO profile."
+          },
+          "money": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": true,
+                "description": "Account spending and balance details returned by DataForSEO."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "rates": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": true,
+                "description": "API rate information returned by DataForSEO."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "limits": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": true,
+                "description": "API limit information returned by DataForSEO."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "statistics": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": true,
+                "description": "API usage statistics returned by DataForSEO."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": true,
+        "description": "Normalized account details returned by the DataForSEO User Data endpoint."
+      }
+    },
+    {
+      "id": "dataforseo.google_ads_search_volume_live",
+      "service": "dataforseo",
+      "name": "google_ads_search_volume_live",
+      "description": "Retrieve Google Ads search volume metrics from DataForSEO for one batch of keywords.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "keywords": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "description": "One keyword sent to DataForSEO."
+            },
+            "description": "Keywords to request search volume for.",
+            "minItems": 1,
+            "maxItems": 1000
+          },
+          "locationName": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Full name of the location to target in DataForSEO."
+          },
+          "locationCode": {
+            "type": "integer",
+            "description": "Numeric DataForSEO location code to target."
+          },
+          "languageName": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Full name of the language to target in DataForSEO."
+          },
+          "languageCode": {
+            "type": "string",
+            "minLength": 1,
+            "description": "DataForSEO language code to target."
+          },
+          "tag": {
+            "type": "string",
+            "minLength": 1,
+            "description": "User-defined task tag passed through to DataForSEO."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "keywords"
+        ],
+        "description": "Input parameters for retrieving Google Ads search volume through DataForSEO."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "task": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "DataForSEO task identifier."
+              },
+              "status_code": {
+                "type": "integer",
+                "description": "DataForSEO task status code."
+              },
+              "status_message": {
+                "type": "string",
+                "description": "DataForSEO task status message."
+              },
+              "time": {
+                "type": "string",
+                "description": "Task execution time reported by DataForSEO."
+              },
+              "cost": {
+                "type": "number",
+                "description": "Task cost in USD reported by DataForSEO."
+              },
+              "result_count": {
+                "type": "integer",
+                "description": "Number of result objects returned by the task."
+              }
+            },
+            "additionalProperties": true,
+            "required": [
+              "status_code",
+              "status_message"
+            ],
+            "description": "Metadata for the first DataForSEO task returned by the endpoint."
+          },
+          "results": {
+            "anyOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {},
+                  "additionalProperties": true,
+                  "description": "One result object returned by DataForSEO."
+                },
+                "description": "Result objects returned by DataForSEO for the first task."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "description": "Normalized DataForSEO Google Ads Search Volume Live output."
+      }
+    },
+    {
+      "id": "dataforseo.google_domain_rank_overview_live",
+      "service": "dataforseo",
+      "name": "google_domain_rank_overview_live",
+      "description": "Retrieve DataForSEO Labs Google ranking and traffic overview for a domain.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "target": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Target domain sent to DataForSEO without protocol or www."
+          },
+          "locationName": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Full name of the location to target in DataForSEO."
+          },
+          "locationCode": {
+            "type": "integer",
+            "description": "Numeric DataForSEO location code to target."
+          },
+          "languageName": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Full name of the language to target in DataForSEO."
+          },
+          "languageCode": {
+            "type": "string",
+            "minLength": 1,
+            "description": "DataForSEO language code to target."
+          },
+          "ignoreSynonyms": {
+            "type": "boolean",
+            "description": "Whether to exclude highly similar keywords."
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1000,
+            "description": "Maximum number of returned domain rank overview items."
+          },
+          "offset": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Offset in the returned results array."
+          },
+          "tag": {
+            "type": "string",
+            "minLength": 1,
+            "description": "User-defined task tag passed through to DataForSEO."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "target"
+        ],
+        "description": "Input parameters for retrieving DataForSEO Labs Google domain rank overview."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "task": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "DataForSEO task identifier."
+              },
+              "status_code": {
+                "type": "integer",
+                "description": "DataForSEO task status code."
+              },
+              "status_message": {
+                "type": "string",
+                "description": "DataForSEO task status message."
+              },
+              "time": {
+                "type": "string",
+                "description": "Task execution time reported by DataForSEO."
+              },
+              "cost": {
+                "type": "number",
+                "description": "Task cost in USD reported by DataForSEO."
+              },
+              "result_count": {
+                "type": "integer",
+                "description": "Number of result objects returned by the task."
+              }
+            },
+            "additionalProperties": true,
+            "required": [
+              "status_code",
+              "status_message"
+            ],
+            "description": "Metadata for the first DataForSEO task returned by the endpoint."
+          },
+          "results": {
+            "anyOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {},
+                  "additionalProperties": true,
+                  "description": "One result object returned by DataForSEO."
+                },
+                "description": "Result objects returned by DataForSEO for the first task."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "description": "Normalized DataForSEO Labs Google Domain Rank Overview Live output."
+      }
+    },
+    {
+      "id": "dataforseo.google_keyword_ideas_live",
+      "service": "dataforseo",
+      "name": "google_keyword_ideas_live",
+      "description": "Retrieve DataForSEO Labs Google keyword ideas for seed keywords.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "keywords": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "description": "One keyword."
+            },
+            "description": "Seed keywords sent to DataForSEO Labs.",
+            "minItems": 1,
+            "maxItems": 200
+          },
+          "locationName": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Full name of the location to target in DataForSEO."
+          },
+          "locationCode": {
+            "type": "integer",
+            "description": "Numeric DataForSEO location code to target."
+          },
+          "languageName": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Full name of the language to target in DataForSEO."
+          },
+          "languageCode": {
+            "type": "string",
+            "minLength": 1,
+            "description": "DataForSEO language code to target."
+          },
+          "closelyVariants": {
+            "type": "boolean",
+            "description": "Whether phrase-match search mode is used."
+          },
+          "ignoreSynonyms": {
+            "type": "boolean",
+            "description": "Whether to exclude highly similar keywords."
+          },
+          "includeSerpInfo": {
+            "type": "boolean",
+            "description": "Whether to include SERP information for each keyword."
+          },
+          "includeClickstreamData": {
+            "type": "boolean",
+            "description": "Whether to include clickstream-based metrics."
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1000,
+            "description": "Maximum number of returned items."
+          },
+          "offset": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Offset in the returned results array."
+          },
+          "filters": {
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "description": "A string JSON value."
+                },
+                {
+                  "type": "number",
+                  "description": "A numeric JSON value."
+                },
+                {
+                  "type": "boolean",
+                  "description": "A boolean JSON value."
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "description": "A nested JSON array item."
+                  },
+                  "description": "A nested JSON array value."
+                },
+                {
+                  "type": "object",
+                  "properties": {},
+                  "additionalProperties": true,
+                  "description": "A nested JSON object value."
+                }
+              ],
+              "description": "A JSON value accepted by DataForSEO for filters or options."
+            },
+            "description": "DataForSEO filter expression.",
+            "minItems": 1
+          },
+          "orderBy": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "description": "One DataForSEO sorting rule."
+            },
+            "description": "DataForSEO sorting rules.",
+            "minItems": 1
+          },
+          "tag": {
+            "type": "string",
+            "minLength": 1,
+            "description": "User-defined task tag passed through to DataForSEO."
+          },
+          "offsetToken": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Offset token for subsequent keyword idea requests."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "keywords"
+        ],
+        "description": "Input parameters for retrieving DataForSEO Labs Google keyword ideas."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "task": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "DataForSEO task identifier."
+              },
+              "status_code": {
+                "type": "integer",
+                "description": "DataForSEO task status code."
+              },
+              "status_message": {
+                "type": "string",
+                "description": "DataForSEO task status message."
+              },
+              "time": {
+                "type": "string",
+                "description": "Task execution time reported by DataForSEO."
+              },
+              "cost": {
+                "type": "number",
+                "description": "Task cost in USD reported by DataForSEO."
+              },
+              "result_count": {
+                "type": "integer",
+                "description": "Number of result objects returned by the task."
+              }
+            },
+            "additionalProperties": true,
+            "required": [
+              "status_code",
+              "status_message"
+            ],
+            "description": "Metadata for the first DataForSEO task returned by the endpoint."
+          },
+          "results": {
+            "anyOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {},
+                  "additionalProperties": true,
+                  "description": "One result object returned by DataForSEO."
+                },
+                "description": "Result objects returned by DataForSEO for the first task."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "description": "Normalized DataForSEO Labs Google Keyword Ideas Live output."
+      }
+    },
+    {
+      "id": "dataforseo.google_keyword_overview_live",
+      "service": "dataforseo",
+      "name": "google_keyword_overview_live",
+      "description": "Retrieve DataForSEO Labs Google keyword overview metrics for a batch of keywords.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "keywords": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "description": "One keyword."
+            },
+            "description": "Keywords sent to DataForSEO Labs.",
+            "minItems": 1,
+            "maxItems": 700
+          },
+          "locationName": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Full name of the location to target in DataForSEO."
+          },
+          "locationCode": {
+            "type": "integer",
+            "description": "Numeric DataForSEO location code to target."
+          },
+          "languageName": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Full name of the language to target in DataForSEO."
+          },
+          "languageCode": {
+            "type": "string",
+            "minLength": 1,
+            "description": "DataForSEO language code to target."
+          },
+          "includeSerpInfo": {
+            "type": "boolean",
+            "description": "Whether to include SERP information for each keyword."
+          },
+          "includeClickstreamData": {
+            "type": "boolean",
+            "description": "Whether to include clickstream-based metrics."
+          },
+          "tag": {
+            "type": "string",
+            "minLength": 1,
+            "description": "User-defined task tag passed through to DataForSEO."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "keywords"
+        ],
+        "description": "Input parameters for retrieving DataForSEO Labs Google keyword overview metrics."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "task": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "DataForSEO task identifier."
+              },
+              "status_code": {
+                "type": "integer",
+                "description": "DataForSEO task status code."
+              },
+              "status_message": {
+                "type": "string",
+                "description": "DataForSEO task status message."
+              },
+              "time": {
+                "type": "string",
+                "description": "Task execution time reported by DataForSEO."
+              },
+              "cost": {
+                "type": "number",
+                "description": "Task cost in USD reported by DataForSEO."
+              },
+              "result_count": {
+                "type": "integer",
+                "description": "Number of result objects returned by the task."
+              }
+            },
+            "additionalProperties": true,
+            "required": [
+              "status_code",
+              "status_message"
+            ],
+            "description": "Metadata for the first DataForSEO task returned by the endpoint."
+          },
+          "results": {
+            "anyOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {},
+                  "additionalProperties": true,
+                  "description": "One result object returned by DataForSEO."
+                },
+                "description": "Result objects returned by DataForSEO for the first task."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "description": "Normalized DataForSEO Labs Google Keyword Overview Live output."
+      }
+    },
+    {
+      "id": "dataforseo.google_keyword_suggestions_live",
+      "service": "dataforseo",
+      "name": "google_keyword_suggestions_live",
+      "description": "Retrieve DataForSEO Labs Google keyword suggestions for one seed keyword.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "keyword": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Seed keyword used to generate keyword suggestions."
+          },
+          "locationName": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Full name of the location to target in DataForSEO."
+          },
+          "locationCode": {
+            "type": "integer",
+            "description": "Numeric DataForSEO location code to target."
+          },
+          "languageName": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Full name of the language to target in DataForSEO."
+          },
+          "languageCode": {
+            "type": "string",
+            "minLength": 1,
+            "description": "DataForSEO language code to target."
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1000,
+            "description": "Maximum number of keyword suggestions to return."
+          },
+          "includeSeedKeyword": {
+            "type": "boolean",
+            "description": "Whether to include the seed keyword in the response."
+          },
+          "tag": {
+            "type": "string",
+            "minLength": 1,
+            "description": "User-defined task tag passed through to DataForSEO."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "keyword"
+        ],
+        "description": "Input parameters for retrieving DataForSEO Labs Google keyword suggestions."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "task": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "DataForSEO task identifier."
+              },
+              "status_code": {
+                "type": "integer",
+                "description": "DataForSEO task status code."
+              },
+              "status_message": {
+                "type": "string",
+                "description": "DataForSEO task status message."
+              },
+              "time": {
+                "type": "string",
+                "description": "Task execution time reported by DataForSEO."
+              },
+              "cost": {
+                "type": "number",
+                "description": "Task cost in USD reported by DataForSEO."
+              },
+              "result_count": {
+                "type": "integer",
+                "description": "Number of result objects returned by the task."
+              }
+            },
+            "additionalProperties": true,
+            "required": [
+              "status_code",
+              "status_message"
+            ],
+            "description": "Metadata for the first DataForSEO task returned by the endpoint."
+          },
+          "results": {
+            "anyOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {},
+                  "additionalProperties": true,
+                  "description": "One result object returned by DataForSEO."
+                },
+                "description": "Result objects returned by DataForSEO for the first task."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "description": "Normalized DataForSEO Labs Google Keyword Suggestions Live output."
+      }
+    },
+    {
+      "id": "dataforseo.google_keywords_for_site_live",
+      "service": "dataforseo",
+      "name": "google_keywords_for_site_live",
+      "description": "Retrieve DataForSEO Labs Google keyword ideas relevant to a target domain.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "target": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Target domain sent to DataForSEO without protocol or www."
+          },
+          "locationName": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Full name of the location to target in DataForSEO."
+          },
+          "locationCode": {
+            "type": "integer",
+            "description": "Numeric DataForSEO location code to target."
+          },
+          "languageName": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Full name of the language to target in DataForSEO."
+          },
+          "languageCode": {
+            "type": "string",
+            "minLength": 1,
+            "description": "DataForSEO language code to target."
+          },
+          "includeSerpInfo": {
+            "type": "boolean",
+            "description": "Whether to include SERP information for each keyword."
+          },
+          "includeSubdomains": {
+            "type": "boolean",
+            "description": "Whether subdomains are included in the keyword search."
+          },
+          "includeClickstreamData": {
+            "type": "boolean",
+            "description": "Whether to include clickstream-based metrics."
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1000,
+            "description": "Maximum number of returned items."
+          },
+          "offset": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Offset in the returned results array."
+          },
+          "filters": {
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "description": "A string JSON value."
+                },
+                {
+                  "type": "number",
+                  "description": "A numeric JSON value."
+                },
+                {
+                  "type": "boolean",
+                  "description": "A boolean JSON value."
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "description": "A nested JSON array item."
+                  },
+                  "description": "A nested JSON array value."
+                },
+                {
+                  "type": "object",
+                  "properties": {},
+                  "additionalProperties": true,
+                  "description": "A nested JSON object value."
+                }
+              ],
+              "description": "A JSON value accepted by DataForSEO for filters or options."
+            },
+            "description": "DataForSEO filter expression.",
+            "minItems": 1
+          },
+          "orderBy": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "description": "One DataForSEO sorting rule."
+            },
+            "description": "DataForSEO sorting rules.",
+            "minItems": 1
+          },
+          "tag": {
+            "type": "string",
+            "minLength": 1,
+            "description": "User-defined task tag passed through to DataForSEO."
+          },
+          "offsetToken": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Offset token for subsequent keyword requests."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "target"
+        ],
+        "description": "Input parameters for retrieving DataForSEO Labs Google keywords for a site."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "task": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "DataForSEO task identifier."
+              },
+              "status_code": {
+                "type": "integer",
+                "description": "DataForSEO task status code."
+              },
+              "status_message": {
+                "type": "string",
+                "description": "DataForSEO task status message."
+              },
+              "time": {
+                "type": "string",
+                "description": "Task execution time reported by DataForSEO."
+              },
+              "cost": {
+                "type": "number",
+                "description": "Task cost in USD reported by DataForSEO."
+              },
+              "result_count": {
+                "type": "integer",
+                "description": "Number of result objects returned by the task."
+              }
+            },
+            "additionalProperties": true,
+            "required": [
+              "status_code",
+              "status_message"
+            ],
+            "description": "Metadata for the first DataForSEO task returned by the endpoint."
+          },
+          "results": {
+            "anyOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {},
+                  "additionalProperties": true,
+                  "description": "One result object returned by DataForSEO."
+                },
+                "description": "Result objects returned by DataForSEO for the first task."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "description": "Normalized DataForSEO Labs Google Keywords For Site Live output."
+      }
+    },
+    {
+      "id": "dataforseo.google_organic_live_advanced",
+      "service": "dataforseo",
+      "name": "google_organic_live_advanced",
+      "description": "Run a DataForSEO Google Organic SERP Live Advanced request for one search keyword.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "keyword": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Search keyword sent to DataForSEO."
+          },
+          "locationName": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Full name of the location to target in DataForSEO."
+          },
+          "locationCode": {
+            "type": "integer",
+            "description": "Numeric DataForSEO location code to target."
+          },
+          "languageName": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Full name of the language to target in DataForSEO."
+          },
+          "languageCode": {
+            "type": "string",
+            "minLength": 1,
+            "description": "DataForSEO language code to target."
+          },
+          "device": {
+            "type": "string",
+            "enum": [
+              "desktop",
+              "mobile"
+            ],
+            "description": "Device type used for the SERP request."
+          },
+          "os": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Operating system name sent to DataForSEO for mobile or desktop requests."
+          },
+          "depth": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 700,
+            "description": "Maximum SERP depth to retrieve."
+          },
+          "tag": {
+            "type": "string",
+            "minLength": 1,
+            "description": "User-defined task tag passed through to DataForSEO."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "keyword"
+        ],
+        "description": "Input parameters for running a DataForSEO Google Organic SERP Live Advanced request."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "task": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "DataForSEO task identifier."
+              },
+              "status_code": {
+                "type": "integer",
+                "description": "DataForSEO task status code."
+              },
+              "status_message": {
+                "type": "string",
+                "description": "DataForSEO task status message."
+              },
+              "time": {
+                "type": "string",
+                "description": "Task execution time reported by DataForSEO."
+              },
+              "cost": {
+                "type": "number",
+                "description": "Task cost in USD reported by DataForSEO."
+              },
+              "result_count": {
+                "type": "integer",
+                "description": "Number of result objects returned by the task."
+              }
+            },
+            "additionalProperties": true,
+            "required": [
+              "status_code",
+              "status_message"
+            ],
+            "description": "Metadata for the first DataForSEO task returned by the endpoint."
+          },
+          "results": {
+            "anyOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {},
+                  "additionalProperties": true,
+                  "description": "One result object returned by DataForSEO."
+                },
+                "description": "Result objects returned by DataForSEO for the first task."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "description": "Normalized DataForSEO Google Organic SERP Live Advanced output."
+      }
+    },
+    {
+      "id": "dataforseo.google_relevant_pages_live",
+      "service": "dataforseo",
+      "name": "google_relevant_pages_live",
+      "description": "Retrieve ranking and traffic metrics for the most relevant pages of a domain.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "target": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Target domain sent to DataForSEO without protocol or www."
+          },
+          "ignoreSynonyms": {
+            "type": "boolean",
+            "description": "Whether to exclude highly similar keywords."
+          },
+          "includeClickstreamData": {
+            "type": "boolean",
+            "description": "Whether to include clickstream-based metrics."
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1000,
+            "description": "Maximum number of returned items."
+          },
+          "offset": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Offset in the returned results array."
+          },
+          "filters": {
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "description": "A string JSON value."
+                },
+                {
+                  "type": "number",
+                  "description": "A numeric JSON value."
+                },
+                {
+                  "type": "boolean",
+                  "description": "A boolean JSON value."
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "description": "A nested JSON array item."
+                  },
+                  "description": "A nested JSON array value."
+                },
+                {
+                  "type": "object",
+                  "properties": {},
+                  "additionalProperties": true,
+                  "description": "A nested JSON object value."
+                }
+              ],
+              "description": "A JSON value accepted by DataForSEO for filters or options."
+            },
+            "description": "DataForSEO filter expression.",
+            "minItems": 1
+          },
+          "orderBy": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "description": "One DataForSEO sorting rule."
+            },
+            "description": "DataForSEO sorting rules.",
+            "minItems": 1
+          },
+          "tag": {
+            "type": "string",
+            "minLength": 1,
+            "description": "User-defined task tag passed through to DataForSEO."
+          },
+          "itemTypes": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "description": "One search result item type."
+            },
+            "description": "Search result item types included in DataForSEO Labs calculations.",
+            "minItems": 1
+          },
+          "historicalSerpMode": {
+            "type": "string",
+            "enum": [
+              "live",
+              "lost",
+              "all"
+            ],
+            "description": "Historical SERP mode used for relevant pages."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "target"
+        ],
+        "description": "Input parameters for retrieving DataForSEO Labs Google relevant pages for a domain."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "task": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "DataForSEO task identifier."
+              },
+              "status_code": {
+                "type": "integer",
+                "description": "DataForSEO task status code."
+              },
+              "status_message": {
+                "type": "string",
+                "description": "DataForSEO task status message."
+              },
+              "time": {
+                "type": "string",
+                "description": "Task execution time reported by DataForSEO."
+              },
+              "cost": {
+                "type": "number",
+                "description": "Task cost in USD reported by DataForSEO."
+              },
+              "result_count": {
+                "type": "integer",
+                "description": "Number of result objects returned by the task."
+              }
+            },
+            "additionalProperties": true,
+            "required": [
+              "status_code",
+              "status_message"
+            ],
+            "description": "Metadata for the first DataForSEO task returned by the endpoint."
+          },
+          "results": {
+            "anyOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {},
+                  "additionalProperties": true,
+                  "description": "One result object returned by DataForSEO."
+                },
+                "description": "Result objects returned by DataForSEO for the first task."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "description": "Normalized DataForSEO Labs Google Relevant Pages Live output."
+      }
+    },
+    {
+      "id": "dataforseo.google_serp_competitors_live",
+      "service": "dataforseo",
+      "name": "google_serp_competitors_live",
+      "description": "Retrieve domains competing in Google SERPs for the specified keywords.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "keywords": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "description": "One keyword."
+            },
+            "description": "Keywords used to find SERP competitors.",
+            "minItems": 1,
+            "maxItems": 200
+          },
+          "locationName": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Full name of the location to target in DataForSEO."
+          },
+          "locationCode": {
+            "type": "integer",
+            "description": "Numeric DataForSEO location code to target."
+          },
+          "includeSubdomains": {
+            "type": "boolean",
+            "description": "Whether subdomains are included in the competitor search."
+          },
+          "itemTypes": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "description": "One search result item type."
+            },
+            "description": "Search result item types included in DataForSEO Labs calculations.",
+            "minItems": 1
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1000,
+            "description": "Maximum number of returned items."
+          },
+          "offset": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Offset in the returned results array."
+          },
+          "filters": {
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "description": "A string JSON value."
+                },
+                {
+                  "type": "number",
+                  "description": "A numeric JSON value."
+                },
+                {
+                  "type": "boolean",
+                  "description": "A boolean JSON value."
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "description": "A nested JSON array item."
+                  },
+                  "description": "A nested JSON array value."
+                },
+                {
+                  "type": "object",
+                  "properties": {},
+                  "additionalProperties": true,
+                  "description": "A nested JSON object value."
+                }
+              ],
+              "description": "A JSON value accepted by DataForSEO for filters or options."
+            },
+            "description": "DataForSEO filter expression.",
+            "minItems": 1
+          },
+          "orderBy": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "description": "One DataForSEO sorting rule."
+            },
+            "description": "DataForSEO sorting rules.",
+            "minItems": 1
+          },
+          "tag": {
+            "type": "string",
+            "minLength": 1,
+            "description": "User-defined task tag passed through to DataForSEO."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "keywords"
+        ],
+        "description": "Input parameters for retrieving DataForSEO Labs Google SERP competitors."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "task": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "DataForSEO task identifier."
+              },
+              "status_code": {
+                "type": "integer",
+                "description": "DataForSEO task status code."
+              },
+              "status_message": {
+                "type": "string",
+                "description": "DataForSEO task status message."
+              },
+              "time": {
+                "type": "string",
+                "description": "Task execution time reported by DataForSEO."
+              },
+              "cost": {
+                "type": "number",
+                "description": "Task cost in USD reported by DataForSEO."
+              },
+              "result_count": {
+                "type": "integer",
+                "description": "Number of result objects returned by the task."
+              }
+            },
+            "additionalProperties": true,
+            "required": [
+              "status_code",
+              "status_message"
+            ],
+            "description": "Metadata for the first DataForSEO task returned by the endpoint."
+          },
+          "results": {
+            "anyOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {},
+                  "additionalProperties": true,
+                  "description": "One result object returned by DataForSEO."
+                },
+                "description": "Result objects returned by DataForSEO for the first task."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "description": "Normalized DataForSEO Labs Google SERP Competitors Live output."
+      }
+    }
+  ]
+}

@@ -11,6 +11,10 @@
     "new:assistant": "node scripts/new.mjs assistant",
     "new:mcp": "node scripts/new.mjs mcp",
     "sync": "node scripts/sync.mjs",
-    "validate": "node scripts/validate.mjs"
+    "validate": "node scripts/validate.mjs",
+    "build:mcp": "node scripts/build-mcp-adapter.mjs"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.1"
   }
 }

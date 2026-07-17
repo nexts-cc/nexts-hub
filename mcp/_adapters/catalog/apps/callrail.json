@@ -1,0 +1,1320 @@
+{
+  "service": "callrail",
+  "displayName": "CallRail",
+  "categories": [
+    "Marketing",
+    "Data"
+  ],
+  "authTypes": [
+    "api_key"
+  ],
+  "auth": [
+    {
+      "type": "api_key",
+      "label": "API Key",
+      "placeholder": "CALLRAIL_API_KEY",
+      "description": "CallRail API key used with the Authorization: Token token header. Create or view API keys from your CallRail account integration settings: https://support.callrail.com/hc/en-us/articles/5712444672909-CallRail-s-API-documentation.",
+      "extraFields": []
+    }
+  ],
+  "homepageUrl": "https://www.callrail.com",
+  "actions": [
+    {
+      "id": "callrail.get_call",
+      "service": "callrail",
+      "name": "get_call",
+      "description": "Retrieve one CallRail call by account ID and call ID.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "accountId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The CallRail account ID."
+          },
+          "callId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The CallRail call ID."
+          },
+          "fields": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "description": "One CallRail field name to request."
+            },
+            "description": "Additional field names to request from CallRail, such as milestones or keywords_spotted.",
+            "minItems": 1
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "accountId",
+          "callId"
+        ],
+        "description": "The input payload for retrieving one CallRail call."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "call": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The CallRail call ID."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "companyId": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The CallRail company ID associated with the call."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "customerName": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The caller or customer name."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "customerPhoneNumber": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The caller or customer phone number."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "trackingPhoneNumber": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The tracking phone number that received the call."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "businessPhoneNumber": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The destination business phone number."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "direction": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The call direction returned by CallRail."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "answered": {
+                "anyOf": [
+                  {
+                    "type": "boolean",
+                    "description": "Whether the call was answered."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "duration": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "description": "The call duration in seconds."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "startTime": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The call start timestamp."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "source": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The marketing source attributed to the call."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "recording": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The CallRail recording URL when available."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "raw": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": true,
+                "description": "The raw CallRail object."
+              }
+            },
+            "additionalProperties": false,
+            "description": "A CallRail call."
+          },
+          "raw": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true,
+            "description": "The raw CallRail object."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The response returned when retrieving one CallRail call."
+      }
+    },
+    {
+      "id": "callrail.get_form_submission",
+      "service": "callrail",
+      "name": "get_form_submission",
+      "description": "Retrieve one CallRail form submission by account ID and form submission ID.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "accountId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The CallRail account ID."
+          },
+          "formSubmissionId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The CallRail form submission ID."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The input payload for retrieving one CallRail form submission."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "formSubmission": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The CallRail form submission ID."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "companyId": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The CallRail company ID associated with the submission."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "personId": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The CallRail person ID associated with the submission."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "customerName": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The submitted customer name when available."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "customerEmail": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The submitted customer email when available."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "customerPhoneNumber": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The submitted customer phone number when available."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "formUrl": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The URL of the submitted form."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "landingPageUrl": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The landing page URL attributed to the submission."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "submittedAt": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The submission timestamp."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "source": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The marketing source attributed to the submission."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "formData": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": true,
+                "description": "The submitted form data returned by CallRail."
+              },
+              "raw": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": true,
+                "description": "The raw CallRail object."
+              }
+            },
+            "additionalProperties": false,
+            "description": "A CallRail form submission."
+          },
+          "raw": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true,
+            "description": "The raw CallRail object."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The response returned when retrieving one CallRail form submission."
+      }
+    },
+    {
+      "id": "callrail.list_accounts",
+      "service": "callrail",
+      "name": "list_accounts",
+      "description": "List CallRail accounts visible to the API key.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "The page number to return."
+          },
+          "perPage": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 250,
+            "description": "The number of records to return per page."
+          },
+          "hipaaAccount": {
+            "type": "boolean",
+            "description": "Filter accounts by HIPAA account status."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The input payload for listing CallRail accounts."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "description": "The current page number returned by CallRail."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "perPage": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "description": "The number of records returned per page."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "totalPages": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "description": "The total number of pages when provided by CallRail."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "totalRecords": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "description": "The total number of matching records."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "hasNextPage": {
+            "anyOf": [
+              {
+                "type": "boolean",
+                "description": "Whether a next page is available when CallRail returns relative pagination."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "nextPageUrl": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "The next page URL returned by CallRail when relative pagination is used."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "accounts": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The CallRail account ID."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "name": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The account name."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "outboundRecordingEnabled": {
+                  "anyOf": [
+                    {
+                      "type": "boolean",
+                      "description": "Whether outbound recording is enabled for the account."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "hipaaAccount": {
+                  "anyOf": [
+                    {
+                      "type": "boolean",
+                      "description": "Whether the account is a HIPAA account."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "raw": {
+                  "type": "object",
+                  "properties": {},
+                  "additionalProperties": true,
+                  "description": "The raw CallRail object."
+                }
+              },
+              "additionalProperties": false,
+              "description": "A CallRail account."
+            },
+            "description": "The CallRail accounts returned by the API."
+          },
+          "raw": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true,
+            "description": "The raw CallRail object."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The response returned when listing CallRail accounts."
+      }
+    },
+    {
+      "id": "callrail.list_calls",
+      "service": "callrail",
+      "name": "list_calls",
+      "description": "List CallRail calls for one account with optional company, tracker, date, and field filters.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "accountId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The CallRail account ID."
+          },
+          "companyId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The CallRail company ID."
+          },
+          "trackerId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Only return calls for this CallRail tracker ID."
+          },
+          "startDate": {
+            "type": "string",
+            "description": "Only return calls on or after this date.",
+            "format": "date"
+          },
+          "endDate": {
+            "type": "string",
+            "description": "Only return calls on or before this date.",
+            "format": "date"
+          },
+          "fields": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "description": "One CallRail field name to request."
+            },
+            "description": "Additional field names to request from CallRail, such as milestones or keywords_spotted.",
+            "minItems": 1
+          },
+          "page": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "The page number to return."
+          },
+          "perPage": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 250,
+            "description": "The number of records to return per page."
+          },
+          "relativePagination": {
+            "type": "boolean",
+            "description": "Whether to request CallRail relative pagination."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "accountId"
+        ],
+        "description": "The input payload for listing CallRail calls."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "description": "The current page number returned by CallRail."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "perPage": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "description": "The number of records returned per page."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "totalPages": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "description": "The total number of pages when provided by CallRail."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "totalRecords": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "description": "The total number of matching records."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "hasNextPage": {
+            "anyOf": [
+              {
+                "type": "boolean",
+                "description": "Whether a next page is available when CallRail returns relative pagination."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "nextPageUrl": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "The next page URL returned by CallRail when relative pagination is used."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "calls": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The CallRail call ID."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "companyId": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The CallRail company ID associated with the call."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "customerName": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The caller or customer name."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "customerPhoneNumber": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The caller or customer phone number."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "trackingPhoneNumber": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The tracking phone number that received the call."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "businessPhoneNumber": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The destination business phone number."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "direction": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The call direction returned by CallRail."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "answered": {
+                  "anyOf": [
+                    {
+                      "type": "boolean",
+                      "description": "Whether the call was answered."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "duration": {
+                  "anyOf": [
+                    {
+                      "type": "integer",
+                      "description": "The call duration in seconds."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "startTime": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The call start timestamp."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "source": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The marketing source attributed to the call."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "recording": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The CallRail recording URL when available."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "raw": {
+                  "type": "object",
+                  "properties": {},
+                  "additionalProperties": true,
+                  "description": "The raw CallRail object."
+                }
+              },
+              "additionalProperties": false,
+              "description": "A CallRail call."
+            },
+            "description": "The CallRail calls returned by the API."
+          },
+          "raw": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true,
+            "description": "The raw CallRail object."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The response returned when listing CallRail calls."
+      }
+    },
+    {
+      "id": "callrail.list_companies",
+      "service": "callrail",
+      "name": "list_companies",
+      "description": "List CallRail companies for one account.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "accountId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The CallRail account ID."
+          },
+          "page": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "The page number to return."
+          },
+          "perPage": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 250,
+            "description": "The number of records to return per page."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "accountId"
+        ],
+        "description": "The input payload for listing CallRail companies."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "description": "The current page number returned by CallRail."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "perPage": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "description": "The number of records returned per page."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "totalPages": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "description": "The total number of pages when provided by CallRail."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "totalRecords": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "description": "The total number of matching records."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "hasNextPage": {
+            "anyOf": [
+              {
+                "type": "boolean",
+                "description": "Whether a next page is available when CallRail returns relative pagination."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "nextPageUrl": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "The next page URL returned by CallRail when relative pagination is used."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "companies": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The CallRail company ID."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "name": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The company name."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "status": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The company status returned by CallRail."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "timeZone": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The company time zone."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "createdAt": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The company creation timestamp."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "disabledAt": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The company disabled timestamp when present."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "raw": {
+                  "type": "object",
+                  "properties": {},
+                  "additionalProperties": true,
+                  "description": "The raw CallRail object."
+                }
+              },
+              "additionalProperties": false,
+              "description": "A CallRail company."
+            },
+            "description": "The CallRail companies returned by the API."
+          },
+          "raw": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true,
+            "description": "The raw CallRail object."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The response returned when listing CallRail companies."
+      }
+    },
+    {
+      "id": "callrail.list_form_submissions",
+      "service": "callrail",
+      "name": "list_form_submissions",
+      "description": "List CallRail form submissions for one account with optional company, date, and field filters.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "accountId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The CallRail account ID."
+          },
+          "companyId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The CallRail company ID."
+          },
+          "startDate": {
+            "type": "string",
+            "description": "Only return submissions on or after this date.",
+            "format": "date"
+          },
+          "endDate": {
+            "type": "string",
+            "description": "Only return submissions on or before this date.",
+            "format": "date"
+          },
+          "fields": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "description": "One CallRail field name to request."
+            },
+            "description": "Additional field names to request from CallRail, such as milestones or keywords_spotted.",
+            "minItems": 1
+          },
+          "page": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "The page number to return."
+          },
+          "perPage": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 250,
+            "description": "The number of records to return per page."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "accountId"
+        ],
+        "description": "The input payload for listing CallRail form submissions."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "description": "The current page number returned by CallRail."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "perPage": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "description": "The number of records returned per page."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "totalPages": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "description": "The total number of pages when provided by CallRail."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "totalRecords": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "description": "The total number of matching records."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "hasNextPage": {
+            "anyOf": [
+              {
+                "type": "boolean",
+                "description": "Whether a next page is available when CallRail returns relative pagination."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "nextPageUrl": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "The next page URL returned by CallRail when relative pagination is used."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "formSubmissions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The CallRail form submission ID."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "companyId": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The CallRail company ID associated with the submission."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "personId": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The CallRail person ID associated with the submission."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "customerName": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The submitted customer name when available."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "customerEmail": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The submitted customer email when available."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "customerPhoneNumber": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The submitted customer phone number when available."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "formUrl": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The URL of the submitted form."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "landingPageUrl": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The landing page URL attributed to the submission."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "submittedAt": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The submission timestamp."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "source": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The marketing source attributed to the submission."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "formData": {
+                  "type": "object",
+                  "properties": {},
+                  "additionalProperties": true,
+                  "description": "The submitted form data returned by CallRail."
+                },
+                "raw": {
+                  "type": "object",
+                  "properties": {},
+                  "additionalProperties": true,
+                  "description": "The raw CallRail object."
+                }
+              },
+              "additionalProperties": false,
+              "description": "A CallRail form submission."
+            },
+            "description": "The CallRail form submissions returned by the API."
+          },
+          "raw": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true,
+            "description": "The raw CallRail object."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The response returned when listing CallRail form submissions."
+      }
+    }
+  ]
+}

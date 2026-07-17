@@ -1,0 +1,960 @@
+{
+  "service": "cloudflare_r2",
+  "displayName": "Cloudflare R2",
+  "categories": [
+    "Storage",
+    "Developer Tools"
+  ],
+  "authTypes": [
+    "custom_credential",
+    "oauth2"
+  ],
+  "auth": [
+    {
+      "type": "custom_credential",
+      "fields": [
+        {
+          "key": "apiKey",
+          "label": "API Token",
+          "inputType": "password",
+          "required": true,
+          "secret": true,
+          "placeholder": "cloudflare_api_token",
+          "description": "Cloudflare API token sent as a Bearer token. Create one from the Cloudflare API Tokens page: https://dash.cloudflare.com/profile/api-tokens"
+        },
+        {
+          "key": "accountId",
+          "label": "Account ID",
+          "inputType": "text",
+          "required": true,
+          "secret": false,
+          "placeholder": "023e105f4ecef8ad9ca31a8372d0c353",
+          "description": "Cloudflare account ID used for R2 bucket management. Find it in the Cloudflare dashboard or account ID docs: https://developers.cloudflare.com/fundamentals/account/find-account-and-zone-ids/"
+        }
+      ]
+    },
+    {
+      "type": "oauth2",
+      "authorizationUrl": "https://dash.cloudflare.com/oauth2/auth",
+      "tokenUrl": "https://dash.cloudflare.com/oauth2/token",
+      "refreshTokenUrl": "https://dash.cloudflare.com/oauth2/token",
+      "scopes": [
+        "workers-r2.read",
+        "workers-r2.write"
+      ],
+      "tokenEndpointAuthMethod": "client_secret_basic"
+    }
+  ],
+  "homepageUrl": "https://www.cloudflare.com/developer-platform/products/r2/",
+  "actions": [
+    {
+      "id": "cloudflare_r2.create_bucket",
+      "service": "cloudflare_r2",
+      "name": "create_bucket",
+      "description": "Create an R2 bucket in a Cloudflare account.",
+      "requiredScopes": [
+        "workers-r2.write"
+      ],
+      "providerPermissions": [
+        "Workers R2 Storage Write"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "accountId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The Cloudflare account ID. Custom-credential connections reuse the connected account ID when this is omitted."
+          },
+          "name": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 64,
+            "description": "The R2 bucket name."
+          },
+          "locationHint": {
+            "type": "string",
+            "enum": [
+              "apac",
+              "eeur",
+              "enam",
+              "weur",
+              "wnam",
+              "oc"
+            ],
+            "description": "The R2 bucket region hint."
+          },
+          "storageClass": {
+            "type": "string",
+            "enum": [
+              "Standard",
+              "InfrequentAccess"
+            ],
+            "description": "The default storage class for newly uploaded objects."
+          },
+          "jurisdiction": {
+            "type": "string",
+            "enum": [
+              "default",
+              "eu",
+              "fedramp"
+            ],
+            "description": "The jurisdiction where objects in the bucket are guaranteed to be stored."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "name"
+        ],
+        "description": "The input payload for this action."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "bucket": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The bucket name."
+              },
+              "creationDate": {
+                "type": "string",
+                "description": "The bucket creation timestamp."
+              },
+              "location": {
+                "type": "string",
+                "enum": [
+                  "apac",
+                  "eeur",
+                  "enam",
+                  "weur",
+                  "wnam",
+                  "oc"
+                ],
+                "description": "The R2 bucket region hint."
+              },
+              "jurisdiction": {
+                "type": "string",
+                "enum": [
+                  "default",
+                  "eu",
+                  "fedramp"
+                ],
+                "description": "The jurisdiction where objects in the bucket are guaranteed to be stored."
+              },
+              "storageClass": {
+                "type": "string",
+                "enum": [
+                  "Standard",
+                  "InfrequentAccess"
+                ],
+                "description": "The default storage class for newly uploaded objects."
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "name"
+            ],
+            "description": "A Cloudflare R2 bucket."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The output payload for this action."
+      }
+    },
+    {
+      "id": "cloudflare_r2.delete_bucket",
+      "service": "cloudflare_r2",
+      "name": "delete_bucket",
+      "description": "Delete an R2 bucket by name.",
+      "requiredScopes": [
+        "workers-r2.write"
+      ],
+      "providerPermissions": [
+        "Workers R2 Storage Write"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "accountId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The Cloudflare account ID. Custom-credential connections reuse the connected account ID when this is omitted."
+          },
+          "bucketName": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 64,
+            "description": "The R2 bucket name."
+          },
+          "jurisdiction": {
+            "type": "string",
+            "enum": [
+              "default",
+              "eu",
+              "fedramp"
+            ],
+            "description": "The jurisdiction where objects in the bucket are guaranteed to be stored."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "bucketName"
+        ],
+        "description": "The input payload for this action."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "bucketName": {
+            "type": "string",
+            "description": "The deleted bucket name."
+          },
+          "deleted": {
+            "type": "boolean",
+            "description": "Whether the bucket delete request succeeded."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The output payload for this action."
+      }
+    },
+    {
+      "id": "cloudflare_r2.delete_bucket_cors_policy",
+      "service": "cloudflare_r2",
+      "name": "delete_bucket_cors_policy",
+      "description": "Delete the bucket-level CORS policy for an R2 bucket.",
+      "requiredScopes": [
+        "workers-r2.write"
+      ],
+      "providerPermissions": [
+        "Workers R2 Storage Write"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "accountId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The Cloudflare account ID. Custom-credential connections reuse the connected account ID when this is omitted."
+          },
+          "bucketName": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 64,
+            "description": "The R2 bucket name."
+          },
+          "jurisdiction": {
+            "type": "string",
+            "enum": [
+              "default",
+              "eu",
+              "fedramp"
+            ],
+            "description": "The jurisdiction where objects in the bucket are guaranteed to be stored."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "bucketName"
+        ],
+        "description": "The input payload for this action."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "bucketName": {
+            "type": "string",
+            "description": "The bucket whose CORS policy was removed."
+          },
+          "deleted": {
+            "type": "boolean",
+            "description": "Whether the delete request succeeded."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The output payload for this action."
+      }
+    },
+    {
+      "id": "cloudflare_r2.get_bucket",
+      "service": "cloudflare_r2",
+      "name": "get_bucket",
+      "description": "Get one R2 bucket by name.",
+      "requiredScopes": [
+        "workers-r2.read"
+      ],
+      "providerPermissions": [
+        "Workers R2 Storage Read"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "accountId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The Cloudflare account ID. Custom-credential connections reuse the connected account ID when this is omitted."
+          },
+          "bucketName": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 64,
+            "description": "The R2 bucket name."
+          },
+          "jurisdiction": {
+            "type": "string",
+            "enum": [
+              "default",
+              "eu",
+              "fedramp"
+            ],
+            "description": "The jurisdiction where objects in the bucket are guaranteed to be stored."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "bucketName"
+        ],
+        "description": "The input payload for this action."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "bucket": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The bucket name."
+              },
+              "creationDate": {
+                "type": "string",
+                "description": "The bucket creation timestamp."
+              },
+              "location": {
+                "type": "string",
+                "enum": [
+                  "apac",
+                  "eeur",
+                  "enam",
+                  "weur",
+                  "wnam",
+                  "oc"
+                ],
+                "description": "The R2 bucket region hint."
+              },
+              "jurisdiction": {
+                "type": "string",
+                "enum": [
+                  "default",
+                  "eu",
+                  "fedramp"
+                ],
+                "description": "The jurisdiction where objects in the bucket are guaranteed to be stored."
+              },
+              "storageClass": {
+                "type": "string",
+                "enum": [
+                  "Standard",
+                  "InfrequentAccess"
+                ],
+                "description": "The default storage class for newly uploaded objects."
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "name"
+            ],
+            "description": "A Cloudflare R2 bucket."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The output payload for this action."
+      }
+    },
+    {
+      "id": "cloudflare_r2.get_bucket_cors_policy",
+      "service": "cloudflare_r2",
+      "name": "get_bucket_cors_policy",
+      "description": "Fetch the bucket-level CORS policy for an R2 bucket.",
+      "requiredScopes": [
+        "workers-r2.read"
+      ],
+      "providerPermissions": [
+        "Workers R2 Storage Read"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "accountId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The Cloudflare account ID. Custom-credential connections reuse the connected account ID when this is omitted."
+          },
+          "bucketName": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 64,
+            "description": "The R2 bucket name."
+          },
+          "jurisdiction": {
+            "type": "string",
+            "enum": [
+              "default",
+              "eu",
+              "fedramp"
+            ],
+            "description": "The jurisdiction where objects in the bucket are guaranteed to be stored."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "bucketName"
+        ],
+        "description": "The input payload for this action."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "rules": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "allowed": {
+                  "type": "object",
+                  "properties": {
+                    "methods": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "enum": [
+                          "GET",
+                          "PUT",
+                          "POST",
+                          "DELETE",
+                          "HEAD"
+                        ],
+                        "description": "An HTTP method allowed by a CORS rule."
+                      },
+                      "description": "The methods allowed by this CORS rule.",
+                      "minItems": 1
+                    },
+                    "origins": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "description": "The allowed origins for this CORS rule.",
+                      "minItems": 1
+                    },
+                    "headers": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "description": "The allowed request headers for this CORS rule."
+                    }
+                  },
+                  "additionalProperties": false,
+                  "required": [
+                    "methods",
+                    "origins"
+                  ],
+                  "description": "The allowed origins, methods, and headers for this CORS rule."
+                },
+                "id": {
+                  "type": "string",
+                  "description": "The optional identifier for this CORS rule."
+                },
+                "exposeHeaders": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "description": "The response headers exposed to browser clients."
+                },
+                "maxAgeSeconds": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "description": "The browser preflight cache duration in seconds."
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "allowed"
+              ],
+              "description": "A bucket-level R2 CORS rule."
+            },
+            "description": "The bucket CORS rules."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The output payload for this action."
+      }
+    },
+    {
+      "id": "cloudflare_r2.list_accounts",
+      "service": "cloudflare_r2",
+      "name": "list_accounts",
+      "description": "List Cloudflare accounts visible to the current credential.",
+      "requiredScopes": [
+        "workers-r2.read"
+      ],
+      "providerPermissions": [
+        "Workers R2 Storage Read"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "The result page number."
+          },
+          "perPage": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "The page size."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The input payload for this action."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "accounts": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "description": "The Cloudflare account ID."
+                },
+                "name": {
+                  "type": "string",
+                  "description": "The Cloudflare account name."
+                },
+                "type": {
+                  "type": "string",
+                  "description": "The Cloudflare account type."
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "id"
+              ],
+              "description": "A Cloudflare account summary."
+            },
+            "description": "The visible Cloudflare accounts."
+          },
+          "resultInfo": {
+            "type": "object",
+            "properties": {
+              "page": {
+                "type": "integer",
+                "description": "The current page number."
+              },
+              "perPage": {
+                "type": "integer",
+                "description": "The page size."
+              },
+              "count": {
+                "type": "integer",
+                "description": "The number of items in the current page."
+              },
+              "totalCount": {
+                "type": "integer",
+                "description": "The total number of matching items."
+              },
+              "totalPages": {
+                "type": "integer",
+                "description": "The total number of pages."
+              }
+            },
+            "additionalProperties": false,
+            "description": "Cloudflare pagination metadata."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "accounts"
+        ],
+        "description": "The output payload for this action."
+      }
+    },
+    {
+      "id": "cloudflare_r2.list_buckets",
+      "service": "cloudflare_r2",
+      "name": "list_buckets",
+      "description": "List the R2 buckets in a Cloudflare account.",
+      "requiredScopes": [
+        "workers-r2.read"
+      ],
+      "providerPermissions": [
+        "Workers R2 Storage Read"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "accountId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The Cloudflare account ID. Custom-credential connections reuse the connected account ID when this is omitted."
+          },
+          "cursor": {
+            "type": "string",
+            "description": "Pagination cursor returned by a previous list_buckets call."
+          },
+          "direction": {
+            "type": "string",
+            "enum": [
+              "asc",
+              "desc"
+            ],
+            "description": "The sort direction."
+          },
+          "nameContains": {
+            "type": "string",
+            "description": "Filters buckets whose names contain this phrase."
+          },
+          "order": {
+            "type": "string",
+            "enum": [
+              "name"
+            ],
+            "description": "The field used to order results."
+          },
+          "perPage": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1000,
+            "description": "The maximum number of buckets to return."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The input payload for this action."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "buckets": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "The bucket name."
+                },
+                "creationDate": {
+                  "type": "string",
+                  "description": "The bucket creation timestamp."
+                },
+                "location": {
+                  "type": "string",
+                  "enum": [
+                    "apac",
+                    "eeur",
+                    "enam",
+                    "weur",
+                    "wnam",
+                    "oc"
+                  ],
+                  "description": "The R2 bucket region hint."
+                },
+                "jurisdiction": {
+                  "type": "string",
+                  "enum": [
+                    "default",
+                    "eu",
+                    "fedramp"
+                  ],
+                  "description": "The jurisdiction where objects in the bucket are guaranteed to be stored."
+                },
+                "storageClass": {
+                  "type": "string",
+                  "enum": [
+                    "Standard",
+                    "InfrequentAccess"
+                  ],
+                  "description": "The default storage class for newly uploaded objects."
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "name"
+              ],
+              "description": "A Cloudflare R2 bucket."
+            },
+            "description": "The returned R2 buckets."
+          },
+          "cursor": {
+            "type": "string",
+            "description": "The pagination cursor for the next page, if the response is truncated."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "buckets"
+        ],
+        "description": "The output payload for this action."
+      }
+    },
+    {
+      "id": "cloudflare_r2.update_bucket",
+      "service": "cloudflare_r2",
+      "name": "update_bucket",
+      "description": "Update mutable R2 bucket properties such as default storage class or jurisdiction.",
+      "requiredScopes": [
+        "workers-r2.write"
+      ],
+      "providerPermissions": [
+        "Workers R2 Storage Write"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "accountId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The Cloudflare account ID. Custom-credential connections reuse the connected account ID when this is omitted."
+          },
+          "bucketName": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 64,
+            "description": "The R2 bucket name."
+          },
+          "storageClass": {
+            "type": "string",
+            "enum": [
+              "Standard",
+              "InfrequentAccess"
+            ],
+            "description": "The default storage class for newly uploaded objects."
+          },
+          "jurisdiction": {
+            "type": "string",
+            "enum": [
+              "default",
+              "eu",
+              "fedramp"
+            ],
+            "description": "The jurisdiction where objects in the bucket are guaranteed to be stored."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "bucketName"
+        ],
+        "description": "The input payload for this action.",
+        "anyOf": [
+          {
+            "required": [
+              "storageClass"
+            ]
+          },
+          {
+            "required": [
+              "jurisdiction"
+            ]
+          }
+        ]
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "bucket": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The bucket name."
+              },
+              "creationDate": {
+                "type": "string",
+                "description": "The bucket creation timestamp."
+              },
+              "location": {
+                "type": "string",
+                "enum": [
+                  "apac",
+                  "eeur",
+                  "enam",
+                  "weur",
+                  "wnam",
+                  "oc"
+                ],
+                "description": "The R2 bucket region hint."
+              },
+              "jurisdiction": {
+                "type": "string",
+                "enum": [
+                  "default",
+                  "eu",
+                  "fedramp"
+                ],
+                "description": "The jurisdiction where objects in the bucket are guaranteed to be stored."
+              },
+              "storageClass": {
+                "type": "string",
+                "enum": [
+                  "Standard",
+                  "InfrequentAccess"
+                ],
+                "description": "The default storage class for newly uploaded objects."
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "name"
+            ],
+            "description": "A Cloudflare R2 bucket."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The output payload for this action."
+      }
+    },
+    {
+      "id": "cloudflare_r2.update_bucket_cors_policy",
+      "service": "cloudflare_r2",
+      "name": "update_bucket_cors_policy",
+      "description": "Replace the bucket-level CORS policy for an R2 bucket.",
+      "requiredScopes": [
+        "workers-r2.write"
+      ],
+      "providerPermissions": [
+        "Workers R2 Storage Write"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "accountId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The Cloudflare account ID. Custom-credential connections reuse the connected account ID when this is omitted."
+          },
+          "bucketName": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 64,
+            "description": "The R2 bucket name."
+          },
+          "rules": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "allowed": {
+                  "type": "object",
+                  "properties": {
+                    "methods": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "enum": [
+                          "GET",
+                          "PUT",
+                          "POST",
+                          "DELETE",
+                          "HEAD"
+                        ],
+                        "description": "An HTTP method allowed by a CORS rule."
+                      },
+                      "description": "The methods allowed by this CORS rule.",
+                      "minItems": 1
+                    },
+                    "origins": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "description": "The allowed origins for this CORS rule.",
+                      "minItems": 1
+                    },
+                    "headers": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "description": "The allowed request headers for this CORS rule."
+                    }
+                  },
+                  "additionalProperties": false,
+                  "required": [
+                    "methods",
+                    "origins"
+                  ],
+                  "description": "The allowed origins, methods, and headers for this CORS rule."
+                },
+                "id": {
+                  "type": "string",
+                  "description": "The optional identifier for this CORS rule."
+                },
+                "exposeHeaders": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "description": "The response headers exposed to browser clients."
+                },
+                "maxAgeSeconds": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "description": "The browser preflight cache duration in seconds."
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "allowed"
+              ],
+              "description": "A bucket-level R2 CORS rule."
+            },
+            "description": "The full CORS rule set to store."
+          },
+          "jurisdiction": {
+            "type": "string",
+            "enum": [
+              "default",
+              "eu",
+              "fedramp"
+            ],
+            "description": "The jurisdiction where objects in the bucket are guaranteed to be stored."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "bucketName",
+          "rules"
+        ],
+        "description": "The input payload for this action."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "bucketName": {
+            "type": "string",
+            "description": "The bucket whose CORS policy was updated."
+          },
+          "updated": {
+            "type": "boolean",
+            "description": "Whether the update request succeeded."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The output payload for this action."
+      }
+    }
+  ]
+}

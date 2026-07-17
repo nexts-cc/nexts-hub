@@ -1,0 +1,560 @@
+{
+  "service": "granola",
+  "displayName": "Granola",
+  "categories": [
+    "AI",
+    "Productivity"
+  ],
+  "authTypes": [
+    "api_key"
+  ],
+  "auth": [
+    {
+      "type": "api_key",
+      "label": "API Key",
+      "placeholder": "granola_api_key",
+      "description": "Granola API key used as a bearer token. Create or view keys from Granola Settings > Integrations > Granola API: https://docs.granola.ai/help-center/sharing/integrations/granola-api."
+    }
+  ],
+  "homepageUrl": "https://www.granola.ai",
+  "actions": [
+    {
+      "id": "granola.get_note",
+      "service": "granola",
+      "name": "get_note",
+      "description": "Get a Granola meeting note by ID, optionally including the transcript.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "note_id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Granola note ID to retrieve."
+          },
+          "include": {
+            "type": "string",
+            "enum": [
+              "transcript"
+            ],
+            "description": "Optional related Granola note data to include."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "note_id"
+        ],
+        "description": "Path and query parameters for retrieving a Granola note."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "note": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "The ID of the note."
+              },
+              "object": {
+                "type": "string",
+                "description": "The object type returned by Granola."
+              },
+              "title": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The title of the note."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "owner": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "description": "The name of the user."
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "email": {
+                    "type": "string",
+                    "description": "The email address of the user.",
+                    "format": "email"
+                  }
+                },
+                "additionalProperties": true,
+                "description": "A Granola user object."
+              },
+              "created_at": {
+                "type": "string",
+                "description": "The creation time of the note."
+              },
+              "updated_at": {
+                "type": "string",
+                "description": "The last update time of the note."
+              },
+              "web_url": {
+                "type": "string",
+                "description": "The URL to view the note in Granola.",
+                "format": "uri"
+              },
+              "calendar_event": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "event_title": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "description": "The title of the calendar event."
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "invitees": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "email": {
+                              "type": "string",
+                              "description": "The email address of the calendar invitee.",
+                              "format": "email"
+                            }
+                          },
+                          "additionalProperties": true,
+                          "description": "A Granola calendar invitee object."
+                        },
+                        "description": "Calendar invitees returned by Granola."
+                      },
+                      "organiser": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "description": "The email address of the organiser."
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "calendar_event_id": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "description": "The ID of the calendar event."
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "scheduled_start_time": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "description": "The scheduled start time of the calendar event."
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "scheduled_end_time": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "description": "The scheduled end time of the calendar event."
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      }
+                    },
+                    "additionalProperties": true,
+                    "description": "A Granola calendar event object."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "attendees": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "description": "The name of the user."
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "email": {
+                      "type": "string",
+                      "description": "The email address of the user.",
+                      "format": "email"
+                    }
+                  },
+                  "additionalProperties": true,
+                  "description": "A Granola user object."
+                },
+                "description": "Meeting attendees returned by Granola."
+              },
+              "folder_membership": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "description": "The ID of the folder."
+                    },
+                    "object": {
+                      "type": "string",
+                      "description": "The object type returned by Granola."
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "The name of the folder."
+                    },
+                    "parent_folder_id": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "description": "The ID of the parent folder, or null for top-level folders."
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    }
+                  },
+                  "additionalProperties": true,
+                  "description": "A Granola folder object."
+                },
+                "description": "Folders that contain the note."
+              },
+              "summary_text": {
+                "type": "string",
+                "description": "The plain text summary of the note."
+              },
+              "summary_markdown": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The markdown summary of the note, when available."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "transcript": {
+                "anyOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "speaker": {
+                          "type": "object",
+                          "properties": {
+                            "source": {
+                              "type": "string",
+                              "description": "The source of the speaker, such as microphone or speaker."
+                            },
+                            "diarization_label": {
+                              "type": "string",
+                              "description": "The diarized anonymous speaker label when Granola returns one."
+                            }
+                          },
+                          "additionalProperties": true,
+                          "description": "A Granola transcript speaker object."
+                        },
+                        "text": {
+                          "type": "string",
+                          "description": "The transcript text."
+                        },
+                        "start_time": {
+                          "type": "string",
+                          "description": "The start time of the transcript item."
+                        },
+                        "end_time": {
+                          "type": "string",
+                          "description": "The end time of the transcript item."
+                        }
+                      },
+                      "additionalProperties": true,
+                      "description": "A Granola transcript item."
+                    },
+                    "description": "Transcript items returned by Granola."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "additionalProperties": true,
+            "description": "A Granola note object."
+          }
+        },
+        "additionalProperties": false,
+        "description": "Granola note response."
+      }
+    },
+    {
+      "id": "granola.list_folders",
+      "service": "granola",
+      "name": "list_folders",
+      "description": "List accessible Granola folders with cursor pagination.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "cursor": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Cursor token returned by a previous Granola page."
+          },
+          "page_size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 30,
+            "description": "Maximum number of records to return. Granola allows 1 to 30."
+          }
+        },
+        "additionalProperties": false,
+        "description": "Query parameters for listing Granola folders."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "folders": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "description": "The ID of the folder."
+                },
+                "object": {
+                  "type": "string",
+                  "description": "The object type returned by Granola."
+                },
+                "name": {
+                  "type": "string",
+                  "description": "The name of the folder."
+                },
+                "parent_folder_id": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The ID of the parent folder, or null for top-level folders."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "additionalProperties": true,
+              "description": "A Granola folder object."
+            },
+            "description": "Folders returned by Granola."
+          },
+          "hasMore": {
+            "type": "boolean",
+            "description": "Whether Granola has more folders to fetch."
+          },
+          "cursor": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "The cursor to continue from, when one is available."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "nextCursor": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "Cursor to pass into the next request, when one is available."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "description": "Paginated Granola folders response."
+      }
+    },
+    {
+      "id": "granola.list_notes",
+      "service": "granola",
+      "name": "list_notes",
+      "description": "List accessible Granola meeting notes with optional date, folder, and cursor filters.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "created_before": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Date or date-time filter accepted by Granola, such as 2026-01-27 or 2026-01-27T15:30:00Z."
+          },
+          "created_after": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Date or date-time filter accepted by Granola, such as 2026-01-27 or 2026-01-27T15:30:00Z."
+          },
+          "updated_after": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Date or date-time filter accepted by Granola, such as 2026-01-27 or 2026-01-27T15:30:00Z."
+          },
+          "folder_id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Granola folder ID used to filter notes."
+          },
+          "cursor": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Cursor token returned by a previous Granola page."
+          },
+          "page_size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 30,
+            "description": "Maximum number of records to return. Granola allows 1 to 30."
+          }
+        },
+        "additionalProperties": false,
+        "description": "Query parameters for listing Granola notes."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "notes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "description": "The ID of the note."
+                },
+                "object": {
+                  "type": "string",
+                  "description": "The object type returned by Granola."
+                },
+                "title": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The title of the note."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "owner": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "description": "The name of the user."
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "email": {
+                      "type": "string",
+                      "description": "The email address of the user.",
+                      "format": "email"
+                    }
+                  },
+                  "additionalProperties": true,
+                  "description": "A Granola user object."
+                },
+                "created_at": {
+                  "type": "string",
+                  "description": "The creation time of the note."
+                },
+                "updated_at": {
+                  "type": "string",
+                  "description": "The last update time of the note."
+                }
+              },
+              "additionalProperties": true,
+              "description": "A Granola note summary object."
+            },
+            "description": "Notes returned by Granola."
+          },
+          "hasMore": {
+            "type": "boolean",
+            "description": "Whether Granola has more notes to fetch."
+          },
+          "cursor": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "The cursor to continue from, when one is available."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "nextCursor": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "Cursor to pass into the next request, when one is available."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "description": "Paginated Granola notes response."
+      }
+    }
+  ]
+}

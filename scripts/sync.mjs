@@ -87,6 +87,8 @@ export function computeCategoryHashes(baseDir = root) {
       join("plugins", ".agents", "plugins", "marketplace.json"),
     ]),
     assistants: hashPaths(baseDir, contentDirs(baseDir, "assistants")),
+    // Adapter source is validated separately and is not a marketplace item.
+    // Excluding the 1,075 source trees keeps routine registry validation fast.
     mcp: hashPaths(baseDir, contentDirs(baseDir, "mcp")),
   };
 }

@@ -1,0 +1,2616 @@
+{
+  "service": "shopify_admin",
+  "displayName": "Shopify Admin",
+  "categories": [
+    "Marketing",
+    "Data"
+  ],
+  "authTypes": [
+    "api_key"
+  ],
+  "auth": [
+    {
+      "type": "api_key",
+      "label": "Admin API access token",
+      "placeholder": "shpat_...",
+      "description": "Shopify Admin API access token sent with the X-Shopify-Access-Token header. Create or install a custom app and copy its Admin API access token: https://shopify.dev/docs/apps/build/authentication-authorization/access-tokens",
+      "extraFields": [
+        {
+          "key": "shopDomain",
+          "label": "Shop domain",
+          "inputType": "text",
+          "required": true,
+          "secret": false,
+          "placeholder": "acme.myshopify.com",
+          "description": "The store's myshopify.com domain, such as acme.myshopify.com. A Shopify admin URL for the same shop is also accepted."
+        }
+      ]
+    }
+  ],
+  "homepageUrl": "https://www.shopify.com",
+  "actions": [
+    {
+      "id": "shopify_admin.execute_graphql",
+      "service": "shopify_admin",
+      "name": "execute_graphql",
+      "description": "Execute a JSON-friendly Shopify Admin GraphQL query or mutation against the connected shop.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The GraphQL document to execute."
+          },
+          "variables": {
+            "type": "object",
+            "additionalProperties": {
+              "description": "A variable."
+            },
+            "description": "GraphQL variables keyed by variable name."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "query"
+        ],
+        "description": "The Shopify Admin GraphQL request payload."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true,
+            "description": "The raw object returned by Shopify Admin GraphQL."
+          },
+          "extensions": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true,
+            "description": "The raw object returned by Shopify Admin GraphQL."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "data"
+        ],
+        "description": "The raw Shopify Admin GraphQL response data and extensions."
+      }
+    },
+    {
+      "id": "shopify_admin.get_collection",
+      "service": "shopify_admin",
+      "name": "get_collection",
+      "description": "Retrieve one Shopify collection by GraphQL global ID.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "A Shopify GraphQL global ID."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "id"
+        ],
+        "description": "The Shopify collection lookup input."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "collection": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "A Shopify GraphQL global ID."
+                  },
+                  "title": {
+                    "type": "string",
+                    "description": "The collection title."
+                  },
+                  "handle": {
+                    "type": "string",
+                    "description": "The collection handle."
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "The plain-text collection description."
+                  },
+                  "descriptionHtml": {
+                    "type": "string",
+                    "description": "The HTML collection description."
+                  },
+                  "updatedAt": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "description": "The collection update timestamp when returned by Shopify."
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "imageUrl": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "description": "The collection image URL when returned by Shopify.",
+                        "format": "uri"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "raw": {
+                    "type": "object",
+                    "properties": {},
+                    "additionalProperties": true,
+                    "description": "The raw object returned by Shopify Admin GraphQL."
+                  }
+                },
+                "additionalProperties": false,
+                "required": [
+                  "id",
+                  "title",
+                  "handle",
+                  "description",
+                  "descriptionHtml",
+                  "updatedAt",
+                  "imageUrl",
+                  "raw"
+                ],
+                "description": "A normalized Shopify collection detail."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "collection"
+        ],
+        "description": "The normalized Shopify collection response."
+      }
+    },
+    {
+      "id": "shopify_admin.get_customer",
+      "service": "shopify_admin",
+      "name": "get_customer",
+      "description": "Retrieve one Shopify customer by GraphQL global ID.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "A Shopify GraphQL global ID."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "id"
+        ],
+        "description": "The Shopify customer lookup input."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "customer": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "A Shopify GraphQL global ID."
+                  },
+                  "displayName": {
+                    "type": "string",
+                    "description": "The customer display name."
+                  },
+                  "firstName": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "description": "The customer first name when returned by Shopify."
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "lastName": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "description": "The customer last name when returned by Shopify."
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "email": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "description": "The customer email address when returned by Shopify."
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "phone": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "description": "The customer phone number when returned by Shopify."
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "state": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "description": "The customer account state when returned by Shopify."
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "tags": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "A customer tag."
+                    },
+                    "description": "Customer tags returned by Shopify."
+                  },
+                  "numberOfOrders": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "description": "The customer's lifetime order count encoded as an unsigned 64-bit integer string."
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "amountSpent": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "description": "The customer's lifetime amount spent when returned."
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "amountSpentCurrencyCode": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "description": "The currency code for the customer's lifetime amount spent when returned."
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "createdAt": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "description": "The customer creation timestamp when returned by Shopify."
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "updatedAt": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "description": "The customer update timestamp when returned by Shopify."
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "raw": {
+                    "type": "object",
+                    "properties": {},
+                    "additionalProperties": true,
+                    "description": "The raw object returned by Shopify Admin GraphQL."
+                  }
+                },
+                "additionalProperties": false,
+                "required": [
+                  "id",
+                  "displayName",
+                  "firstName",
+                  "lastName",
+                  "email",
+                  "phone",
+                  "state",
+                  "tags",
+                  "numberOfOrders",
+                  "amountSpent",
+                  "amountSpentCurrencyCode",
+                  "createdAt",
+                  "updatedAt",
+                  "raw"
+                ],
+                "description": "A normalized Shopify customer detail."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "customer"
+        ],
+        "description": "The normalized Shopify customer response."
+      }
+    },
+    {
+      "id": "shopify_admin.get_inventory_item",
+      "service": "shopify_admin",
+      "name": "get_inventory_item",
+      "description": "Retrieve one Shopify inventory item by GraphQL global ID.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "A Shopify GraphQL global ID."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "id"
+        ],
+        "description": "The Shopify inventory item lookup input."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "inventoryItem": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "A Shopify GraphQL global ID."
+                  },
+                  "sku": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "description": "The inventory item SKU when returned by Shopify."
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "tracked": {
+                    "type": "boolean",
+                    "description": "Whether Shopify tracks inventory levels for this item."
+                  },
+                  "requiresShipping": {
+                    "type": "boolean",
+                    "description": "Whether this inventory item requires shipping."
+                  },
+                  "countryCodeOfOrigin": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "description": "The ISO country code of origin when returned by Shopify."
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "harmonizedSystemCode": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "description": "The harmonized system code when returned by Shopify."
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "createdAt": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "description": "The inventory item creation timestamp when returned."
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "updatedAt": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "description": "The inventory item update timestamp when returned."
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "raw": {
+                    "type": "object",
+                    "properties": {},
+                    "additionalProperties": true,
+                    "description": "The raw object returned by Shopify Admin GraphQL."
+                  }
+                },
+                "additionalProperties": false,
+                "required": [
+                  "id",
+                  "sku",
+                  "tracked",
+                  "requiresShipping",
+                  "countryCodeOfOrigin",
+                  "harmonizedSystemCode",
+                  "createdAt",
+                  "updatedAt",
+                  "raw"
+                ],
+                "description": "A normalized Shopify inventory item detail."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "inventoryItem"
+        ],
+        "description": "The normalized Shopify inventory item response."
+      }
+    },
+    {
+      "id": "shopify_admin.get_location",
+      "service": "shopify_admin",
+      "name": "get_location",
+      "description": "Retrieve one Shopify location by GraphQL global ID.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "A Shopify GraphQL global ID."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "id"
+        ],
+        "description": "The Shopify location lookup input."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "location": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "A Shopify GraphQL global ID."
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "The location name."
+                  },
+                  "isActive": {
+                    "type": "boolean",
+                    "description": "Whether the location is active."
+                  },
+                  "fulfillsOnlineOrders": {
+                    "type": "boolean",
+                    "description": "Whether this location can fulfill online orders."
+                  },
+                  "address1": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "description": "The first address line when returned by Shopify."
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "city": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "description": "The location city when returned by Shopify."
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "province": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "description": "The location province or state when returned by Shopify."
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "country": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "description": "The location country when returned by Shopify."
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "zip": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "description": "The location postal code when returned by Shopify."
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "raw": {
+                    "type": "object",
+                    "properties": {},
+                    "additionalProperties": true,
+                    "description": "The raw object returned by Shopify Admin GraphQL."
+                  }
+                },
+                "additionalProperties": false,
+                "required": [
+                  "id",
+                  "name",
+                  "isActive",
+                  "fulfillsOnlineOrders",
+                  "address1",
+                  "city",
+                  "province",
+                  "country",
+                  "zip",
+                  "raw"
+                ],
+                "description": "A normalized Shopify location detail."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "location"
+        ],
+        "description": "The normalized Shopify location response."
+      }
+    },
+    {
+      "id": "shopify_admin.get_order",
+      "service": "shopify_admin",
+      "name": "get_order",
+      "description": "Retrieve one Shopify order by GraphQL global ID.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "A Shopify GraphQL global ID."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "id"
+        ],
+        "description": "The Shopify order lookup input."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "order": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "A Shopify GraphQL global ID."
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "The merchant-facing Shopify order name."
+                  },
+                  "email": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "description": "The order email address when returned by Shopify."
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "phone": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "description": "The order phone number when returned by Shopify."
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "displayFinancialStatus": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "description": "The display financial status returned by Shopify."
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "displayFulfillmentStatus": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "description": "The display fulfillment status returned by Shopify."
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "currencyCode": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "description": "The order currency code returned by Shopify."
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "totalAmount": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "description": "The current order total amount in shop currency when returned."
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "totalCurrencyCode": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "description": "The current order total currency code in shop currency when returned."
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "customerId": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "description": "The customer ID associated with the order when returned."
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "customerDisplayName": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "description": "The display name of the customer associated with the order when returned."
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "createdAt": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "description": "The order creation timestamp when returned by Shopify."
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "updatedAt": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "description": "The order update timestamp when returned by Shopify."
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "raw": {
+                    "type": "object",
+                    "properties": {},
+                    "additionalProperties": true,
+                    "description": "The raw object returned by Shopify Admin GraphQL."
+                  }
+                },
+                "additionalProperties": false,
+                "required": [
+                  "id",
+                  "name",
+                  "email",
+                  "phone",
+                  "displayFinancialStatus",
+                  "displayFulfillmentStatus",
+                  "currencyCode",
+                  "totalAmount",
+                  "totalCurrencyCode",
+                  "customerId",
+                  "customerDisplayName",
+                  "createdAt",
+                  "updatedAt",
+                  "raw"
+                ],
+                "description": "A normalized Shopify order detail."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "order"
+        ],
+        "description": "The normalized Shopify order response."
+      }
+    },
+    {
+      "id": "shopify_admin.get_product",
+      "service": "shopify_admin",
+      "name": "get_product",
+      "description": "Retrieve one Shopify product by GraphQL global ID.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "A Shopify GraphQL global ID."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "id"
+        ],
+        "description": "The Shopify product lookup input."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "product": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "A Shopify GraphQL global ID."
+                  },
+                  "title": {
+                    "type": "string",
+                    "description": "The product title."
+                  },
+                  "handle": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "description": "The product handle when returned by Shopify."
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "status": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "description": "The product status when returned by Shopify."
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "vendor": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "description": "The product vendor when returned by Shopify."
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "productType": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "description": "The product type when returned by Shopify."
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "descriptionHtml": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "description": "The product HTML description when returned by Shopify."
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "createdAt": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "description": "The product creation timestamp when returned by Shopify."
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "updatedAt": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "description": "The product update timestamp when returned by Shopify."
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "onlineStoreUrl": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "description": "The online store product URL when returned by Shopify.",
+                        "format": "uri"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "raw": {
+                    "type": "object",
+                    "properties": {},
+                    "additionalProperties": true,
+                    "description": "The raw object returned by Shopify Admin GraphQL."
+                  }
+                },
+                "additionalProperties": false,
+                "required": [
+                  "id",
+                  "title",
+                  "handle",
+                  "status",
+                  "vendor",
+                  "productType",
+                  "descriptionHtml",
+                  "createdAt",
+                  "updatedAt",
+                  "onlineStoreUrl",
+                  "raw"
+                ],
+                "description": "A normalized Shopify product detail."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "product"
+        ],
+        "description": "The normalized Shopify product response."
+      }
+    },
+    {
+      "id": "shopify_admin.get_shop",
+      "service": "shopify_admin",
+      "name": "get_shop",
+      "description": "Retrieve basic shop information for the connected Shopify Admin token.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false,
+        "description": "No input is required to retrieve the connected Shopify shop."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "shop": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "description": "A Shopify GraphQL global ID."
+              },
+              "name": {
+                "type": "string",
+                "description": "The shop display name."
+              },
+              "myshopifyDomain": {
+                "type": "string",
+                "description": "The canonical myshopify.com domain for the shop."
+              },
+              "primaryDomainUrl": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The shop primary domain URL when returned by Shopify.",
+                    "format": "uri"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "primaryDomainHost": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The shop primary domain host when returned by Shopify."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "raw": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": true,
+                "description": "The raw object returned by Shopify Admin GraphQL."
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "name",
+              "myshopifyDomain",
+              "primaryDomainUrl",
+              "primaryDomainHost",
+              "raw"
+            ],
+            "description": "A normalized Shopify shop."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "shop"
+        ],
+        "description": "The normalized Shopify shop response."
+      }
+    },
+    {
+      "id": "shopify_admin.list_collections",
+      "service": "shopify_admin",
+      "name": "list_collections",
+      "description": "List Shopify collections with optional search query and cursor pagination.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "first": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 250,
+            "description": "The first number of records to return.",
+            "default": 50
+          },
+          "after": {
+            "type": "string",
+            "minLength": 1,
+            "description": "A Shopify GraphQL pagination cursor."
+          },
+          "query": {
+            "type": "string",
+            "minLength": 1,
+            "description": "A Shopify Admin API search query string."
+          }
+        },
+        "additionalProperties": false,
+        "description": "Shopify GraphQL connection arguments."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "collections": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "A Shopify GraphQL global ID."
+                },
+                "title": {
+                  "type": "string",
+                  "description": "The collection title."
+                },
+                "handle": {
+                  "type": "string",
+                  "description": "The collection handle."
+                },
+                "description": {
+                  "type": "string",
+                  "description": "The plain-text collection description."
+                },
+                "descriptionHtml": {
+                  "type": "string",
+                  "description": "The HTML collection description."
+                },
+                "updatedAt": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The collection update timestamp when returned by Shopify."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "imageUrl": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The collection image URL when returned by Shopify.",
+                      "format": "uri"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "cursor": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "A Shopify GraphQL pagination cursor."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "raw": {
+                  "type": "object",
+                  "properties": {},
+                  "additionalProperties": true,
+                  "description": "The raw object returned by Shopify Admin GraphQL."
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "id",
+                "title",
+                "handle",
+                "description",
+                "descriptionHtml",
+                "updatedAt",
+                "imageUrl",
+                "cursor",
+                "raw"
+              ],
+              "description": "A normalized Shopify collection."
+            },
+            "description": "Collections returned by Shopify."
+          },
+          "pageInfo": {
+            "type": "object",
+            "properties": {
+              "hasNextPage": {
+                "type": "boolean",
+                "description": "Whether another page exists after this page."
+              },
+              "hasPreviousPage": {
+                "type": "boolean",
+                "description": "Whether another page exists before this page."
+              },
+              "startCursor": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "A Shopify GraphQL pagination cursor."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "endCursor": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "A Shopify GraphQL pagination cursor."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "hasNextPage",
+              "hasPreviousPage",
+              "startCursor",
+              "endCursor"
+            ],
+            "description": "Shopify GraphQL pagination metadata."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "collections",
+          "pageInfo"
+        ],
+        "description": "The normalized Shopify collection list response."
+      }
+    },
+    {
+      "id": "shopify_admin.list_customers",
+      "service": "shopify_admin",
+      "name": "list_customers",
+      "description": "List Shopify customers with optional search query and cursor pagination.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "first": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 250,
+            "description": "The first number of records to return.",
+            "default": 50
+          },
+          "after": {
+            "type": "string",
+            "minLength": 1,
+            "description": "A Shopify GraphQL pagination cursor."
+          },
+          "query": {
+            "type": "string",
+            "minLength": 1,
+            "description": "A Shopify Admin API search query string."
+          }
+        },
+        "additionalProperties": false,
+        "description": "Shopify GraphQL connection arguments."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "customers": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "A Shopify GraphQL global ID."
+                },
+                "displayName": {
+                  "type": "string",
+                  "description": "The customer display name."
+                },
+                "firstName": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The customer first name when returned by Shopify."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "lastName": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The customer last name when returned by Shopify."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "email": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The customer email address when returned by Shopify."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "phone": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The customer phone number when returned by Shopify."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "state": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The customer account state when returned by Shopify."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "tags": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "A customer tag."
+                  },
+                  "description": "Customer tags returned by Shopify."
+                },
+                "numberOfOrders": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The customer's lifetime order count encoded as an unsigned 64-bit integer string."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "amountSpent": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The customer's lifetime amount spent when returned."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "amountSpentCurrencyCode": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The currency code for the customer's lifetime amount spent when returned."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "createdAt": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The customer creation timestamp when returned by Shopify."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "updatedAt": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The customer update timestamp when returned by Shopify."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "cursor": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "A Shopify GraphQL pagination cursor."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "raw": {
+                  "type": "object",
+                  "properties": {},
+                  "additionalProperties": true,
+                  "description": "The raw object returned by Shopify Admin GraphQL."
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "id",
+                "displayName",
+                "firstName",
+                "lastName",
+                "email",
+                "phone",
+                "state",
+                "tags",
+                "numberOfOrders",
+                "amountSpent",
+                "amountSpentCurrencyCode",
+                "createdAt",
+                "updatedAt",
+                "cursor",
+                "raw"
+              ],
+              "description": "A normalized Shopify customer."
+            },
+            "description": "Customers returned by Shopify."
+          },
+          "pageInfo": {
+            "type": "object",
+            "properties": {
+              "hasNextPage": {
+                "type": "boolean",
+                "description": "Whether another page exists after this page."
+              },
+              "hasPreviousPage": {
+                "type": "boolean",
+                "description": "Whether another page exists before this page."
+              },
+              "startCursor": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "A Shopify GraphQL pagination cursor."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "endCursor": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "A Shopify GraphQL pagination cursor."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "hasNextPage",
+              "hasPreviousPage",
+              "startCursor",
+              "endCursor"
+            ],
+            "description": "Shopify GraphQL pagination metadata."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "customers",
+          "pageInfo"
+        ],
+        "description": "The normalized Shopify customer list response."
+      }
+    },
+    {
+      "id": "shopify_admin.list_inventory_items",
+      "service": "shopify_admin",
+      "name": "list_inventory_items",
+      "description": "List Shopify inventory items with optional search query and cursor pagination.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "first": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 250,
+            "description": "The first number of records to return.",
+            "default": 50
+          },
+          "after": {
+            "type": "string",
+            "minLength": 1,
+            "description": "A Shopify GraphQL pagination cursor."
+          },
+          "query": {
+            "type": "string",
+            "minLength": 1,
+            "description": "A Shopify Admin API search query string."
+          }
+        },
+        "additionalProperties": false,
+        "description": "Shopify GraphQL connection arguments."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "inventoryItems": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "A Shopify GraphQL global ID."
+                },
+                "sku": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The inventory item SKU when returned by Shopify."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "tracked": {
+                  "type": "boolean",
+                  "description": "Whether Shopify tracks inventory levels for this item."
+                },
+                "requiresShipping": {
+                  "type": "boolean",
+                  "description": "Whether this inventory item requires shipping."
+                },
+                "countryCodeOfOrigin": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The ISO country code of origin when returned by Shopify."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "harmonizedSystemCode": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The harmonized system code when returned by Shopify."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "createdAt": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The inventory item creation timestamp when returned."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "updatedAt": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The inventory item update timestamp when returned."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "cursor": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "A Shopify GraphQL pagination cursor."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "raw": {
+                  "type": "object",
+                  "properties": {},
+                  "additionalProperties": true,
+                  "description": "The raw object returned by Shopify Admin GraphQL."
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "id",
+                "sku",
+                "tracked",
+                "requiresShipping",
+                "countryCodeOfOrigin",
+                "harmonizedSystemCode",
+                "createdAt",
+                "updatedAt",
+                "cursor",
+                "raw"
+              ],
+              "description": "A normalized Shopify inventory item."
+            },
+            "description": "Inventory items returned by Shopify."
+          },
+          "pageInfo": {
+            "type": "object",
+            "properties": {
+              "hasNextPage": {
+                "type": "boolean",
+                "description": "Whether another page exists after this page."
+              },
+              "hasPreviousPage": {
+                "type": "boolean",
+                "description": "Whether another page exists before this page."
+              },
+              "startCursor": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "A Shopify GraphQL pagination cursor."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "endCursor": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "A Shopify GraphQL pagination cursor."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "hasNextPage",
+              "hasPreviousPage",
+              "startCursor",
+              "endCursor"
+            ],
+            "description": "Shopify GraphQL pagination metadata."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "inventoryItems",
+          "pageInfo"
+        ],
+        "description": "The normalized Shopify inventory item list response."
+      }
+    },
+    {
+      "id": "shopify_admin.list_locations",
+      "service": "shopify_admin",
+      "name": "list_locations",
+      "description": "List Shopify inventory locations with optional filters and cursor pagination.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "first": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 250,
+            "description": "The first number of records to return.",
+            "default": 50
+          },
+          "after": {
+            "type": "string",
+            "minLength": 1,
+            "description": "A Shopify GraphQL pagination cursor."
+          },
+          "query": {
+            "type": "string",
+            "minLength": 1,
+            "description": "A Shopify Admin API search query string."
+          },
+          "includeInactive": {
+            "type": "boolean",
+            "description": "Whether to include deactivated locations."
+          },
+          "includeLegacy": {
+            "type": "boolean",
+            "description": "Whether to include legacy fulfillment service locations."
+          }
+        },
+        "additionalProperties": false,
+        "description": "Shopify location connection arguments."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "locations": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "A Shopify GraphQL global ID."
+                },
+                "name": {
+                  "type": "string",
+                  "description": "The location name."
+                },
+                "isActive": {
+                  "type": "boolean",
+                  "description": "Whether the location is active."
+                },
+                "fulfillsOnlineOrders": {
+                  "type": "boolean",
+                  "description": "Whether this location can fulfill online orders."
+                },
+                "address1": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The first address line when returned by Shopify."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "city": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The location city when returned by Shopify."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "province": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The location province or state when returned by Shopify."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "country": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The location country when returned by Shopify."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "zip": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The location postal code when returned by Shopify."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "cursor": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "A Shopify GraphQL pagination cursor."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "raw": {
+                  "type": "object",
+                  "properties": {},
+                  "additionalProperties": true,
+                  "description": "The raw object returned by Shopify Admin GraphQL."
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "id",
+                "name",
+                "isActive",
+                "fulfillsOnlineOrders",
+                "address1",
+                "city",
+                "province",
+                "country",
+                "zip",
+                "cursor",
+                "raw"
+              ],
+              "description": "A normalized Shopify location."
+            },
+            "description": "Locations returned by Shopify."
+          },
+          "pageInfo": {
+            "type": "object",
+            "properties": {
+              "hasNextPage": {
+                "type": "boolean",
+                "description": "Whether another page exists after this page."
+              },
+              "hasPreviousPage": {
+                "type": "boolean",
+                "description": "Whether another page exists before this page."
+              },
+              "startCursor": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "A Shopify GraphQL pagination cursor."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "endCursor": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "A Shopify GraphQL pagination cursor."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "hasNextPage",
+              "hasPreviousPage",
+              "startCursor",
+              "endCursor"
+            ],
+            "description": "Shopify GraphQL pagination metadata."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "locations",
+          "pageInfo"
+        ],
+        "description": "The normalized Shopify location list response."
+      }
+    },
+    {
+      "id": "shopify_admin.list_orders",
+      "service": "shopify_admin",
+      "name": "list_orders",
+      "description": "List Shopify orders with optional search query and cursor pagination.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "first": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 250,
+            "description": "The first number of records to return.",
+            "default": 50
+          },
+          "after": {
+            "type": "string",
+            "minLength": 1,
+            "description": "A Shopify GraphQL pagination cursor."
+          },
+          "query": {
+            "type": "string",
+            "minLength": 1,
+            "description": "A Shopify Admin API search query string."
+          }
+        },
+        "additionalProperties": false,
+        "description": "Shopify GraphQL connection arguments."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "orders": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "A Shopify GraphQL global ID."
+                },
+                "name": {
+                  "type": "string",
+                  "description": "The merchant-facing Shopify order name."
+                },
+                "email": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The order email address when returned by Shopify."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "phone": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The order phone number when returned by Shopify."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "displayFinancialStatus": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The display financial status returned by Shopify."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "displayFulfillmentStatus": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The display fulfillment status returned by Shopify."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "currencyCode": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The order currency code returned by Shopify."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "totalAmount": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The current order total amount in shop currency when returned."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "totalCurrencyCode": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The current order total currency code in shop currency when returned."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "customerId": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The customer ID associated with the order when returned."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "customerDisplayName": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The display name of the customer associated with the order when returned."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "createdAt": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The order creation timestamp when returned by Shopify."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "updatedAt": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The order update timestamp when returned by Shopify."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "cursor": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "A Shopify GraphQL pagination cursor."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "raw": {
+                  "type": "object",
+                  "properties": {},
+                  "additionalProperties": true,
+                  "description": "The raw object returned by Shopify Admin GraphQL."
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "id",
+                "name",
+                "email",
+                "phone",
+                "displayFinancialStatus",
+                "displayFulfillmentStatus",
+                "currencyCode",
+                "totalAmount",
+                "totalCurrencyCode",
+                "customerId",
+                "customerDisplayName",
+                "createdAt",
+                "updatedAt",
+                "cursor",
+                "raw"
+              ],
+              "description": "A normalized Shopify order."
+            },
+            "description": "Orders returned by Shopify."
+          },
+          "pageInfo": {
+            "type": "object",
+            "properties": {
+              "hasNextPage": {
+                "type": "boolean",
+                "description": "Whether another page exists after this page."
+              },
+              "hasPreviousPage": {
+                "type": "boolean",
+                "description": "Whether another page exists before this page."
+              },
+              "startCursor": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "A Shopify GraphQL pagination cursor."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "endCursor": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "A Shopify GraphQL pagination cursor."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "hasNextPage",
+              "hasPreviousPage",
+              "startCursor",
+              "endCursor"
+            ],
+            "description": "Shopify GraphQL pagination metadata."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "orders",
+          "pageInfo"
+        ],
+        "description": "The normalized Shopify order list response."
+      }
+    },
+    {
+      "id": "shopify_admin.list_product_variants",
+      "service": "shopify_admin",
+      "name": "list_product_variants",
+      "description": "List Shopify product variants with optional search query and cursor pagination.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "first": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 250,
+            "description": "The first number of records to return.",
+            "default": 50
+          },
+          "after": {
+            "type": "string",
+            "minLength": 1,
+            "description": "A Shopify GraphQL pagination cursor."
+          },
+          "query": {
+            "type": "string",
+            "minLength": 1,
+            "description": "A Shopify Admin API search query string."
+          }
+        },
+        "additionalProperties": false,
+        "description": "Shopify GraphQL connection arguments."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "variants": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "A Shopify GraphQL global ID."
+                },
+                "title": {
+                  "type": "string",
+                  "description": "The variant title."
+                },
+                "sku": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The variant SKU when returned by Shopify."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "price": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The variant price as a decimal string when returned by Shopify."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "inventoryQuantity": {
+                  "anyOf": [
+                    {
+                      "type": "integer",
+                      "description": "The tracked inventory quantity when returned by Shopify."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "productId": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The parent product ID when returned by Shopify."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "productTitle": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The parent product title when returned by Shopify."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "cursor": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "A Shopify GraphQL pagination cursor."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "raw": {
+                  "type": "object",
+                  "properties": {},
+                  "additionalProperties": true,
+                  "description": "The raw object returned by Shopify Admin GraphQL."
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "id",
+                "title",
+                "sku",
+                "price",
+                "inventoryQuantity",
+                "productId",
+                "productTitle",
+                "cursor",
+                "raw"
+              ],
+              "description": "A normalized Shopify product variant."
+            },
+            "description": "Product variants returned by Shopify."
+          },
+          "pageInfo": {
+            "type": "object",
+            "properties": {
+              "hasNextPage": {
+                "type": "boolean",
+                "description": "Whether another page exists after this page."
+              },
+              "hasPreviousPage": {
+                "type": "boolean",
+                "description": "Whether another page exists before this page."
+              },
+              "startCursor": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "A Shopify GraphQL pagination cursor."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "endCursor": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "A Shopify GraphQL pagination cursor."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "hasNextPage",
+              "hasPreviousPage",
+              "startCursor",
+              "endCursor"
+            ],
+            "description": "Shopify GraphQL pagination metadata."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "variants",
+          "pageInfo"
+        ],
+        "description": "The normalized Shopify product variant list response."
+      }
+    },
+    {
+      "id": "shopify_admin.list_products",
+      "service": "shopify_admin",
+      "name": "list_products",
+      "description": "List Shopify products with optional search query and cursor pagination.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "first": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 250,
+            "description": "The first number of records to return.",
+            "default": 50
+          },
+          "after": {
+            "type": "string",
+            "minLength": 1,
+            "description": "A Shopify GraphQL pagination cursor."
+          },
+          "query": {
+            "type": "string",
+            "minLength": 1,
+            "description": "A Shopify Admin API search query string."
+          }
+        },
+        "additionalProperties": false,
+        "description": "Shopify GraphQL connection arguments."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "products": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "A Shopify GraphQL global ID."
+                },
+                "title": {
+                  "type": "string",
+                  "description": "The product title."
+                },
+                "handle": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The product handle when returned by Shopify."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "status": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The product status when returned by Shopify."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "vendor": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The product vendor when returned by Shopify."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "productType": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The product type when returned by Shopify."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "createdAt": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The product creation timestamp when returned by Shopify."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "updatedAt": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The product update timestamp when returned by Shopify."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "onlineStoreUrl": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The online store product URL when returned by Shopify.",
+                      "format": "uri"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "cursor": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "A Shopify GraphQL pagination cursor."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "raw": {
+                  "type": "object",
+                  "properties": {},
+                  "additionalProperties": true,
+                  "description": "The raw object returned by Shopify Admin GraphQL."
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "id",
+                "title",
+                "handle",
+                "status",
+                "vendor",
+                "productType",
+                "createdAt",
+                "updatedAt",
+                "onlineStoreUrl",
+                "cursor",
+                "raw"
+              ],
+              "description": "A normalized Shopify product summary."
+            },
+            "description": "Products returned by Shopify."
+          },
+          "pageInfo": {
+            "type": "object",
+            "properties": {
+              "hasNextPage": {
+                "type": "boolean",
+                "description": "Whether another page exists after this page."
+              },
+              "hasPreviousPage": {
+                "type": "boolean",
+                "description": "Whether another page exists before this page."
+              },
+              "startCursor": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "A Shopify GraphQL pagination cursor."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "endCursor": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "A Shopify GraphQL pagination cursor."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "hasNextPage",
+              "hasPreviousPage",
+              "startCursor",
+              "endCursor"
+            ],
+            "description": "Shopify GraphQL pagination metadata."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "products",
+          "pageInfo"
+        ],
+        "description": "The normalized Shopify product list response."
+      }
+    }
+  ]
+}

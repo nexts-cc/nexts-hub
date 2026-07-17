@@ -1,0 +1,83 @@
+name: Publish MCP adapters
+
+on:
+  workflow_dispatch:
+    inputs:
+      selection:
+        description: Use all, or comma-separated service ids such as gmail,slack,github
+        required: true
+        default: all
+        type: string
+      version:
+        description: SemVer package version
+        required: true
+        default: 1.0.0
+        type: string
+      batch_size:
+        description: Adapters built sequentially in each parallel job
+        required: true
+        default: '25'
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      batches: ${{ steps.select.outputs.batches }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: select
+        env:
+          SELECTION: ${{ inputs.selection }}
+          BATCH_SIZE: ${{ inputs.batch_size }}
+        run: |
+          batches="$(node scripts/select-mcp-adapters.mjs --selection "$SELECTION" --batch-size "$BATCH_SIZE")"
+          echo "batches=$batches" >> "$GITHUB_OUTPUT"
+
+  publish:
+    needs: prepare
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        batch: ${{ fromJSON(needs.prepare.outputs.batches) }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm run validate
+      - name: Build MCP adapter batch
+        env:
+          SERVICES: ${{ matrix.batch.services }}
+          VERSION: ${{ inputs.version }}
+        run: |
+          IFS=',' read -ra service_ids <<< "$SERVICES"
+          for service in "${service_ids[@]}"; do
+            npm run build:mcp -- --service "$service" --version "$VERSION"
+          done
+      - name: Publish immutable release batch
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SERVICES: ${{ matrix.batch.services }}
+          VERSION: ${{ inputs.version }}
+        run: |
+          IFS=',' read -ra service_ids <<< "$SERVICES"
+          for service in "${service_ids[@]}"; do
+            tag="mcp-${service}-v${VERSION}"
+            if gh release view "$tag" >/dev/null 2>&1; then
+              echo "Release $tag already exists; bump the version instead of replacing an immutable package." >&2
+              exit 1
+            fi
+            gh release create "$tag" \
+              "dist/mcp/${service}"/*.tgz \
+              "dist/mcp/${service}/catalog-release.json" \
+              --title "MCP ${service} v${VERSION}" \
+              --notes "NEXTS-owned MCP adapter ${service} v${VERSION}."
+          done

@@ -1,0 +1,1083 @@
+{
+  "service": "forem",
+  "displayName": "Forem",
+  "categories": [
+    "Social",
+    "Developer Tools"
+  ],
+  "authTypes": [
+    "api_key"
+  ],
+  "auth": [
+    {
+      "type": "api_key",
+      "label": "API Key",
+      "placeholder": "forem_api_key",
+      "description": "Forem API key sent with the api-key header. For DEV, generate one from the DEV extensions settings page: https://dev.to/settings/extensions.",
+      "extraFields": [
+        {
+          "key": "baseUrl",
+          "label": "Forem base URL",
+          "inputType": "text",
+          "required": false,
+          "secret": false,
+          "placeholder": "https://dev.to",
+          "description": "The HTTPS origin for the Forem instance. Use https://dev.to for DEV, or the origin of your own Forem community."
+        }
+      ]
+    }
+  ],
+  "homepageUrl": "https://www.forem.com",
+  "actions": [
+    {
+      "id": "forem.create_article",
+      "service": "forem",
+      "name": "create_article",
+      "description": "Create a Forem article for the authenticated user.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The article title."
+          },
+          "bodyMarkdown": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The article body in Markdown."
+          },
+          "published": {
+            "type": "boolean",
+            "description": "Whether the article should be published."
+          },
+          "series": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "The article series name."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "mainImage": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "The main image URL for the article.",
+                "format": "uri"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "canonicalUrl": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "The canonical URL for the article.",
+                "format": "uri"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "description": {
+            "type": "string",
+            "description": "The article description."
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "description": "One Forem tag name."
+            },
+            "description": "The Forem tags to send as a comma-separated upstream value.",
+            "minItems": 1
+          },
+          "organizationId": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 1,
+                "description": "The Forem organization ID for the article."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "title",
+          "bodyMarkdown"
+        ],
+        "description": "The input payload for creating a Forem article."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "article": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true,
+            "description": "A Forem article."
+          },
+          "raw": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true,
+            "description": "The raw object returned by Forem."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The response returned for one Forem article."
+      }
+    },
+    {
+      "id": "forem.get_article",
+      "service": "forem",
+      "name": "get_article",
+      "description": "Retrieve one published Forem article by numeric ID.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "articleId": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "The Forem article ID."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The input payload for retrieving a Forem article by ID."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "article": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true,
+            "description": "A Forem article."
+          },
+          "raw": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true,
+            "description": "The raw object returned by Forem."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The response returned for one Forem article."
+      }
+    },
+    {
+      "id": "forem.get_article_by_path",
+      "service": "forem",
+      "name": "get_article_by_path",
+      "description": "Retrieve one published Forem article by username and slug.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The Forem username from the article path."
+          },
+          "slug": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The Forem article slug."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The input payload for retrieving a Forem article by path."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "article": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true,
+            "description": "A Forem article."
+          },
+          "raw": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true,
+            "description": "The raw object returned by Forem."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The response returned for one Forem article."
+      }
+    },
+    {
+      "id": "forem.get_comment",
+      "service": "forem",
+      "name": "get_comment",
+      "description": "Retrieve one Forem comment thread by numeric ID.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "commentId": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "The Forem comment ID."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The input payload for retrieving a Forem comment."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "comment": {
+            "type": "object",
+            "properties": {
+              "type_of": {
+                "type": "string",
+                "description": "The Forem record type."
+              },
+              "id_code": {
+                "type": "string",
+                "description": "The Forem comment ID code."
+              },
+              "created_at": {
+                "type": "string",
+                "description": "The comment creation timestamp."
+              },
+              "body_html": {
+                "type": "string",
+                "description": "The rendered comment body HTML."
+              },
+              "image_url": {
+                "type": "string",
+                "description": "The image URL attached to a podcast comment when returned by Forem."
+              },
+              "user": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "The user's display name."
+                  },
+                  "username": {
+                    "type": "string",
+                    "description": "The Forem username."
+                  },
+                  "twitter_username": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "description": "The user's Twitter username when returned by Forem."
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "github_username": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "description": "The user's GitHub username when returned by Forem."
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "user_id": {
+                    "type": "integer",
+                    "description": "The Forem user ID."
+                  },
+                  "website_url": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "description": "The user website URL when returned by Forem."
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "profile_image": {
+                    "type": "string",
+                    "description": "The user profile image URL."
+                  },
+                  "profile_image_90": {
+                    "type": "string",
+                    "description": "The 90px user profile image URL."
+                  }
+                },
+                "additionalProperties": true,
+                "description": "The Forem user summary attached to a resource."
+              },
+              "children": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {},
+                  "additionalProperties": true,
+                  "description": "One nested Forem comment."
+                },
+                "description": "Nested child comments."
+              }
+            },
+            "additionalProperties": true,
+            "description": "A Forem comment thread node."
+          },
+          "raw": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true,
+            "description": "The raw object returned by Forem."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The response returned for one Forem comment."
+      }
+    },
+    {
+      "id": "forem.get_current_user",
+      "service": "forem",
+      "name": "get_current_user",
+      "description": "Retrieve the Forem user associated with the connected API key.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false,
+        "description": "The input payload for retrieving the current Forem user."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "user": {
+            "type": "object",
+            "properties": {
+              "type_of": {
+                "type": "string",
+                "description": "The Forem record type."
+              },
+              "id": {
+                "type": "integer",
+                "description": "The Forem user ID."
+              },
+              "username": {
+                "type": "string",
+                "description": "The Forem username."
+              },
+              "name": {
+                "type": "string",
+                "description": "The Forem display name."
+              },
+              "email": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The user email address when returned by Forem."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "summary": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The user profile summary when returned by Forem."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "twitter_username": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The user's Twitter username when returned by Forem."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "github_username": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The user's GitHub username when returned by Forem."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "website_url": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The user website URL when returned by Forem."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "location": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The user location when returned by Forem."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "joined_at": {
+                "type": "string",
+                "description": "The user join date returned by Forem."
+              },
+              "profile_image": {
+                "type": "string",
+                "description": "The user profile image URL."
+              },
+              "badge_ids": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "description": "One badge ID."
+                },
+                "description": "The Forem badge IDs awarded to the user."
+              },
+              "followers_count": {
+                "type": "integer",
+                "description": "The number of followers reported by Forem."
+              }
+            },
+            "additionalProperties": true,
+            "description": "A Forem user profile."
+          },
+          "raw": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true,
+            "description": "The raw object returned by Forem."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The response returned for the current Forem user."
+      }
+    },
+    {
+      "id": "forem.list_articles",
+      "service": "forem",
+      "name": "list_articles",
+      "description": "List published Forem articles with optional filters.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "The pagination page number."
+          },
+          "perPage": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1000,
+            "description": "The number of articles to return per page. Forem defaults to 30."
+          },
+          "tag": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Return articles containing this tag."
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "description": "One Forem tag name."
+            },
+            "description": "The Forem tags to send as a comma-separated upstream value.",
+            "minItems": 1
+          },
+          "tagsExclude": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "description": "One Forem tag name."
+            },
+            "description": "The Forem tags to send as a comma-separated upstream value.",
+            "minItems": 1
+          },
+          "username": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Return articles for this user or organization username."
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "fresh",
+              "rising",
+              "all"
+            ],
+            "description": "The Forem article list state filter."
+          },
+          "top": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Return the most popular articles from the last N days."
+          },
+          "collectionId": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Return articles belonging to this collection ID."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The input payload for listing Forem articles."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "articles": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": true,
+              "description": "A Forem article."
+            },
+            "description": "The Forem articles returned by the request."
+          },
+          "raw": {
+            "type": "array",
+            "items": {
+              "description": "One raw Forem item."
+            },
+            "description": "The raw array returned by Forem."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The response returned when listing Forem articles."
+      }
+    },
+    {
+      "id": "forem.list_comments",
+      "service": "forem",
+      "name": "list_comments",
+      "description": "List Forem comments for an article or podcast episode as threaded conversations.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "articleId": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "The Forem article ID whose comments should be listed."
+          },
+          "podcastEpisodeId": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "The Forem podcast episode ID whose comments should be listed."
+          },
+          "page": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "The pagination page number."
+          },
+          "perPage": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1000,
+            "description": "The number of articles to return per page. Forem defaults to 30."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The input payload for listing Forem comments.",
+        "oneOf": [
+          {
+            "required": [
+              "articleId"
+            ],
+            "not": {
+              "required": [
+                "podcastEpisodeId"
+              ]
+            }
+          },
+          {
+            "required": [
+              "podcastEpisodeId"
+            ],
+            "not": {
+              "required": [
+                "articleId"
+              ]
+            }
+          }
+        ]
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "comments": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "type_of": {
+                  "type": "string",
+                  "description": "The Forem record type."
+                },
+                "id_code": {
+                  "type": "string",
+                  "description": "The Forem comment ID code."
+                },
+                "created_at": {
+                  "type": "string",
+                  "description": "The comment creation timestamp."
+                },
+                "body_html": {
+                  "type": "string",
+                  "description": "The rendered comment body HTML."
+                },
+                "image_url": {
+                  "type": "string",
+                  "description": "The image URL attached to a podcast comment when returned by Forem."
+                },
+                "user": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "description": "The user's display name."
+                    },
+                    "username": {
+                      "type": "string",
+                      "description": "The Forem username."
+                    },
+                    "twitter_username": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "description": "The user's Twitter username when returned by Forem."
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "github_username": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "description": "The user's GitHub username when returned by Forem."
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "user_id": {
+                      "type": "integer",
+                      "description": "The Forem user ID."
+                    },
+                    "website_url": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "description": "The user website URL when returned by Forem."
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "profile_image": {
+                      "type": "string",
+                      "description": "The user profile image URL."
+                    },
+                    "profile_image_90": {
+                      "type": "string",
+                      "description": "The 90px user profile image URL."
+                    }
+                  },
+                  "additionalProperties": true,
+                  "description": "The Forem user summary attached to a resource."
+                },
+                "children": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {},
+                    "additionalProperties": true,
+                    "description": "One nested Forem comment."
+                  },
+                  "description": "Nested child comments."
+                }
+              },
+              "additionalProperties": true,
+              "description": "A Forem comment thread node."
+            },
+            "description": "The Forem comments returned by the request."
+          },
+          "raw": {
+            "type": "array",
+            "items": {
+              "description": "One raw Forem item."
+            },
+            "description": "The raw array returned by Forem."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The response returned when listing Forem comments."
+      }
+    },
+    {
+      "id": "forem.list_my_articles",
+      "service": "forem",
+      "name": "list_my_articles",
+      "description": "List articles owned by the authenticated Forem user.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "scope": {
+            "type": "string",
+            "enum": [
+              "published",
+              "unpublished",
+              "all",
+              "default"
+            ],
+            "description": "Which authenticated-user article collection to list."
+          },
+          "page": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "The pagination page number."
+          },
+          "perPage": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1000,
+            "description": "The number of articles to return per page. Forem defaults to 30."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The input payload for listing authenticated user's Forem articles."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "articles": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": true,
+              "description": "A Forem article."
+            },
+            "description": "The Forem articles returned by the request."
+          },
+          "raw": {
+            "type": "array",
+            "items": {
+              "description": "One raw Forem item."
+            },
+            "description": "The raw array returned by Forem."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The response returned when listing Forem articles."
+      }
+    },
+    {
+      "id": "forem.list_tags",
+      "service": "forem",
+      "name": "list_tags",
+      "description": "List Forem tags ordered by popularity.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "The pagination page number."
+          },
+          "perPage": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1000,
+            "description": "The number of tags to return per page. Forem defaults to 10."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The input payload for listing Forem tags."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer",
+                  "description": "The Forem tag ID."
+                },
+                "name": {
+                  "type": "string",
+                  "description": "The Forem tag name."
+                },
+                "bg_color_hex": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The tag background color in hex."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "text_color_hex": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The tag text color in hex."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "short_summary": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The tag short summary when returned by Forem."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "additionalProperties": true,
+              "description": "A Forem tag."
+            },
+            "description": "The Forem tags returned by the request."
+          },
+          "raw": {
+            "type": "array",
+            "items": {
+              "description": "One raw Forem item."
+            },
+            "description": "The raw array returned by Forem."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The response returned when listing Forem tags."
+      }
+    },
+    {
+      "id": "forem.update_article",
+      "service": "forem",
+      "name": "update_article",
+      "description": "Update an existing Forem article by numeric ID.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "articleId": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "The Forem article ID to update."
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The article title."
+          },
+          "bodyMarkdown": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The article body in Markdown."
+          },
+          "published": {
+            "type": "boolean",
+            "description": "Whether the article should be published."
+          },
+          "series": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "The article series name."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "mainImage": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "The main image URL for the article.",
+                "format": "uri"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "canonicalUrl": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "The canonical URL for the article.",
+                "format": "uri"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "description": {
+            "type": "string",
+            "description": "The article description."
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "description": "One Forem tag name."
+            },
+            "description": "The Forem tags to send as a comma-separated upstream value.",
+            "minItems": 1
+          },
+          "organizationId": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 1,
+                "description": "The Forem organization ID for the article."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "articleId"
+        ],
+        "description": "The input payload for updating a Forem article.",
+        "anyOf": [
+          {
+            "required": [
+              "title"
+            ]
+          },
+          {
+            "required": [
+              "bodyMarkdown"
+            ]
+          },
+          {
+            "required": [
+              "published"
+            ]
+          },
+          {
+            "required": [
+              "series"
+            ]
+          },
+          {
+            "required": [
+              "mainImage"
+            ]
+          },
+          {
+            "required": [
+              "canonicalUrl"
+            ]
+          },
+          {
+            "required": [
+              "description"
+            ]
+          },
+          {
+            "required": [
+              "tags"
+            ]
+          },
+          {
+            "required": [
+              "organizationId"
+            ]
+          }
+        ]
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "article": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true,
+            "description": "A Forem article."
+          },
+          "raw": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true,
+            "description": "The raw object returned by Forem."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The response returned for one Forem article."
+      }
+    }
+  ]
+}

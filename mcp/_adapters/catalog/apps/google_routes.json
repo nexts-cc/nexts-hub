@@ -1,0 +1,175 @@
+{
+  "service": "google_routes",
+  "displayName": "Google Routes",
+  "categories": [
+    "Location",
+    "Developer Tools"
+  ],
+  "authTypes": [
+    "api_key"
+  ],
+  "auth": [
+    {
+      "type": "api_key",
+      "label": "API Key",
+      "placeholder": "GOOGLE_MAPS_API_KEY",
+      "description": "Google Maps Platform API key sent with the X-Goog-Api-Key header. Create or manage it in the Google Cloud Console: https://developers.google.com/maps/documentation/routes/get-api-key",
+      "extraFields": []
+    }
+  ],
+  "homepageUrl": "https://developers.google.com/maps/documentation/routes",
+  "actions": [
+    {
+      "id": "google_routes.compute_route_matrix",
+      "service": "google_routes",
+      "name": "compute_route_matrix",
+      "description": "Compute route matrix elements for origin and destination waypoint combinations with Google Routes.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "fieldMask": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The response field mask sent as the `X-Goog-FieldMask` header."
+          },
+          "origins": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": {
+                "description": "A nested Google Routes API JSON property value."
+              },
+              "description": "One origin route matrix waypoint."
+            },
+            "description": "The route matrix origin route matrix waypoints.",
+            "minItems": 1
+          },
+          "destinations": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": {
+                "description": "A nested Google Routes API JSON property value."
+              },
+              "description": "One destination route matrix waypoint."
+            },
+            "description": "The route matrix destination route matrix waypoints.",
+            "minItems": 1
+          }
+        },
+        "additionalProperties": true,
+        "description": "Input payload for Google Routes `computeRouteMatrix`."
+      },
+      "outputSchema": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "originIndex": {
+              "type": "integer",
+              "description": "The zero-based origin index for this matrix element."
+            },
+            "destinationIndex": {
+              "type": "integer",
+              "description": "The zero-based destination index for this matrix element."
+            },
+            "status": {
+              "type": "object",
+              "additionalProperties": {
+                "description": "A nested Google Routes API JSON property value."
+              },
+              "description": "The per-element status returned by Google Routes."
+            },
+            "condition": {
+              "type": "string",
+              "description": "The route condition for this matrix element."
+            },
+            "distanceMeters": {
+              "type": "integer",
+              "description": "The route distance in meters."
+            },
+            "duration": {
+              "type": "string",
+              "description": "The route duration."
+            },
+            "staticDuration": {
+              "type": "string",
+              "description": "The route static duration without traffic."
+            }
+          },
+          "additionalProperties": true,
+          "description": "One Google Routes route matrix element."
+        },
+        "description": "The Google Routes `computeRouteMatrix` response elements."
+      }
+    },
+    {
+      "id": "google_routes.compute_routes",
+      "service": "google_routes",
+      "name": "compute_routes",
+      "description": "Compute one or more routes between an origin and destination with Google Routes.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "fieldMask": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The response field mask sent as the `X-Goog-FieldMask` header."
+          },
+          "origin": {
+            "type": "object",
+            "additionalProperties": {
+              "description": "A nested Google Routes API JSON property value."
+            },
+            "description": "The route origin waypoint."
+          },
+          "destination": {
+            "type": "object",
+            "additionalProperties": {
+              "description": "A nested Google Routes API JSON property value."
+            },
+            "description": "The route destination waypoint."
+          }
+        },
+        "additionalProperties": true,
+        "description": "Input payload for Google Routes `computeRoutes`."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "routes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": {
+                "description": "A nested Google Routes API JSON property value."
+              },
+              "description": "One route."
+            },
+            "description": "The routes returned by Google Routes."
+          },
+          "fallbackInfo": {
+            "type": "object",
+            "additionalProperties": {
+              "description": "A nested Google Routes API JSON property value."
+            },
+            "description": "Fallback information returned by Google Routes."
+          },
+          "geocodingResults": {
+            "type": "object",
+            "additionalProperties": {
+              "description": "A nested Google Routes API JSON property value."
+            },
+            "description": "Geocoding results returned by Google Routes."
+          }
+        },
+        "additionalProperties": true,
+        "description": "The Google Routes `computeRoutes` response."
+      }
+    }
+  ]
+}

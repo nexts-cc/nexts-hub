@@ -1,38 +1,50 @@
-# MCP Servers
+# NEXTS MCP catalog and adapters
 
-一个目录 = 一个 MCP server 注册,`mcp.json` 为唯一必需文件。
+The MCP category contains launch definitions and the source for adapters maintained by NEXTS. It does not mirror packages maintained by third parties.
 
-```
+## Four distribution types
+
+1. `official_npm`: an npm MCP package published by the official product/vendor. NEXTS stores its package specifier and runs it directly with `npx`.
+2. `community_npm`: an npm MCP package published by an independent community maintainer. NEXTS stores its package specifier and identifies it as third-party.
+3. `nexts_hub`: an adapter maintained by NEXTS. Its source lives under `mcp/_adapters`, and each service is built into its own versioned `.tgz` release asset.
+4. `remote_mcp`: an HTTPS Streamable HTTP MCP endpoint. The client connects to the endpoint and does not install a local npm package.
+
+## Layout
+
+```text
 mcp/
-├── templates/basic-mcp/   模板(templates/、.agents/、_ 开头目录不作为内容加载)
-└── <id>/mcp.json
++-- _adapters/                 NEXTS-maintained adapter source (not a marketplace item)
+|   +-- catalog/apps/          provider metadata and action schemas
+|   +-- core/                  shared adapter contracts
+|   `-- src/providers/         provider executors
++-- templates/basic-mcp/       manifest template
++-- <published-id>/mcp.json    optional curated Hub launch definition
+`-- .agents/mcp/marketplace.json
 ```
 
-## mcp.json schema
+Generated `.tgz` files and temporary build output are ignored. Publish them as GitHub Release assets rather than committing binaries.
 
-对齐 nextcli `config.toml` 的 MCP server 定义(stdio / http 两种传输):
+## Build one NEXTS adapter
 
-```jsonc
-{
-  "id": "codegraph",               // 唯一 id,与目录名一致
-  "display_name": "CodeGraph",
-  "description": "Code knowledge graph queries (impact / callers / affected).",
-  "transport": "stdio",            // stdio | http
-  // transport = stdio:
-  "command": "codegraph",
-  "args": ["mcp"],
-  "env": {},                        // 需要的环境变量(值留空表示用户须自行提供)
-  // transport = http:
-  "url": null,                      // 如 "http://127.0.0.1:8000/mcp"
-  "headers": {},
-  "enabled_by_default": false,      // 拉取后是否默认启用
-  "platforms": ["windows", "macos", "linux"]
-}
+```bash
+npm install
+npm run build:mcp -- --service gmail --version 1.0.0
 ```
 
-## 约定
+The command produces:
 
-- 目录名 == `id`;`templates/`、`.agents/` 与 `_` 开头目录不作为内容加载。注册表 `.agents/mcp/marketplace.json` 由 `npm run sync` 生成。
-- 落地方式由 app 决定:写入数据目录 `mcp/` 或合并进 nextcli 的 `config.toml`(config 来源的 server 默认对 agent 放行)。
-- **不要在仓库里存任何密钥/token**;需要凭据的 server 在 `env`/`headers` 里留键名,值由用户在 app 内填。
-- 文件编码 UTF-8 无 BOM。
+```text
+dist/mcp/gmail/gmail-1.0.0.tgz
+dist/mcp/gmail/catalog-release.json
+```
+
+Upload the `.tgz` to the release tag printed in `catalog-release.json`, then publish that HTTPS asset URL in `nexts-account-service`. Do not use `127.0.0.1`, `localhost`, a local filesystem path, or the account-service catalog-assets route for a production MCP release.
+
+The `Publish MCP adapters` GitHub Action accepts `all` or a comma-separated service list. It automatically splits the selection into parallel batches while keeping one immutable Release per adapter. For example, one workflow run can publish all 1,075 adapters, or only `gmail,slack,github`; no per-adapter workflow dispatch is required.
+
+## Security and ownership
+
+- Credentials and OAuth tokens are never committed to this repository.
+- Account-service owns catalog state, OAuth coordination, visibility, recommendations, and the versioned launch definition.
+- The desktop owns installed state and encrypted local credentials.
+- Official/community packages remain owned by their original publishers; NEXTS must not silently repackage them.

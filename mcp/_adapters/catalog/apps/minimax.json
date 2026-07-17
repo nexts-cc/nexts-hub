@@ -1,0 +1,803 @@
+{
+  "service": "minimax",
+  "displayName": "MiniMax",
+  "categories": [
+    "AI"
+  ],
+  "authTypes": [
+    "api_key"
+  ],
+  "auth": [
+    {
+      "type": "api_key",
+      "label": "API Key",
+      "placeholder": "MINIMAX_API_KEY",
+      "description": "MiniMax API key sent as an Authorization Bearer token. Create or view API keys in Account Management > API Keys: https://platform.minimax.io/user-center/basic-information/interface-key."
+    }
+  ],
+  "homepageUrl": "https://www.minimax.io",
+  "actions": [
+    {
+      "id": "minimax.create_response",
+      "service": "minimax",
+      "name": "create_response",
+      "description": "Create a non-streaming MiniMax response using the OpenAI Responses API shape.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "model": {
+            "type": "string",
+            "minLength": 1,
+            "description": "MiniMax model name to invoke, for example MiniMax-M3.",
+            "pattern": "\\S"
+          },
+          "input": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "description": "Simple text input for MiniMax.",
+                "pattern": "\\S"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "anyOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "const": "message",
+                          "type": "string",
+                          "description": "Message item type. Omit it or set it to message."
+                        },
+                        "role": {
+                          "type": "string",
+                          "enum": [
+                            "user",
+                            "assistant",
+                            "system",
+                            "developer",
+                            "tool"
+                          ],
+                          "description": "Message role."
+                        },
+                        "content": {
+                          "type": "string",
+                          "minLength": 1,
+                          "description": "Text content for the message.",
+                          "pattern": "\\S"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "required": [
+                        "role",
+                        "content"
+                      ],
+                      "description": "MiniMax Responses API message input item with text content."
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "const": "function_call",
+                          "type": "string",
+                          "description": "Function call item type."
+                        },
+                        "call_id": {
+                          "type": "string",
+                          "minLength": 1,
+                          "description": "Tool call identifier.",
+                          "pattern": "\\S"
+                        },
+                        "name": {
+                          "type": "string",
+                          "minLength": 1,
+                          "description": "Function name.",
+                          "pattern": "\\S"
+                        },
+                        "arguments": {
+                          "type": "string",
+                          "minLength": 1,
+                          "description": "Function arguments encoded as a JSON string.",
+                          "pattern": "\\S"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "description": "MiniMax Responses API function call input item."
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "const": "function_call_output",
+                          "type": "string",
+                          "description": "Function call output item type."
+                        },
+                        "call_id": {
+                          "type": "string",
+                          "minLength": 1,
+                          "description": "Tool call identifier.",
+                          "pattern": "\\S"
+                        },
+                        "output": {
+                          "type": "string",
+                          "minLength": 1,
+                          "description": "Tool output text.",
+                          "pattern": "\\S"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "description": "MiniMax Responses API function call output input item."
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "const": "reasoning",
+                          "type": "string",
+                          "description": "Reasoning input item type."
+                        },
+                        "summary": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "type": {
+                                "const": "summary_text",
+                                "type": "string",
+                                "description": "Reasoning summary item type."
+                              },
+                              "text": {
+                                "type": "string",
+                                "minLength": 1,
+                                "description": "Reasoning summary text.",
+                                "pattern": "\\S"
+                              }
+                            },
+                            "additionalProperties": false,
+                            "description": "MiniMax reasoning summary text item."
+                          },
+                          "description": "Reasoning summary items to include in conversation history.",
+                          "minItems": 1
+                        }
+                      },
+                      "additionalProperties": false,
+                      "description": "MiniMax Responses API reasoning input item."
+                    }
+                  ],
+                  "description": "Supported MiniMax Responses API conversation item."
+                },
+                "description": "Conversation history items to send to MiniMax.",
+                "minItems": 1
+              }
+            ],
+            "description": "MiniMax Responses API text or conversation input."
+          },
+          "instructions": {
+            "type": "string",
+            "description": "System instructions for the response."
+          },
+          "max_output_tokens": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Maximum output token count."
+          },
+          "temperature": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1,
+            "description": "Sampling temperature in the official range [0, 1]."
+          },
+          "top_p": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1,
+            "description": "Nucleus sampling value in the official range [0, 1]."
+          },
+          "service_tier": {
+            "type": "string",
+            "enum": [
+              "standard",
+              "priority"
+            ],
+            "description": "MiniMax service tier for request admission."
+          },
+          "tools": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "const": "function",
+                  "type": "string",
+                  "description": "Tool type. MiniMax currently supports function tools."
+                },
+                "name": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "Function tool name.",
+                  "pattern": "\\S"
+                },
+                "description": {
+                  "type": "string",
+                  "description": "Human-readable function tool description."
+                },
+                "parameters": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "description": "JSON Schema parameters for the function tool."
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "type",
+                "name"
+              ],
+              "description": "MiniMax Responses API function tool definition."
+            },
+            "description": "Function tools available to MiniMax.",
+            "minItems": 1
+          },
+          "tool_choice": {
+            "type": "string",
+            "enum": [
+              "none",
+              "auto"
+            ],
+            "description": "Tool selection strategy."
+          },
+          "metadata": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string",
+              "description": "Metadata value."
+            },
+            "description": "String metadata to attach to the MiniMax request."
+          },
+          "prompt_cache_key": {
+            "type": "string",
+            "description": "Prompt cache routing identifier."
+          },
+          "stream": {
+            "const": false,
+            "type": "boolean",
+            "description": "Set to false for the non-streaming connector action."
+          },
+          "text": {
+            "type": "object",
+            "properties": {
+              "format": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "const": "text",
+                    "type": "string",
+                    "description": "Plain text output format."
+                  }
+                },
+                "additionalProperties": false,
+                "description": "MiniMax response text format."
+              }
+            },
+            "additionalProperties": false,
+            "description": "MiniMax output text format control."
+          },
+          "reasoning": {
+            "type": "object",
+            "properties": {
+              "effort": {
+                "type": "string",
+                "enum": [
+                  "minimal",
+                  "low",
+                  "medium",
+                  "high",
+                  "none"
+                ],
+                "description": "Reasoning effort value."
+              }
+            },
+            "additionalProperties": false,
+            "description": "MiniMax reasoning control. MiniMax-M3 defaults to none when omitted."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "model",
+          "input"
+        ],
+        "description": "Request body for creating a non-streaming MiniMax response."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "MiniMax response identifier."
+          },
+          "object": {
+            "type": "string",
+            "description": "Object type returned by MiniMax, usually response."
+          },
+          "created_at": {
+            "type": "integer",
+            "description": "Response creation time as Unix seconds."
+          },
+          "model": {
+            "type": "string",
+            "description": "MiniMax model that processed the request."
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "completed",
+              "incomplete",
+              "failed"
+            ],
+            "description": "MiniMax response status."
+          },
+          "output": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": true,
+              "description": "MiniMax Responses API output item."
+            },
+            "description": "MiniMax response output items."
+          },
+          "output_text": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "Concatenated response text returned by MiniMax."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "usage": {
+            "type": "object",
+            "additionalProperties": true,
+            "description": "MiniMax usage object with token counts and details."
+          },
+          "error": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "code": {
+                    "type": "string",
+                    "description": "MiniMax error code."
+                  },
+                  "message": {
+                    "type": "string",
+                    "description": "Human-readable MiniMax error message."
+                  }
+                },
+                "additionalProperties": true,
+                "description": "MiniMax response error object."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "incomplete_details": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "reason": {
+                    "type": "string",
+                    "description": "Reason MiniMax marked the response incomplete."
+                  }
+                },
+                "additionalProperties": true,
+                "description": "MiniMax incomplete response details."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "parallel_tool_calls": {
+            "type": "boolean",
+            "description": "Whether MiniMax can run tool calls in parallel."
+          },
+          "store": {
+            "type": "boolean",
+            "description": "Whether MiniMax stored the response."
+          },
+          "truncation": {
+            "type": "string",
+            "description": "MiniMax truncation mode used for the response."
+          }
+        },
+        "additionalProperties": true,
+        "required": [
+          "id",
+          "object",
+          "created_at",
+          "model",
+          "status",
+          "output"
+        ],
+        "description": "MiniMax response object."
+      }
+    },
+    {
+      "id": "minimax.estimate_input_tokens",
+      "service": "minimax",
+      "name": "estimate_input_tokens",
+      "description": "Estimate MiniMax response input tokens without invoking the model.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "model": {
+            "type": "string",
+            "minLength": 1,
+            "description": "MiniMax model name to estimate against, for example MiniMax-M3.",
+            "pattern": "\\S"
+          },
+          "input": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "description": "Simple text input for MiniMax.",
+                "pattern": "\\S"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "anyOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "const": "message",
+                          "type": "string",
+                          "description": "Message item type. Omit it or set it to message."
+                        },
+                        "role": {
+                          "type": "string",
+                          "enum": [
+                            "user",
+                            "assistant",
+                            "system",
+                            "developer",
+                            "tool"
+                          ],
+                          "description": "Message role."
+                        },
+                        "content": {
+                          "type": "string",
+                          "minLength": 1,
+                          "description": "Text content for the message.",
+                          "pattern": "\\S"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "required": [
+                        "role",
+                        "content"
+                      ],
+                      "description": "MiniMax Responses API message input item with text content."
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "const": "function_call",
+                          "type": "string",
+                          "description": "Function call item type."
+                        },
+                        "call_id": {
+                          "type": "string",
+                          "minLength": 1,
+                          "description": "Tool call identifier.",
+                          "pattern": "\\S"
+                        },
+                        "name": {
+                          "type": "string",
+                          "minLength": 1,
+                          "description": "Function name.",
+                          "pattern": "\\S"
+                        },
+                        "arguments": {
+                          "type": "string",
+                          "minLength": 1,
+                          "description": "Function arguments encoded as a JSON string.",
+                          "pattern": "\\S"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "description": "MiniMax Responses API function call input item."
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "const": "function_call_output",
+                          "type": "string",
+                          "description": "Function call output item type."
+                        },
+                        "call_id": {
+                          "type": "string",
+                          "minLength": 1,
+                          "description": "Tool call identifier.",
+                          "pattern": "\\S"
+                        },
+                        "output": {
+                          "type": "string",
+                          "minLength": 1,
+                          "description": "Tool output text.",
+                          "pattern": "\\S"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "description": "MiniMax Responses API function call output input item."
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "const": "reasoning",
+                          "type": "string",
+                          "description": "Reasoning input item type."
+                        },
+                        "summary": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "type": {
+                                "const": "summary_text",
+                                "type": "string",
+                                "description": "Reasoning summary item type."
+                              },
+                              "text": {
+                                "type": "string",
+                                "minLength": 1,
+                                "description": "Reasoning summary text.",
+                                "pattern": "\\S"
+                              }
+                            },
+                            "additionalProperties": false,
+                            "description": "MiniMax reasoning summary text item."
+                          },
+                          "description": "Reasoning summary items to include in conversation history.",
+                          "minItems": 1
+                        }
+                      },
+                      "additionalProperties": false,
+                      "description": "MiniMax Responses API reasoning input item."
+                    }
+                  ],
+                  "description": "Supported MiniMax Responses API conversation item."
+                },
+                "description": "Conversation history items to send to MiniMax.",
+                "minItems": 1
+              }
+            ],
+            "description": "MiniMax Responses API text or conversation input."
+          },
+          "instructions": {
+            "type": "string",
+            "description": "System instructions included in the estimate."
+          },
+          "tools": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "const": "function",
+                  "type": "string",
+                  "description": "Tool type. MiniMax currently supports function tools."
+                },
+                "name": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "Function tool name.",
+                  "pattern": "\\S"
+                },
+                "description": {
+                  "type": "string",
+                  "description": "Human-readable function tool description."
+                },
+                "parameters": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "description": "JSON Schema parameters for the function tool."
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "type",
+                "name"
+              ],
+              "description": "MiniMax Responses API function tool definition."
+            },
+            "description": "Function tools included in the estimate.",
+            "minItems": 1
+          },
+          "tool_choice": {
+            "type": "string",
+            "enum": [
+              "none",
+              "auto"
+            ],
+            "description": "Tool selection strategy."
+          },
+          "text": {
+            "type": "object",
+            "properties": {
+              "format": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "const": "text",
+                    "type": "string",
+                    "description": "Plain text output format."
+                  }
+                },
+                "additionalProperties": false,
+                "description": "MiniMax response text format."
+              }
+            },
+            "additionalProperties": false,
+            "description": "MiniMax output text format control."
+          },
+          "reasoning": {
+            "type": "object",
+            "properties": {
+              "effort": {
+                "type": "string",
+                "enum": [
+                  "minimal",
+                  "low",
+                  "medium",
+                  "high",
+                  "none"
+                ],
+                "description": "Reasoning effort value."
+              }
+            },
+            "additionalProperties": false,
+            "description": "MiniMax reasoning control. MiniMax-M3 defaults to none when omitted."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "model",
+          "input"
+        ],
+        "description": "Request body for estimating MiniMax response input tokens."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "object": {
+            "type": "string",
+            "description": "Object type returned by MiniMax, usually response.input_tokens."
+          },
+          "input_tokens": {
+            "type": "integer",
+            "description": "Estimated input token count."
+          }
+        },
+        "additionalProperties": true,
+        "description": "MiniMax input token estimate response."
+      }
+    },
+    {
+      "id": "minimax.list_models",
+      "service": "minimax",
+      "name": "list_models",
+      "description": "List OpenAI-compatible MiniMax models available to the API key.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false,
+        "description": "No input is required to list MiniMax models."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "object": {
+            "type": "string",
+            "description": "Object type returned by MiniMax, usually list."
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "description": "MiniMax model identifier."
+                },
+                "object": {
+                  "type": "string",
+                  "description": "Object type returned by MiniMax, usually model."
+                },
+                "created": {
+                  "type": "integer",
+                  "description": "Unix timestamp when MiniMax created the model."
+                },
+                "owned_by": {
+                  "type": "string",
+                  "description": "Organization that owns the model."
+                }
+              },
+              "additionalProperties": true,
+              "required": [
+                "id"
+              ],
+              "description": "OpenAI-compatible MiniMax model object."
+            },
+            "description": "MiniMax models returned by the API."
+          }
+        },
+        "additionalProperties": true,
+        "description": "MiniMax model list response."
+      }
+    },
+    {
+      "id": "minimax.retrieve_model",
+      "service": "minimax",
+      "name": "retrieve_model",
+      "description": "Retrieve OpenAI-compatible metadata for one MiniMax model.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "modelId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "MiniMax model identifier to retrieve.",
+            "pattern": "\\S"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Input parameters for retrieving a MiniMax model."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "MiniMax model identifier."
+          },
+          "object": {
+            "type": "string",
+            "description": "Object type returned by MiniMax, usually model."
+          },
+          "created": {
+            "type": "integer",
+            "description": "Unix timestamp when MiniMax created the model."
+          },
+          "owned_by": {
+            "type": "string",
+            "description": "Organization that owns the model."
+          }
+        },
+        "additionalProperties": true,
+        "required": [
+          "id"
+        ],
+        "description": "OpenAI-compatible MiniMax model object."
+      }
+    }
+  ]
+}

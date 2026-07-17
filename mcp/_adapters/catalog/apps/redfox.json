@@ -1,0 +1,980 @@
+{
+  "service": "redfox",
+  "displayName": "RedFoxHub",
+  "categories": [
+    "Social",
+    "Data"
+  ],
+  "authTypes": [
+    "api_key"
+  ],
+  "auth": [
+    {
+      "type": "api_key",
+      "label": "API Key",
+      "placeholder": "REDFOX_API_KEY",
+      "description": "RedFoxHub API key sent with the REDFOX_API_KEY header. Register or sign in at https://redfox.hk, then create or view keys in Key Management: https://redfox.hk/settings/api-keys.",
+      "extraFields": []
+    }
+  ],
+  "homepageUrl": "https://redfox.hk",
+  "actions": [
+    {
+      "id": "redfox.get_douyin_user",
+      "service": "redfox",
+      "name": "get_douyin_user",
+      "description": "Fetch a Douyin account detail payload through RedFoxHub.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "accountId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Douyin account ID accepted by RedFoxHub."
+          }
+        },
+        "additionalProperties": false,
+        "description": "Input parameters for fetching a Douyin account through RedFoxHub."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "RedFoxHub business status code. A value of 2000 means success."
+          },
+          "msg": {
+            "type": "string",
+            "description": "Message returned by RedFoxHub."
+          },
+          "data": {
+            "description": "The RedFoxHub data payload returned by the endpoint."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The RedFoxHub response wrapper returned by the endpoint."
+      }
+    },
+    {
+      "id": "redfox.get_douyin_work",
+      "service": "redfox",
+      "name": "get_douyin_work",
+      "description": "Fetch a Douyin work detail payload through RedFoxHub by work ID or work URL.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "workId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Douyin work ID accepted by RedFoxHub."
+          },
+          "workUrl": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Douyin work URL accepted by RedFoxHub."
+          }
+        },
+        "additionalProperties": false,
+        "description": "Input parameters for fetching a Douyin work through RedFoxHub. Provide at least one identifier."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "RedFoxHub business status code. A value of 2000 means success."
+          },
+          "msg": {
+            "type": "string",
+            "description": "Message returned by RedFoxHub."
+          },
+          "data": {
+            "description": "The RedFoxHub data payload returned by the endpoint."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The RedFoxHub response wrapper returned by the endpoint."
+      }
+    },
+    {
+      "id": "redfox.get_wechat_account",
+      "service": "redfox",
+      "name": "get_wechat_account",
+      "description": "Fetch a WeChat Official Account detail payload through RedFoxHub.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "account": {
+            "type": "string",
+            "minLength": 1,
+            "description": "WeChat Official Account ID accepted by RedFoxHub."
+          },
+          "accountName": {
+            "type": "string",
+            "minLength": 1,
+            "description": "WeChat Official Account name accepted by RedFoxHub."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "account"
+        ],
+        "description": "Input parameters for fetching a WeChat Official Account through RedFoxHub."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "RedFoxHub business status code. A value of 2000 means success."
+          },
+          "msg": {
+            "type": "string",
+            "description": "Message returned by RedFoxHub."
+          },
+          "data": {
+            "description": "The RedFoxHub data payload returned by the endpoint."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The RedFoxHub response wrapper returned by the endpoint."
+      }
+    },
+    {
+      "id": "redfox.get_wechat_article",
+      "service": "redfox",
+      "name": "get_wechat_article",
+      "description": "Fetch a WeChat Official Account article payload through RedFoxHub.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "workUuid": {
+            "type": "string",
+            "minLength": 1,
+            "description": "WeChat article UUID accepted by RedFoxHub."
+          }
+        },
+        "additionalProperties": false,
+        "description": "Input parameters for fetching a WeChat Official Account article through RedFoxHub."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "RedFoxHub business status code. A value of 2000 means success."
+          },
+          "msg": {
+            "type": "string",
+            "description": "Message returned by RedFoxHub."
+          },
+          "data": {
+            "description": "The RedFoxHub data payload returned by the endpoint."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The RedFoxHub response wrapper returned by the endpoint."
+      }
+    },
+    {
+      "id": "redfox.get_wechat_article_by_url",
+      "service": "redfox",
+      "name": "get_wechat_article_by_url",
+      "description": "Fetch WeChat Official Account article data through RedFoxHub by article URL.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "minLength": 1,
+            "description": "WeChat article URL accepted by RedFoxHub."
+          }
+        },
+        "additionalProperties": false,
+        "description": "Input parameters for fetching WeChat Official Account article data by URL through RedFoxHub."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "RedFoxHub business status code. A value of 2000 means success."
+          },
+          "msg": {
+            "type": "string",
+            "description": "Message returned by RedFoxHub."
+          },
+          "data": {
+            "description": "The RedFoxHub data payload returned by the endpoint."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The RedFoxHub response wrapper returned by the endpoint."
+      }
+    },
+    {
+      "id": "redfox.get_xiaohongshu_user",
+      "service": "redfox",
+      "name": "get_xiaohongshu_user",
+      "description": "Fetch a Xiaohongshu account detail payload through RedFoxHub.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "accountId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Xiaohongshu account display ID accepted by RedFoxHub."
+          },
+          "userId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Xiaohongshu account primary user ID accepted by RedFoxHub."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "accountId"
+        ],
+        "description": "Input parameters for fetching a Xiaohongshu account through RedFoxHub."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "RedFoxHub business status code. A value of 2000 means success."
+          },
+          "msg": {
+            "type": "string",
+            "description": "Message returned by RedFoxHub."
+          },
+          "data": {
+            "description": "The RedFoxHub data payload returned by the endpoint."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The RedFoxHub response wrapper returned by the endpoint."
+      }
+    },
+    {
+      "id": "redfox.get_xiaohongshu_work",
+      "service": "redfox",
+      "name": "get_xiaohongshu_work",
+      "description": "Fetch a Xiaohongshu work detail payload through RedFoxHub by work ID or link.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "workId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Xiaohongshu work ID accepted by RedFoxHub."
+          },
+          "workLink": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Xiaohongshu work link accepted by RedFoxHub."
+          }
+        },
+        "additionalProperties": false,
+        "description": "Input parameters for fetching a Xiaohongshu work through RedFoxHub. Provide at least one identifier."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "RedFoxHub business status code. A value of 2000 means success."
+          },
+          "msg": {
+            "type": "string",
+            "description": "Message returned by RedFoxHub."
+          },
+          "data": {
+            "description": "The RedFoxHub data payload returned by the endpoint."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The RedFoxHub response wrapper returned by the endpoint."
+      }
+    },
+    {
+      "id": "redfox.list_douyin_user_works",
+      "service": "redfox",
+      "name": "list_douyin_user_works",
+      "description": "List works published by a Douyin account through RedFoxHub.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "accountId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Douyin account identifier accepted by RedFoxHub."
+          },
+          "authorUrl": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Douyin author page URL accepted by RedFoxHub."
+          },
+          "secUserId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Douyin sec_user_id accepted by RedFoxHub."
+          },
+          "offset": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Zero-based pagination offset accepted by RedFoxHub."
+          },
+          "sortType": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Sort type accepted by RedFoxHub for this endpoint."
+          }
+        },
+        "additionalProperties": false,
+        "description": "Input parameters for listing Douyin works published by an account through RedFoxHub. accountId, authorUrl, or secUserId is required."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "RedFoxHub business status code. A value of 2000 means success."
+          },
+          "msg": {
+            "type": "string",
+            "description": "Message returned by RedFoxHub."
+          },
+          "data": {
+            "description": "The RedFoxHub data payload returned by the endpoint."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The RedFoxHub response wrapper returned by the endpoint."
+      }
+    },
+    {
+      "id": "redfox.list_wechat_account_articles",
+      "service": "redfox",
+      "name": "list_wechat_account_articles",
+      "description": "List articles published by a WeChat Official Account through RedFoxHub.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "account": {
+            "type": "string",
+            "minLength": 1,
+            "description": "WeChat Official Account ID accepted by RedFoxHub."
+          },
+          "accountName": {
+            "type": "string",
+            "minLength": 1,
+            "description": "WeChat Official Account name accepted by RedFoxHub."
+          },
+          "offset": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Zero-based pagination offset accepted by RedFoxHub."
+          },
+          "sortType": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Sort type accepted by RedFoxHub for this endpoint."
+          },
+          "publishTimeStart": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Earliest publish time accepted by RedFoxHub."
+          },
+          "publishTimeEnd": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Latest publish time accepted by RedFoxHub."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "account"
+        ],
+        "description": "Input parameters for listing WeChat Official Account articles through RedFoxHub."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "RedFoxHub business status code. A value of 2000 means success."
+          },
+          "msg": {
+            "type": "string",
+            "description": "Message returned by RedFoxHub."
+          },
+          "data": {
+            "description": "The RedFoxHub data payload returned by the endpoint."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The RedFoxHub response wrapper returned by the endpoint."
+      }
+    },
+    {
+      "id": "redfox.search_douyin_ai_creations",
+      "service": "redfox",
+      "name": "search_douyin_ai_creations",
+      "description": "Search Douyin AI creation data through RedFoxHub.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "keyword": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Search keyword sent to RedFoxHub."
+          },
+          "pageNum": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "One-based page number accepted by RedFoxHub."
+          },
+          "pageSize": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Page size accepted by RedFoxHub."
+          },
+          "startTime": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Time value accepted by RedFoxHub."
+          },
+          "endTime": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Time value accepted by RedFoxHub."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "keyword"
+        ],
+        "description": "Input parameters for searching Douyin AI creation data through RedFoxHub."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "RedFoxHub business status code. A value of 2000 means success."
+          },
+          "msg": {
+            "type": "string",
+            "description": "Message returned by RedFoxHub."
+          },
+          "data": {
+            "description": "The RedFoxHub data payload returned by the endpoint."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The RedFoxHub response wrapper returned by the endpoint."
+      }
+    },
+    {
+      "id": "redfox.search_douyin_users",
+      "service": "redfox",
+      "name": "search_douyin_users",
+      "description": "Search Douyin accounts through RedFoxHub and return the upstream result payload.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "keyword": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Search keyword sent to RedFoxHub."
+          },
+          "offset": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Zero-based pagination offset accepted by RedFoxHub."
+          },
+          "sortType": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Sort type accepted by RedFoxHub for this endpoint."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "keyword"
+        ],
+        "description": "Input parameters for searching Douyin accounts through RedFoxHub."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "RedFoxHub business status code. A value of 2000 means success."
+          },
+          "msg": {
+            "type": "string",
+            "description": "Message returned by RedFoxHub."
+          },
+          "data": {
+            "description": "The RedFoxHub data payload returned by the endpoint."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The RedFoxHub response wrapper returned by the endpoint."
+      }
+    },
+    {
+      "id": "redfox.search_douyin_works",
+      "service": "redfox",
+      "name": "search_douyin_works",
+      "description": "Search Douyin works through RedFoxHub and return the upstream result payload.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "keyword": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Search keyword sent to RedFoxHub."
+          },
+          "offset": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Zero-based pagination offset accepted by RedFoxHub."
+          },
+          "sortType": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Sort type accepted by RedFoxHub for this endpoint."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "keyword"
+        ],
+        "description": "Input parameters for searching Douyin works through RedFoxHub."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "RedFoxHub business status code. A value of 2000 means success."
+          },
+          "msg": {
+            "type": "string",
+            "description": "Message returned by RedFoxHub."
+          },
+          "data": {
+            "description": "The RedFoxHub data payload returned by the endpoint."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The RedFoxHub response wrapper returned by the endpoint."
+      }
+    },
+    {
+      "id": "redfox.search_tiktok_users",
+      "service": "redfox",
+      "name": "search_tiktok_users",
+      "description": "Search TikTok accounts through RedFoxHub.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "keyword": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Search keyword sent to RedFoxHub."
+          },
+          "cursor": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "TikTok search pagination cursor. Use 0 for the first page."
+          }
+        },
+        "additionalProperties": false,
+        "description": "Input parameters for searching TikTok accounts through RedFoxHub."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "RedFoxHub business status code. A value of 2000 means success."
+          },
+          "msg": {
+            "type": "string",
+            "description": "Message returned by RedFoxHub."
+          },
+          "data": {
+            "description": "The RedFoxHub data payload returned by the endpoint."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The RedFoxHub response wrapper returned by the endpoint."
+      }
+    },
+    {
+      "id": "redfox.search_wechat_accounts",
+      "service": "redfox",
+      "name": "search_wechat_accounts",
+      "description": "Search WeChat Official Accounts through RedFoxHub and return the upstream payload.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "keyword": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Search keyword sent to RedFoxHub."
+          },
+          "offset": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Zero-based pagination offset accepted by RedFoxHub."
+          },
+          "sortType": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Sort type accepted by RedFoxHub for this endpoint."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "keyword"
+        ],
+        "description": "Input parameters for searching WeChat Official Accounts through RedFoxHub."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "RedFoxHub business status code. A value of 2000 means success."
+          },
+          "msg": {
+            "type": "string",
+            "description": "Message returned by RedFoxHub."
+          },
+          "data": {
+            "description": "The RedFoxHub data payload returned by the endpoint."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The RedFoxHub response wrapper returned by the endpoint."
+      }
+    },
+    {
+      "id": "redfox.search_wechat_ai_creations",
+      "service": "redfox",
+      "name": "search_wechat_ai_creations",
+      "description": "Search WeChat Official Account AI creation data through RedFoxHub.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "keyword": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Search keyword sent to RedFoxHub."
+          },
+          "pageNum": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "One-based page number accepted by RedFoxHub."
+          },
+          "pageSize": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Page size accepted by RedFoxHub."
+          },
+          "startTime": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Time value accepted by RedFoxHub."
+          },
+          "endTime": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Time value accepted by RedFoxHub."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "keyword",
+          "pageNum",
+          "pageSize"
+        ],
+        "description": "Input parameters for searching WeChat Official Account AI creation data through RedFoxHub."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "RedFoxHub business status code. A value of 2000 means success."
+          },
+          "msg": {
+            "type": "string",
+            "description": "Message returned by RedFoxHub."
+          },
+          "data": {
+            "description": "The RedFoxHub data payload returned by the endpoint."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The RedFoxHub response wrapper returned by the endpoint."
+      }
+    },
+    {
+      "id": "redfox.search_wechat_articles",
+      "service": "redfox",
+      "name": "search_wechat_articles",
+      "description": "Search WeChat Official Account articles through RedFoxHub and return the upstream payload.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "keyword": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Search keyword sent to RedFoxHub."
+          },
+          "offset": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Zero-based pagination offset accepted by RedFoxHub."
+          },
+          "sortType": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Sort type accepted by RedFoxHub for this endpoint."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "keyword"
+        ],
+        "description": "Input parameters for searching WeChat Official Account articles through RedFoxHub."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "RedFoxHub business status code. A value of 2000 means success."
+          },
+          "msg": {
+            "type": "string",
+            "description": "Message returned by RedFoxHub."
+          },
+          "data": {
+            "description": "The RedFoxHub data payload returned by the endpoint."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The RedFoxHub response wrapper returned by the endpoint."
+      }
+    },
+    {
+      "id": "redfox.search_xiaohongshu_ai_creations",
+      "service": "redfox",
+      "name": "search_xiaohongshu_ai_creations",
+      "description": "Search Xiaohongshu AI creation data through RedFoxHub.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "keyword": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Search keyword sent to RedFoxHub."
+          },
+          "pageNum": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "One-based page number accepted by RedFoxHub."
+          },
+          "pageSize": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Page size accepted by RedFoxHub."
+          },
+          "source": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Source filter accepted by RedFoxHub."
+          },
+          "startTime": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Time value accepted by RedFoxHub."
+          },
+          "endTime": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Time value accepted by RedFoxHub."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "keyword",
+          "startTime",
+          "endTime"
+        ],
+        "description": "Input parameters for searching Xiaohongshu AI creation data through RedFoxHub."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "RedFoxHub business status code. A value of 2000 means success."
+          },
+          "msg": {
+            "type": "string",
+            "description": "Message returned by RedFoxHub."
+          },
+          "data": {
+            "description": "The RedFoxHub data payload returned by the endpoint."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The RedFoxHub response wrapper returned by the endpoint."
+      }
+    },
+    {
+      "id": "redfox.search_xiaohongshu_users",
+      "service": "redfox",
+      "name": "search_xiaohongshu_users",
+      "description": "Search Xiaohongshu accounts through RedFoxHub and return the upstream result payload.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "keyword": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Search keyword sent to RedFoxHub."
+          },
+          "offset": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Zero-based pagination offset accepted by RedFoxHub."
+          },
+          "sortType": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Sort type accepted by RedFoxHub for this endpoint."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "keyword"
+        ],
+        "description": "Input parameters for searching Xiaohongshu accounts through RedFoxHub."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "RedFoxHub business status code. A value of 2000 means success."
+          },
+          "msg": {
+            "type": "string",
+            "description": "Message returned by RedFoxHub."
+          },
+          "data": {
+            "description": "The RedFoxHub data payload returned by the endpoint."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The RedFoxHub response wrapper returned by the endpoint."
+      }
+    },
+    {
+      "id": "redfox.search_xiaohongshu_works",
+      "service": "redfox",
+      "name": "search_xiaohongshu_works",
+      "description": "Search Xiaohongshu works through RedFoxHub and return the upstream result payload.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "keyword": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Search keyword sent to RedFoxHub."
+          },
+          "offset": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Zero-based pagination offset accepted by RedFoxHub."
+          },
+          "sortType": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Sort type accepted by RedFoxHub for this endpoint."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "keyword"
+        ],
+        "description": "Input parameters for searching Xiaohongshu works through RedFoxHub."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "RedFoxHub business status code. A value of 2000 means success."
+          },
+          "msg": {
+            "type": "string",
+            "description": "Message returned by RedFoxHub."
+          },
+          "data": {
+            "description": "The RedFoxHub data payload returned by the endpoint."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The RedFoxHub response wrapper returned by the endpoint."
+      }
+    }
+  ]
+}

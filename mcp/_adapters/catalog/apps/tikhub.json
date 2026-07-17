@@ -1,0 +1,3612 @@
+{
+  "service": "tikhub",
+  "displayName": "TikHub",
+  "categories": [
+    "Data",
+    "Social"
+  ],
+  "authTypes": [
+    "api_key"
+  ],
+  "auth": [
+    {
+      "type": "api_key",
+      "label": "API Token",
+      "placeholder": "tikhub_api_token",
+      "description": "TikHub API token sent with the Authorization: Bearer header. Create it in the TikHub API key dashboard and grant only the platform path scopes needed by your actions."
+    }
+  ],
+  "homepageUrl": "https://tikhub.io/",
+  "actions": [
+    {
+      "id": "tikhub.calculate_price",
+      "service": "tikhub",
+      "name": "calculate_price",
+      "description": "Calculate TikHub daily request pricing for one endpoint. Requires the /api/v1/tikhub/user/ TikHub path scope.",
+      "requiredScopes": [
+        "/api/v1/tikhub/user/"
+      ],
+      "providerPermissions": [
+        "/api/v1/tikhub/user/"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "endpoint": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The TikHub endpoint path to inspect or price.",
+            "pattern": "^/"
+          },
+          "requestPerDay": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "The expected number of daily requests used for the price calculation."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "endpoint"
+        ],
+        "description": "The input payload for calculating TikHub endpoint pricing."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "envelope": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "description": "The status-like code returned in the TikHub response body."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "requestId": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub request identifier when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "message": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub response message when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "router": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub router path reported by the response."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "params": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {},
+                    "additionalProperties": true,
+                    "description": "The request parameters echoed by TikHub when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "additionalProperties": false,
+            "description": "The normalized TikHub response envelope."
+          },
+          "endpoint": {
+            "type": "string",
+            "description": "The endpoint path used for the calculation."
+          },
+          "requestPerDay": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "The daily request count used for the calculation."
+          },
+          "price": {
+            "description": "The raw data payload returned by TikHub."
+          },
+          "raw": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true,
+            "description": "The raw TikHub response payload."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The response returned when calculating TikHub endpoint pricing."
+      }
+    },
+    {
+      "id": "tikhub.fetch_douyin_hot_total_list",
+      "service": "tikhub",
+      "name": "fetch_douyin_hot_total_list",
+      "description": "Fetch the public Douyin hot total list through TikHub. Requires the /api/v1/douyin/billboard/ TikHub path scope.",
+      "requiredScopes": [
+        "/api/v1/douyin/billboard/"
+      ],
+      "providerPermissions": [
+        "/api/v1/douyin/billboard/"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "The result page number."
+          },
+          "pageSize": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "The number of hot-list items to return per page."
+          },
+          "type": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The billboard snapshot mode, such as snapshot or range."
+          },
+          "snapshotTime": {
+            "type": "string",
+            "description": "The snapshot timestamp formatted as yyyyMMddHHmmss."
+          },
+          "startDate": {
+            "type": "string",
+            "description": "The start date formatted as yyyyMMdd."
+          },
+          "endDate": {
+            "type": "string",
+            "description": "The end date formatted as yyyyMMdd."
+          },
+          "sentenceTag": {
+            "type": "string",
+            "description": "The comma-separated hot-list category tags."
+          },
+          "keyword": {
+            "type": "string",
+            "description": "The hot-list keyword filter."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "page",
+          "pageSize",
+          "type"
+        ],
+        "description": "The input payload for fetching the Douyin hot total list."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "envelope": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "description": "The status-like code returned in the TikHub response body."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "requestId": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub request identifier when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "message": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub response message when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "router": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub router path reported by the response."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "params": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {},
+                    "additionalProperties": true,
+                    "description": "The request parameters echoed by TikHub when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "additionalProperties": false,
+            "description": "The normalized TikHub response envelope."
+          },
+          "hotList": {
+            "description": "The raw data payload returned by TikHub."
+          },
+          "rawData": {
+            "description": "The raw data payload returned by TikHub."
+          },
+          "raw": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true,
+            "description": "The raw TikHub response payload."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The response returned when fetching the Douyin hot total list."
+      }
+    },
+    {
+      "id": "tikhub.fetch_douyin_user_posts",
+      "service": "tikhub",
+      "name": "fetch_douyin_user_posts",
+      "description": "Fetch public Douyin posts for a user through TikHub without exposing upstream cookies. Requires the /api/v1/douyin/web/ TikHub path scope.",
+      "requiredScopes": [
+        "/api/v1/douyin/web/"
+      ],
+      "providerPermissions": [
+        "/api/v1/douyin/web/"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "secUserId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The Douyin user sec_user_id."
+          },
+          "maxCursor": {
+            "type": "string",
+            "description": "The maximum cursor returned by a previous response."
+          },
+          "count": {
+            "type": "integer",
+            "description": "The number of posts to return."
+          },
+          "filterType": {
+            "type": "string",
+            "description": "The Douyin filter type."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "secUserId"
+        ],
+        "description": "The input payload for fetching Douyin user posts."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "envelope": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "description": "The status-like code returned in the TikHub response body."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "requestId": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub request identifier when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "message": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub response message when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "router": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub router path reported by the response."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "params": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {},
+                    "additionalProperties": true,
+                    "description": "The request parameters echoed by TikHub when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "additionalProperties": false,
+            "description": "The normalized TikHub response envelope."
+          },
+          "posts": {
+            "description": "The raw data payload returned by TikHub."
+          },
+          "rawData": {
+            "description": "The raw data payload returned by TikHub."
+          },
+          "raw": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true,
+            "description": "The raw TikHub response payload."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The response returned when fetching Douyin user posts."
+      }
+    },
+    {
+      "id": "tikhub.fetch_douyin_user_profile_by_short_id",
+      "service": "tikhub",
+      "name": "fetch_douyin_user_profile_by_short_id",
+      "description": "Fetch a public Douyin user profile by short ID through TikHub. Requires the /api/v1/douyin/web/ TikHub path scope.",
+      "requiredScopes": [
+        "/api/v1/douyin/web/"
+      ],
+      "providerPermissions": [
+        "/api/v1/douyin/web/"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "shortId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The Douyin user short ID."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The input payload for fetching a Douyin profile by short ID."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "envelope": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "description": "The status-like code returned in the TikHub response body."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "requestId": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub request identifier when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "message": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub response message when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "router": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub router path reported by the response."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "params": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {},
+                    "additionalProperties": true,
+                    "description": "The request parameters echoed by TikHub when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "additionalProperties": false,
+            "description": "The normalized TikHub response envelope."
+          },
+          "profile": {
+            "description": "The raw data payload returned by TikHub."
+          },
+          "rawData": {
+            "description": "The raw data payload returned by TikHub."
+          },
+          "raw": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true,
+            "description": "The raw TikHub response payload."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The response returned when fetching a Douyin profile."
+      }
+    },
+    {
+      "id": "tikhub.fetch_douyin_user_profile_by_uid",
+      "service": "tikhub",
+      "name": "fetch_douyin_user_profile_by_uid",
+      "description": "Fetch a public Douyin user profile by UID through TikHub. Requires the /api/v1/douyin/web/ TikHub path scope.",
+      "requiredScopes": [
+        "/api/v1/douyin/web/"
+      ],
+      "providerPermissions": [
+        "/api/v1/douyin/web/"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "uid": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The Douyin user UID."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The input payload for fetching a Douyin profile by UID."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "envelope": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "description": "The status-like code returned in the TikHub response body."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "requestId": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub request identifier when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "message": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub response message when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "router": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub router path reported by the response."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "params": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {},
+                    "additionalProperties": true,
+                    "description": "The request parameters echoed by TikHub when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "additionalProperties": false,
+            "description": "The normalized TikHub response envelope."
+          },
+          "profile": {
+            "description": "The raw data payload returned by TikHub."
+          },
+          "rawData": {
+            "description": "The raw data payload returned by TikHub."
+          },
+          "raw": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true,
+            "description": "The raw TikHub response payload."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The response returned when fetching a Douyin profile."
+      }
+    },
+    {
+      "id": "tikhub.fetch_douyin_video_by_share_url",
+      "service": "tikhub",
+      "name": "fetch_douyin_video_by_share_url",
+      "description": "Fetch a public Douyin video detail by share URL through TikHub. Requires the /api/v1/douyin/web/ TikHub path scope.",
+      "requiredScopes": [
+        "/api/v1/douyin/web/"
+      ],
+      "providerPermissions": [
+        "/api/v1/douyin/web/"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "shareUrl": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The Douyin video share URL."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The input payload for fetching a Douyin video by share URL."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "envelope": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "description": "The status-like code returned in the TikHub response body."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "requestId": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub request identifier when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "message": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub response message when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "router": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub router path reported by the response."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "params": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {},
+                    "additionalProperties": true,
+                    "description": "The request parameters echoed by TikHub when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "additionalProperties": false,
+            "description": "The normalized TikHub response envelope."
+          },
+          "post": {
+            "description": "The raw data payload returned by TikHub."
+          },
+          "rawData": {
+            "description": "The raw data payload returned by TikHub."
+          },
+          "raw": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true,
+            "description": "The raw TikHub response payload."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The response returned when fetching a Douyin video."
+      }
+    },
+    {
+      "id": "tikhub.fetch_douyin_video_comment_replies",
+      "service": "tikhub",
+      "name": "fetch_douyin_video_comment_replies",
+      "description": "Fetch public Douyin comment replies through TikHub. Requires the /api/v1/douyin/web/ TikHub path scope.",
+      "requiredScopes": [
+        "/api/v1/douyin/web/"
+      ],
+      "providerPermissions": [
+        "/api/v1/douyin/web/"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "itemId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The Douyin video item ID."
+          },
+          "commentId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The Douyin comment ID."
+          },
+          "cursor": {
+            "type": "integer",
+            "description": "The page cursor."
+          },
+          "count": {
+            "type": "integer",
+            "description": "The number of replies to return."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "itemId",
+          "commentId"
+        ],
+        "description": "The input payload for fetching Douyin comment replies."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "envelope": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "description": "The status-like code returned in the TikHub response body."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "requestId": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub request identifier when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "message": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub response message when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "router": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub router path reported by the response."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "params": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {},
+                    "additionalProperties": true,
+                    "description": "The request parameters echoed by TikHub when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "additionalProperties": false,
+            "description": "The normalized TikHub response envelope."
+          },
+          "replies": {
+            "description": "The raw data payload returned by TikHub."
+          },
+          "rawData": {
+            "description": "The raw data payload returned by TikHub."
+          },
+          "raw": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true,
+            "description": "The raw TikHub response payload."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The response returned when fetching Douyin comment replies."
+      }
+    },
+    {
+      "id": "tikhub.fetch_douyin_video_comments",
+      "service": "tikhub",
+      "name": "fetch_douyin_video_comments",
+      "description": "Fetch public Douyin video comments through TikHub. Requires the /api/v1/douyin/web/ TikHub path scope.",
+      "requiredScopes": [
+        "/api/v1/douyin/web/"
+      ],
+      "providerPermissions": [
+        "/api/v1/douyin/web/"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "awemeId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The Douyin video aweme ID."
+          },
+          "cursor": {
+            "type": "integer",
+            "description": "The page cursor."
+          },
+          "count": {
+            "type": "integer",
+            "description": "The number of comments to return."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "awemeId"
+        ],
+        "description": "The input payload for fetching Douyin video comments."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "envelope": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "description": "The status-like code returned in the TikHub response body."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "requestId": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub request identifier when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "message": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub response message when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "router": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub router path reported by the response."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "params": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {},
+                    "additionalProperties": true,
+                    "description": "The request parameters echoed by TikHub when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "additionalProperties": false,
+            "description": "The normalized TikHub response envelope."
+          },
+          "comments": {
+            "description": "The raw data payload returned by TikHub."
+          },
+          "rawData": {
+            "description": "The raw data payload returned by TikHub."
+          },
+          "raw": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true,
+            "description": "The raw TikHub response payload."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The response returned when fetching Douyin video comments."
+      }
+    },
+    {
+      "id": "tikhub.fetch_douyin_video_detail",
+      "service": "tikhub",
+      "name": "fetch_douyin_video_detail",
+      "description": "Fetch a public Douyin video detail through TikHub. Requires the /api/v1/douyin/web/ TikHub path scope.",
+      "requiredScopes": [
+        "/api/v1/douyin/web/"
+      ],
+      "providerPermissions": [
+        "/api/v1/douyin/web/"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "awemeId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The Douyin video aweme ID."
+          },
+          "needAnchorInfo": {
+            "type": "boolean",
+            "description": "Whether TikHub should include anchor information."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "awemeId"
+        ],
+        "description": "The input payload for fetching a Douyin video."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "envelope": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "description": "The status-like code returned in the TikHub response body."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "requestId": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub request identifier when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "message": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub response message when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "router": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub router path reported by the response."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "params": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {},
+                    "additionalProperties": true,
+                    "description": "The request parameters echoed by TikHub when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "additionalProperties": false,
+            "description": "The normalized TikHub response envelope."
+          },
+          "post": {
+            "description": "The raw data payload returned by TikHub."
+          },
+          "rawData": {
+            "description": "The raw data payload returned by TikHub."
+          },
+          "raw": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true,
+            "description": "The raw TikHub response payload."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The response returned when fetching a Douyin video."
+      }
+    },
+    {
+      "id": "tikhub.fetch_tiktok_post_comments",
+      "service": "tikhub",
+      "name": "fetch_tiktok_post_comments",
+      "description": "Fetch public TikTok post comments through TikHub. Requires the /api/v1/tiktok/web/ TikHub path scope.",
+      "requiredScopes": [
+        "/api/v1/tiktok/web/"
+      ],
+      "providerPermissions": [
+        "/api/v1/tiktok/web/"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "awemeId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The TikTok post aweme ID."
+          },
+          "cursor": {
+            "type": "integer",
+            "description": "The page cursor."
+          },
+          "count": {
+            "type": "integer",
+            "description": "The number of comments to return."
+          },
+          "currentRegion": {
+            "type": "string",
+            "description": "The current region code used by TikHub."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "awemeId"
+        ],
+        "description": "The input payload for fetching TikTok post comments."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "envelope": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "description": "The status-like code returned in the TikHub response body."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "requestId": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub request identifier when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "message": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub response message when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "router": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub router path reported by the response."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "params": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {},
+                    "additionalProperties": true,
+                    "description": "The request parameters echoed by TikHub when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "additionalProperties": false,
+            "description": "The normalized TikHub response envelope."
+          },
+          "comments": {
+            "description": "The raw data payload returned by TikHub."
+          },
+          "rawData": {
+            "description": "The raw data payload returned by TikHub."
+          },
+          "raw": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true,
+            "description": "The raw TikHub response payload."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The response returned when fetching TikTok post comments."
+      }
+    },
+    {
+      "id": "tikhub.fetch_tiktok_post_detail",
+      "service": "tikhub",
+      "name": "fetch_tiktok_post_detail",
+      "description": "Fetch a public TikTok post detail through TikHub. Requires the /api/v1/tiktok/web/ TikHub path scope.",
+      "requiredScopes": [
+        "/api/v1/tiktok/web/"
+      ],
+      "providerPermissions": [
+        "/api/v1/tiktok/web/"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "itemId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The TikTok post item ID."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The input payload for fetching a TikTok post detail."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "envelope": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "description": "The status-like code returned in the TikHub response body."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "requestId": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub request identifier when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "message": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub response message when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "router": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub router path reported by the response."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "params": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {},
+                    "additionalProperties": true,
+                    "description": "The request parameters echoed by TikHub when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "additionalProperties": false,
+            "description": "The normalized TikHub response envelope."
+          },
+          "post": {
+            "description": "The raw data payload returned by TikHub."
+          },
+          "rawData": {
+            "description": "The raw data payload returned by TikHub."
+          },
+          "raw": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true,
+            "description": "The raw TikHub response payload."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The response returned when fetching a TikTok post."
+      }
+    },
+    {
+      "id": "tikhub.fetch_tiktok_tag_detail",
+      "service": "tikhub",
+      "name": "fetch_tiktok_tag_detail",
+      "description": "Fetch a public TikTok tag detail through TikHub. Requires the /api/v1/tiktok/web/ TikHub path scope.",
+      "requiredScopes": [
+        "/api/v1/tiktok/web/"
+      ],
+      "providerPermissions": [
+        "/api/v1/tiktok/web/"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "tagName": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The TikTok tag name."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The input payload for fetching a TikTok tag detail."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "envelope": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "description": "The status-like code returned in the TikHub response body."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "requestId": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub request identifier when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "message": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub response message when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "router": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub router path reported by the response."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "params": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {},
+                    "additionalProperties": true,
+                    "description": "The request parameters echoed by TikHub when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "additionalProperties": false,
+            "description": "The normalized TikHub response envelope."
+          },
+          "results": {
+            "description": "The raw data payload returned by TikHub."
+          },
+          "rawData": {
+            "description": "The raw data payload returned by TikHub."
+          },
+          "raw": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true,
+            "description": "The raw TikHub response payload."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The response returned when fetching a TikTok tag."
+      }
+    },
+    {
+      "id": "tikhub.fetch_tiktok_tag_posts",
+      "service": "tikhub",
+      "name": "fetch_tiktok_tag_posts",
+      "description": "Fetch public TikTok posts for a tag through TikHub. Requires the /api/v1/tiktok/web/ TikHub path scope.",
+      "requiredScopes": [
+        "/api/v1/tiktok/web/"
+      ],
+      "providerPermissions": [
+        "/api/v1/tiktok/web/"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "challengeId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The TikTok challenge ID."
+          },
+          "count": {
+            "type": "integer",
+            "description": "The number of posts to return."
+          },
+          "cursor": {
+            "type": "integer",
+            "description": "The page cursor."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "challengeId"
+        ],
+        "description": "The input payload for fetching TikTok tag posts."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "envelope": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "description": "The status-like code returned in the TikHub response body."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "requestId": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub request identifier when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "message": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub response message when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "router": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub router path reported by the response."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "params": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {},
+                    "additionalProperties": true,
+                    "description": "The request parameters echoed by TikHub when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "additionalProperties": false,
+            "description": "The normalized TikHub response envelope."
+          },
+          "posts": {
+            "description": "The raw data payload returned by TikHub."
+          },
+          "rawData": {
+            "description": "The raw data payload returned by TikHub."
+          },
+          "raw": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true,
+            "description": "The raw TikHub response payload."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The response returned when fetching TikTok tag posts."
+      }
+    },
+    {
+      "id": "tikhub.fetch_tiktok_user_posts",
+      "service": "tikhub",
+      "name": "fetch_tiktok_user_posts",
+      "description": "Fetch public TikTok posts for a user through TikHub. Requires the /api/v1/tiktok/web/ TikHub path scope.",
+      "requiredScopes": [
+        "/api/v1/tiktok/web/"
+      ],
+      "providerPermissions": [
+        "/api/v1/tiktok/web/"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "secUid": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The TikTok user secUid."
+          },
+          "cursor": {
+            "type": "integer",
+            "description": "The page cursor."
+          },
+          "count": {
+            "type": "integer",
+            "description": "The number of posts to return."
+          },
+          "coverFormat": {
+            "type": "integer",
+            "description": "The TikTok cover format value."
+          },
+          "postItemListRequestType": {
+            "type": "integer",
+            "description": "The TikTok post list sort type."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "secUid"
+        ],
+        "description": "The input payload for fetching TikTok user posts."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "envelope": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "description": "The status-like code returned in the TikHub response body."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "requestId": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub request identifier when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "message": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub response message when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "router": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub router path reported by the response."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "params": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {},
+                    "additionalProperties": true,
+                    "description": "The request parameters echoed by TikHub when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "additionalProperties": false,
+            "description": "The normalized TikHub response envelope."
+          },
+          "posts": {
+            "description": "The raw data payload returned by TikHub."
+          },
+          "rawData": {
+            "description": "The raw data payload returned by TikHub."
+          },
+          "raw": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true,
+            "description": "The raw TikHub response payload."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The response returned when fetching TikTok user posts."
+      }
+    },
+    {
+      "id": "tikhub.fetch_tiktok_user_profile",
+      "service": "tikhub",
+      "name": "fetch_tiktok_user_profile",
+      "description": "Fetch a public TikTok user profile through TikHub. Requires the /api/v1/tiktok/web/ TikHub path scope.",
+      "requiredScopes": [
+        "/api/v1/tiktok/web/"
+      ],
+      "providerPermissions": [
+        "/api/v1/tiktok/web/"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "uniqueId": {
+            "type": "string",
+            "description": "The TikTok user uniqueId."
+          },
+          "secUid": {
+            "type": "string",
+            "description": "The TikTok user secUid."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The input payload for fetching a TikTok user profile. Provide either uniqueId or secUid."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "envelope": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "description": "The status-like code returned in the TikHub response body."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "requestId": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub request identifier when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "message": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub response message when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "router": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub router path reported by the response."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "params": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {},
+                    "additionalProperties": true,
+                    "description": "The request parameters echoed by TikHub when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "additionalProperties": false,
+            "description": "The normalized TikHub response envelope."
+          },
+          "profile": {
+            "description": "The raw data payload returned by TikHub."
+          },
+          "rawData": {
+            "description": "The raw data payload returned by TikHub."
+          },
+          "raw": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true,
+            "description": "The raw TikHub response payload."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The response returned when fetching a TikTok profile."
+      }
+    },
+    {
+      "id": "tikhub.fetch_xiaohongshu_hot_list",
+      "service": "tikhub",
+      "name": "fetch_xiaohongshu_hot_list",
+      "description": "Fetch the public Xiaohongshu hot list through TikHub. Requires the /api/v1/xiaohongshu/web_v2/ TikHub path scope.",
+      "requiredScopes": [
+        "/api/v1/xiaohongshu/web_v2/"
+      ],
+      "providerPermissions": [
+        "/api/v1/xiaohongshu/web_v2/"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false,
+        "description": "The input payload for fetching the Xiaohongshu hot list."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "envelope": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "description": "The status-like code returned in the TikHub response body."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "requestId": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub request identifier when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "message": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub response message when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "router": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub router path reported by the response."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "params": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {},
+                    "additionalProperties": true,
+                    "description": "The request parameters echoed by TikHub when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "additionalProperties": false,
+            "description": "The normalized TikHub response envelope."
+          },
+          "hotList": {
+            "description": "The raw data payload returned by TikHub."
+          },
+          "rawData": {
+            "description": "The raw data payload returned by TikHub."
+          },
+          "raw": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true,
+            "description": "The raw TikHub response payload."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The response returned when fetching the Xiaohongshu hot list."
+      }
+    },
+    {
+      "id": "tikhub.fetch_xiaohongshu_note_comment_replies",
+      "service": "tikhub",
+      "name": "fetch_xiaohongshu_note_comment_replies",
+      "description": "Fetch public Xiaohongshu note comment replies through TikHub App V2. Requires the /api/v1/xiaohongshu/app_v2/ TikHub path scope.",
+      "requiredScopes": [
+        "/api/v1/xiaohongshu/app_v2/"
+      ],
+      "providerPermissions": [
+        "/api/v1/xiaohongshu/app_v2/"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "noteId": {
+            "type": "string",
+            "description": "The Xiaohongshu note ID."
+          },
+          "shareText": {
+            "type": "string",
+            "description": "The Xiaohongshu note share link."
+          },
+          "commentId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The Xiaohongshu parent comment ID."
+          },
+          "cursor": {
+            "type": "string",
+            "description": "The sub-comment cursor."
+          },
+          "lastCursor": {
+            "type": "string",
+            "description": "Deprecated compatibility alias for cursor. Prefer cursor for new calls."
+          },
+          "index": {
+            "type": "integer",
+            "description": "The sub-comment pagination index."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "commentId"
+        ],
+        "description": "The input payload for fetching Xiaohongshu sub-comments. Provide either noteId or shareText."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "envelope": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "description": "The status-like code returned in the TikHub response body."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "requestId": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub request identifier when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "message": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub response message when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "router": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub router path reported by the response."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "params": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {},
+                    "additionalProperties": true,
+                    "description": "The request parameters echoed by TikHub when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "additionalProperties": false,
+            "description": "The normalized TikHub response envelope."
+          },
+          "replies": {
+            "description": "The raw data payload returned by TikHub."
+          },
+          "rawData": {
+            "description": "The raw data payload returned by TikHub."
+          },
+          "raw": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true,
+            "description": "The raw TikHub response payload."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The response returned when fetching Xiaohongshu note comment replies."
+      }
+    },
+    {
+      "id": "tikhub.fetch_xiaohongshu_note_comments",
+      "service": "tikhub",
+      "name": "fetch_xiaohongshu_note_comments",
+      "description": "Fetch public Xiaohongshu note comments through TikHub App V2. Requires the /api/v1/xiaohongshu/app_v2/ TikHub path scope.",
+      "requiredScopes": [
+        "/api/v1/xiaohongshu/app_v2/"
+      ],
+      "providerPermissions": [
+        "/api/v1/xiaohongshu/app_v2/"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "noteId": {
+            "type": "string",
+            "description": "The Xiaohongshu note ID."
+          },
+          "shareText": {
+            "type": "string",
+            "description": "The Xiaohongshu note share link."
+          },
+          "cursor": {
+            "type": "string",
+            "description": "The comment cursor."
+          },
+          "index": {
+            "type": "integer",
+            "description": "The comment index returned by a previous response."
+          },
+          "pageArea": {
+            "type": "string",
+            "description": "The comment fold state, such as UNFOLDED or FOLDED."
+          },
+          "sortStrategy": {
+            "type": "string",
+            "description": "The comment sort strategy, such as default, latest_v2, or like_count."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The input payload for fetching Xiaohongshu note comments. Provide either noteId or shareText."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "envelope": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "description": "The status-like code returned in the TikHub response body."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "requestId": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub request identifier when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "message": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub response message when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "router": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub router path reported by the response."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "params": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {},
+                    "additionalProperties": true,
+                    "description": "The request parameters echoed by TikHub when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "additionalProperties": false,
+            "description": "The normalized TikHub response envelope."
+          },
+          "comments": {
+            "description": "The raw data payload returned by TikHub."
+          },
+          "rawData": {
+            "description": "The raw data payload returned by TikHub."
+          },
+          "raw": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true,
+            "description": "The raw TikHub response payload."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The response returned when fetching Xiaohongshu note comments."
+      }
+    },
+    {
+      "id": "tikhub.fetch_xiaohongshu_sub_comments",
+      "service": "tikhub",
+      "name": "fetch_xiaohongshu_sub_comments",
+      "description": "Fetch public Xiaohongshu sub-comments through TikHub App V2. Requires the /api/v1/xiaohongshu/app_v2/ TikHub path scope.",
+      "requiredScopes": [
+        "/api/v1/xiaohongshu/app_v2/"
+      ],
+      "providerPermissions": [
+        "/api/v1/xiaohongshu/app_v2/"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "noteId": {
+            "type": "string",
+            "description": "The Xiaohongshu note ID."
+          },
+          "shareText": {
+            "type": "string",
+            "description": "The Xiaohongshu note share link."
+          },
+          "commentId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The Xiaohongshu parent comment ID."
+          },
+          "cursor": {
+            "type": "string",
+            "description": "The sub-comment cursor."
+          },
+          "lastCursor": {
+            "type": "string",
+            "description": "Deprecated compatibility alias for cursor. Prefer cursor for new calls."
+          },
+          "index": {
+            "type": "integer",
+            "description": "The sub-comment pagination index."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "commentId"
+        ],
+        "description": "The input payload for fetching Xiaohongshu sub-comments. Provide either noteId or shareText."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "envelope": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "description": "The status-like code returned in the TikHub response body."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "requestId": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub request identifier when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "message": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub response message when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "router": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub router path reported by the response."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "params": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {},
+                    "additionalProperties": true,
+                    "description": "The request parameters echoed by TikHub when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "additionalProperties": false,
+            "description": "The normalized TikHub response envelope."
+          },
+          "replies": {
+            "description": "The raw data payload returned by TikHub."
+          },
+          "rawData": {
+            "description": "The raw data payload returned by TikHub."
+          },
+          "raw": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true,
+            "description": "The raw TikHub response payload."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The response returned when fetching Xiaohongshu sub-comments."
+      }
+    },
+    {
+      "id": "tikhub.fetch_xiaohongshu_user_info",
+      "service": "tikhub",
+      "name": "fetch_xiaohongshu_user_info",
+      "description": "Fetch public Xiaohongshu user information through TikHub App V2. Requires the /api/v1/xiaohongshu/app_v2/ TikHub path scope.",
+      "requiredScopes": [
+        "/api/v1/xiaohongshu/app_v2/"
+      ],
+      "providerPermissions": [
+        "/api/v1/xiaohongshu/app_v2/"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string",
+            "description": "The Xiaohongshu user ID."
+          },
+          "shareText": {
+            "type": "string",
+            "description": "The Xiaohongshu profile share link."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The input payload for fetching Xiaohongshu user information. Provide either userId or shareText."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "envelope": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "description": "The status-like code returned in the TikHub response body."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "requestId": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub request identifier when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "message": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub response message when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "router": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub router path reported by the response."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "params": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {},
+                    "additionalProperties": true,
+                    "description": "The request parameters echoed by TikHub when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "additionalProperties": false,
+            "description": "The normalized TikHub response envelope."
+          },
+          "profile": {
+            "description": "The raw data payload returned by TikHub."
+          },
+          "rawData": {
+            "description": "The raw data payload returned by TikHub."
+          },
+          "raw": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true,
+            "description": "The raw TikHub response payload."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The response returned when fetching Xiaohongshu user information."
+      }
+    },
+    {
+      "id": "tikhub.fetch_xiaohongshu_user_notes",
+      "service": "tikhub",
+      "name": "fetch_xiaohongshu_user_notes",
+      "description": "Fetch public Xiaohongshu user notes through TikHub App V2. Requires the /api/v1/xiaohongshu/app_v2/ TikHub path scope.",
+      "requiredScopes": [
+        "/api/v1/xiaohongshu/app_v2/"
+      ],
+      "providerPermissions": [
+        "/api/v1/xiaohongshu/app_v2/"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string",
+            "description": "The Xiaohongshu user ID."
+          },
+          "shareText": {
+            "type": "string",
+            "description": "The Xiaohongshu profile share link."
+          },
+          "cursor": {
+            "type": "string",
+            "description": "The pagination cursor returned by a previous response."
+          },
+          "lastCursor": {
+            "type": "string",
+            "description": "Deprecated compatibility alias for cursor. Prefer cursor for new calls."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The input payload for fetching Xiaohongshu user notes. Provide either userId or shareText."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "envelope": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "description": "The status-like code returned in the TikHub response body."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "requestId": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub request identifier when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "message": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub response message when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "router": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub router path reported by the response."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "params": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {},
+                    "additionalProperties": true,
+                    "description": "The request parameters echoed by TikHub when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "additionalProperties": false,
+            "description": "The normalized TikHub response envelope."
+          },
+          "posts": {
+            "description": "The raw data payload returned by TikHub."
+          },
+          "rawData": {
+            "description": "The raw data payload returned by TikHub."
+          },
+          "raw": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true,
+            "description": "The raw TikHub response payload."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The response returned when fetching Xiaohongshu user notes."
+      }
+    },
+    {
+      "id": "tikhub.get_all_endpoints_info",
+      "service": "tikhub",
+      "name": "get_all_endpoints_info",
+      "description": "Get TikHub cost and metadata for all endpoints. Requires the /api/v1/tikhub/user/ TikHub path scope.",
+      "requiredScopes": [
+        "/api/v1/tikhub/user/"
+      ],
+      "providerPermissions": [
+        "/api/v1/tikhub/user/"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false,
+        "description": "The input payload for getting all TikHub endpoint information."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "envelope": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "description": "The status-like code returned in the TikHub response body."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "requestId": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub request identifier when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "message": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub response message when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "router": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub router path reported by the response."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "params": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {},
+                    "additionalProperties": true,
+                    "description": "The request parameters echoed by TikHub when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "additionalProperties": false,
+            "description": "The normalized TikHub response envelope."
+          },
+          "endpoints": {
+            "description": "The raw data payload returned by TikHub."
+          },
+          "raw": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true,
+            "description": "The raw TikHub response payload."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The response returned when getting all TikHub endpoint information."
+      }
+    },
+    {
+      "id": "tikhub.get_endpoint_info",
+      "service": "tikhub",
+      "name": "get_endpoint_info",
+      "description": "Get TikHub cost and metadata for one endpoint. Requires the /api/v1/tikhub/user/ TikHub path scope.",
+      "requiredScopes": [
+        "/api/v1/tikhub/user/"
+      ],
+      "providerPermissions": [
+        "/api/v1/tikhub/user/"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "endpoint": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The TikHub endpoint path to inspect or price.",
+            "pattern": "^/"
+          }
+        },
+        "additionalProperties": false,
+        "description": "The input payload for getting TikHub endpoint information."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "envelope": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "description": "The status-like code returned in the TikHub response body."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "requestId": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub request identifier when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "message": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub response message when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "router": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub router path reported by the response."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "params": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {},
+                    "additionalProperties": true,
+                    "description": "The request parameters echoed by TikHub when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "additionalProperties": false,
+            "description": "The normalized TikHub response envelope."
+          },
+          "endpoint": {
+            "type": "string",
+            "description": "The endpoint path that was inspected."
+          },
+          "endpointInfo": {
+            "description": "The raw data payload returned by TikHub."
+          },
+          "raw": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true,
+            "description": "The raw TikHub response payload."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The response returned when getting TikHub endpoint information."
+      }
+    },
+    {
+      "id": "tikhub.get_user_daily_usage",
+      "service": "tikhub",
+      "name": "get_user_daily_usage",
+      "description": "Get the current TikHub account daily API usage. Requires the /api/v1/tikhub/user/ TikHub path scope.",
+      "requiredScopes": [
+        "/api/v1/tikhub/user/"
+      ],
+      "providerPermissions": [
+        "/api/v1/tikhub/user/"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false,
+        "description": "The input payload for getting TikHub daily usage."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "envelope": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "description": "The status-like code returned in the TikHub response body."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "requestId": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub request identifier when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "message": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub response message when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "router": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub router path reported by the response."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "params": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {},
+                    "additionalProperties": true,
+                    "description": "The request parameters echoed by TikHub when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "additionalProperties": false,
+            "description": "The normalized TikHub response envelope."
+          },
+          "usage": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": true,
+              "description": "One TikHub daily usage entry."
+            },
+            "description": "The daily usage entries returned by TikHub."
+          },
+          "rawData": {
+            "description": "The raw data payload returned by TikHub."
+          },
+          "raw": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true,
+            "description": "The raw TikHub response payload."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The response returned when getting TikHub daily usage."
+      }
+    },
+    {
+      "id": "tikhub.get_user_info",
+      "service": "tikhub",
+      "name": "get_user_info",
+      "description": "Get the current TikHub account and API key information. Requires the /api/v1/tikhub/user/ TikHub path scope.",
+      "requiredScopes": [
+        "/api/v1/tikhub/user/"
+      ],
+      "providerPermissions": [
+        "/api/v1/tikhub/user/"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false,
+        "description": "The input payload for getting TikHub user information."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "envelope": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "description": "The status-like code returned in the TikHub response body."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "requestId": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub request identifier when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "message": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub response message when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "router": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub router path reported by the response."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "params": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {},
+                    "additionalProperties": true,
+                    "description": "The request parameters echoed by TikHub when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "additionalProperties": false,
+            "description": "The normalized TikHub response envelope."
+          },
+          "apiKey": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "api_key_name": {
+                    "type": "string",
+                    "description": "The API key name."
+                  },
+                  "api_key_scopes": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "A TikHub path scope assigned to the API key."
+                    },
+                    "description": "The TikHub path scopes assigned to the API key."
+                  },
+                  "created_at": {
+                    "type": "string",
+                    "description": "The API key creation timestamp."
+                  },
+                  "expires_at": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "description": "The API key expiration timestamp when configured."
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "api_key_status": {
+                    "type": "integer",
+                    "description": "The API key status value returned by TikHub."
+                  }
+                },
+                "additionalProperties": true,
+                "description": "TikHub API key metadata returned for the current token."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "user": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "description": "The TikHub account email address."
+                  },
+                  "balance": {
+                    "type": "number",
+                    "description": "The current account balance."
+                  },
+                  "free_credit": {
+                    "type": "number",
+                    "description": "The remaining free credit balance."
+                  },
+                  "email_verified": {
+                    "type": "boolean",
+                    "description": "Whether the TikHub account email is verified."
+                  },
+                  "account_disabled": {
+                    "type": "boolean",
+                    "description": "Whether the TikHub account is disabled."
+                  },
+                  "is_active": {
+                    "type": "boolean",
+                    "description": "Whether the TikHub account is active."
+                  }
+                },
+                "additionalProperties": true,
+                "description": "TikHub account metadata returned for the current token."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "scopes": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "A TikHub path scope assigned to the API key."
+            },
+            "description": "The TikHub path scopes assigned to the current API key."
+          },
+          "rawData": {
+            "description": "The raw data payload returned by TikHub."
+          },
+          "raw": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true,
+            "description": "The raw TikHub response payload."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The response returned when getting TikHub user information."
+      }
+    },
+    {
+      "id": "tikhub.search_douyin_users",
+      "service": "tikhub",
+      "name": "search_douyin_users",
+      "description": "Search public Douyin users through TikHub. Requires the /api/v1/douyin/search/ TikHub path scope.",
+      "requiredScopes": [
+        "/api/v1/douyin/search/"
+      ],
+      "providerPermissions": [
+        "/api/v1/douyin/search/"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "keyword": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The Douyin search keyword."
+          },
+          "cursor": {
+            "type": "integer",
+            "description": "The offset cursor returned by a previous response."
+          },
+          "douyinUserFans": {
+            "type": "string",
+            "description": "The Douyin fan-count filter."
+          },
+          "douyinUserType": {
+            "type": "string",
+            "description": "The Douyin user-type filter."
+          },
+          "searchId": {
+            "type": "string",
+            "description": "The Douyin search ID returned by a previous response."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "keyword"
+        ],
+        "description": "The input payload for searching Douyin users."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "envelope": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "description": "The status-like code returned in the TikHub response body."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "requestId": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub request identifier when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "message": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub response message when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "router": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub router path reported by the response."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "params": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {},
+                    "additionalProperties": true,
+                    "description": "The request parameters echoed by TikHub when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "additionalProperties": false,
+            "description": "The normalized TikHub response envelope."
+          },
+          "results": {
+            "description": "The raw data payload returned by TikHub."
+          },
+          "rawData": {
+            "description": "The raw data payload returned by TikHub."
+          },
+          "raw": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true,
+            "description": "The raw TikHub response payload."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The response returned when searching Douyin users."
+      }
+    },
+    {
+      "id": "tikhub.search_douyin_videos",
+      "service": "tikhub",
+      "name": "search_douyin_videos",
+      "description": "Search public Douyin videos through TikHub. Requires the /api/v1/douyin/search/ TikHub path scope.",
+      "requiredScopes": [
+        "/api/v1/douyin/search/"
+      ],
+      "providerPermissions": [
+        "/api/v1/douyin/search/"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "keyword": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The Douyin search keyword."
+          },
+          "cursor": {
+            "type": "integer",
+            "description": "The offset cursor returned by a previous response."
+          },
+          "sortType": {
+            "type": "string",
+            "description": "The Douyin sort type, such as 0, 1, or 2."
+          },
+          "publishTime": {
+            "type": "string",
+            "description": "The Douyin publish time filter."
+          },
+          "filterDuration": {
+            "type": "string",
+            "description": "The Douyin video duration filter."
+          },
+          "contentType": {
+            "type": "string",
+            "description": "The Douyin content type filter."
+          },
+          "searchId": {
+            "type": "string",
+            "description": "The Douyin search ID returned by a previous response."
+          },
+          "backtrace": {
+            "type": "string",
+            "description": "The Douyin backtrace token returned by a previous response."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "keyword"
+        ],
+        "description": "The input payload for searching Douyin videos."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "envelope": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "description": "The status-like code returned in the TikHub response body."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "requestId": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub request identifier when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "message": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub response message when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "router": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub router path reported by the response."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "params": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {},
+                    "additionalProperties": true,
+                    "description": "The request parameters echoed by TikHub when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "additionalProperties": false,
+            "description": "The normalized TikHub response envelope."
+          },
+          "results": {
+            "description": "The raw data payload returned by TikHub."
+          },
+          "rawData": {
+            "description": "The raw data payload returned by TikHub."
+          },
+          "raw": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true,
+            "description": "The raw TikHub response payload."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The response returned when searching Douyin videos."
+      }
+    },
+    {
+      "id": "tikhub.search_tiktok_users",
+      "service": "tikhub",
+      "name": "search_tiktok_users",
+      "description": "Search public TikTok users through TikHub without exposing upstream cookies. Requires the /api/v1/tiktok/web/ TikHub path scope.",
+      "requiredScopes": [
+        "/api/v1/tiktok/web/"
+      ],
+      "providerPermissions": [
+        "/api/v1/tiktok/web/"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "keyword": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The TikTok search keyword."
+          },
+          "cursor": {
+            "type": "integer",
+            "description": "The page cursor."
+          },
+          "searchId": {
+            "type": "string",
+            "description": "The TikTok search ID from a previous response."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "keyword"
+        ],
+        "description": "The input payload for searching TikTok users."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "envelope": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "description": "The status-like code returned in the TikHub response body."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "requestId": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub request identifier when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "message": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub response message when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "router": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub router path reported by the response."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "params": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {},
+                    "additionalProperties": true,
+                    "description": "The request parameters echoed by TikHub when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "additionalProperties": false,
+            "description": "The normalized TikHub response envelope."
+          },
+          "results": {
+            "description": "The raw data payload returned by TikHub."
+          },
+          "rawData": {
+            "description": "The raw data payload returned by TikHub."
+          },
+          "raw": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true,
+            "description": "The raw TikHub response payload."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The response returned when searching TikTok users."
+      }
+    },
+    {
+      "id": "tikhub.search_xiaohongshu_notes",
+      "service": "tikhub",
+      "name": "search_xiaohongshu_notes",
+      "description": "Search public Xiaohongshu notes through TikHub. Requires the /api/v1/xiaohongshu/app_v2/ TikHub path scope.",
+      "requiredScopes": [
+        "/api/v1/xiaohongshu/app_v2/"
+      ],
+      "providerPermissions": [
+        "/api/v1/xiaohongshu/app_v2/"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "keywords": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The Xiaohongshu search keywords."
+          },
+          "page": {
+            "type": "integer",
+            "description": "The result page number."
+          },
+          "sortType": {
+            "type": "string",
+            "description": "The Xiaohongshu note sort type."
+          },
+          "noteType": {
+            "type": "string",
+            "description": "The Xiaohongshu note type filter. Supported string values include \"0\", \"1\", \"2\", \"all\", \"image\", and \"video\"."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "keywords"
+        ],
+        "description": "The input payload for searching Xiaohongshu notes."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "envelope": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "description": "The status-like code returned in the TikHub response body."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "requestId": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub request identifier when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "message": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub response message when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "router": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub router path reported by the response."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "params": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {},
+                    "additionalProperties": true,
+                    "description": "The request parameters echoed by TikHub when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "additionalProperties": false,
+            "description": "The normalized TikHub response envelope."
+          },
+          "results": {
+            "description": "The raw data payload returned by TikHub."
+          },
+          "rawData": {
+            "description": "The raw data payload returned by TikHub."
+          },
+          "raw": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true,
+            "description": "The raw TikHub response payload."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The response returned when searching Xiaohongshu notes."
+      }
+    },
+    {
+      "id": "tikhub.search_xiaohongshu_users",
+      "service": "tikhub",
+      "name": "search_xiaohongshu_users",
+      "description": "Search public Xiaohongshu users through TikHub. Requires the /api/v1/xiaohongshu/app_v2/ TikHub path scope.",
+      "requiredScopes": [
+        "/api/v1/xiaohongshu/app_v2/"
+      ],
+      "providerPermissions": [
+        "/api/v1/xiaohongshu/app_v2/"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "keywords": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The Xiaohongshu search keywords."
+          },
+          "page": {
+            "type": "integer",
+            "description": "The result page number."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "keywords"
+        ],
+        "description": "The input payload for searching Xiaohongshu users."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "envelope": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "description": "The status-like code returned in the TikHub response body."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "requestId": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub request identifier when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "message": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub response message when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "router": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The TikHub router path reported by the response."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "params": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {},
+                    "additionalProperties": true,
+                    "description": "The request parameters echoed by TikHub when returned."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "additionalProperties": false,
+            "description": "The normalized TikHub response envelope."
+          },
+          "results": {
+            "description": "The raw data payload returned by TikHub."
+          },
+          "rawData": {
+            "description": "The raw data payload returned by TikHub."
+          },
+          "raw": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true,
+            "description": "The raw TikHub response payload."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The response returned when searching Xiaohongshu users."
+      }
+    }
+  ]
+}
