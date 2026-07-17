@@ -15,7 +15,11 @@
     "audit:mcp-deps": "node scripts/audit-mcp-dependencies.mjs",
     "check:mcp": "node scripts/check-mcp-adapters.mjs",
     "test:hashes": "node scripts/test-sync-hashes.mjs",
-    "build:mcp": "node scripts/build-mcp-adapter.mjs"
+    "test:local-release": "node scripts/test-local-mcp-release.mjs",
+    "build:mcp": "node scripts/build-mcp-adapter.mjs",
+    "build:mcp:all": "node scripts/build-mcp-adapters.mjs --selection all",
+    "publish:mcp:local": "node scripts/publish-mcp-releases.mjs",
+    "release:mcp:local": "node scripts/release-mcp-local.mjs"
   },
   "devDependencies": {
     "esbuild": "^0.28.1"

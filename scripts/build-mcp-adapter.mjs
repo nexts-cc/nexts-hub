@@ -2,7 +2,7 @@
 
 import { createHash } from "node:crypto";
 import { execFileSync } from "node:child_process";
-import { mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { build } from "esbuild";
 
@@ -36,9 +36,15 @@ writeFileSync(resolve(packageRoot, "package.json"), `${JSON.stringify({
   engines: { node: ">=20" }
 }, null, 2)}\n`, "utf8");
 
+rmSync(outputRoot, { recursive: true, force: true });
 mkdirSync(outputRoot, { recursive: true });
 const npmArguments = ["pack", packageRoot, "--pack-destination", outputRoot, "--json"];
-const npmCli = process.env.npm_execpath ?? resolve(dirname(process.execPath), "../lib/node_modules/npm/bin/npm-cli.js");
+const npmCli = [
+  process.env.npm_execpath,
+  resolve(dirname(process.execPath), "node_modules/npm/bin/npm-cli.js"),
+  resolve(dirname(process.execPath), "../lib/node_modules/npm/bin/npm-cli.js")
+].find((candidate) => candidate && existsSync(candidate));
+if (!npmCli) throw new Error("Unable to locate npm-cli.js; install npm next to the active Node.js runtime");
 const packedOutput = execFileSync(process.execPath, [npmCli, ...npmArguments], { cwd: root, encoding: "utf8" });
 const packed = JSON.parse(packedOutput);
 const filename = packed[0].filename;
@@ -51,7 +57,7 @@ const release = {
   distributionType: "nexts_hub",
   version,
   sha256,
-  artifactPath,
+  artifactPath: filename,
   artifactUrl,
   runtime: { transport: "stdio", command: "npx", args: ["-y", artifactUrl], url: null, env: {}, headers: {} },
   configurationFields: configurationFields(definition)

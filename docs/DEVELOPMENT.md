@@ -47,3 +47,24 @@ One template directory per category, named uniformly:
 4. Manually bump the affected category `version` in the top-level `index.json` when the change should be published.
 5. Run `npm run validate`.
 6. Commit the scaffold, edited files, generated registry updates, and any manual version bump together.
+
+## Local MCP package release
+
+MCP adapter source is committed to Git. Generated `.tgz` files stay under the ignored `dist/` directory and are uploaded as GitHub Release assets; do not commit generated packages to the repository.
+
+The complete local pipeline validates the hub, audits runtime dependencies, bundle-checks all 1,075 adapters, builds the selected packages, verifies their SHA-256 hashes, and uploads resumable immutable releases:
+
+```powershell
+$env:GITHUB_TOKEN = "<fine-grained token with Contents: read and write>"
+npm ci
+npm run release:mcp:local -- --selection all --version 1.0.0 --concurrency 8
+Remove-Item Env:GITHUB_TOKEN
+```
+
+Each adapter is published under `mcp-<service>-v<version>` with its service-only package name, for example `aliyun-oss-1.0.0.tgz`. An already complete release is skipped when resuming. A published but incomplete release is never overwritten; use a new version after resolving it.
+
+To build without uploading, run:
+
+```powershell
+npm run build:mcp:all -- --version 1.0.0 --concurrency 8
+```
