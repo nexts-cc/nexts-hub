@@ -116,8 +116,8 @@ export function hashPaths(baseDir, relativePaths) {
     const rawBytes = readFileSync(join(baseDir, relativeFile));
     // Git can check text out as CRLF on Windows and LF on Linux. Hash a
     // canonical LF representation so generated indexes are reproducible.
-    const bytes = canonicalHashBytes(relativeFile, rawBytes);
-    digest.update(relativeFile);
+    const bytes = canonicalHashBytes(rawBytes);
+    digest.update(canonicalHashPath(relativeFile));
     digest.update("\0");
     digest.update(String(bytes.length));
     digest.update("\0");
@@ -126,13 +126,13 @@ export function hashPaths(baseDir, relativePaths) {
   return `sha256:${digest.digest("hex")}`;
 }
 
-function canonicalHashBytes(relativeFile, bytes) {
-  if (!isTextFile(relativeFile) || bytes.includes(0)) return bytes;
-  return Buffer.from(bytes.toString("utf8").replaceAll("\r\n", "\n"), "utf8");
+export function canonicalHashPath(relativeFile) {
+  return toSlash(relativeFile);
 }
 
-function isTextFile(filePath) {
-  return /\.(?:css|html|js|json|jsx|md|mdx|mjs|ts|tsx|txt|yaml|yml)$/i.test(filePath);
+function canonicalHashBytes(bytes) {
+  if (bytes.includes(0)) return bytes;
+  return Buffer.from(bytes.toString("utf8").replaceAll("\r\n", "\n"), "utf8");
 }
 
 function collectFiles(baseDir, relativePath, out) {
