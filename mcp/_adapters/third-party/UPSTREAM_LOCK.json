@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "repository": "https://github.com/oomol-lab/open-connector",
+  "tag": "v1.1.0",
+  "commit": "11e36e8706ab6c30a02d54727b7900e93c0347c9",
+  "retrievedAt": "2026-07-14",
+  "license": "Apache-2.0",
+  "licenseSha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+  "noticeSha256": "d0890661bf25e7327808610f773b055cb87bf949ff6bba5943c7d62d94d1bf0f",
+  "packageLockSha256": "0da44351d86278de5d0596a3f31dfc6edcbdf010c48c232fb468842b59a7d4f1",
+  "generatedInventory": {
+    "providers": 1075,
+    "actions": 10841,
+    "executableActions": 10841
+  },
+  "upstreamRuntimeDependencies": {
+    "@cfworker/json-schema": "^4.1.1",
+    "@hono/node-server": "^2.0.6",
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "@scalar/hono-api-reference": "^0.11.7",
+    "ali-oss": "^6.23.0",
+    "fast-xml-parser": "^5.9.3",
+    "hono": "^4.12.27",
+    "imapflow": "^1.4.6",
+    "mailparser": "^3.9.14",
+    "mdast-util-from-markdown": "^2.0.3",
+    "mdast-util-gfm": "^3.1.0",
+    "mdast-util-to-markdown": "^2.1.2",
+    "micromark-extension-gfm": "^3.0.0",
+    "minisearch": "^7.2.0",
+    "nodemailer": "^9.0.3",
+    "pino": "^10.3.1",
+    "rss-parser": "^13.1.0",
+    "zod": "^4.4.3"
+  }
+}

@@ -1,0 +1,2389 @@
+{
+  "service": "feishu_app_bot",
+  "displayName": "Feishu App Bot",
+  "categories": [
+    "Communication"
+  ],
+  "authTypes": [
+    "custom_credential"
+  ],
+  "auth": [
+    {
+      "type": "custom_credential",
+      "fields": [
+        {
+          "key": "appId",
+          "label": "App ID",
+          "inputType": "text",
+          "required": true,
+          "secret": false,
+          "description": "The Feishu custom app app_id used to fetch tenant_access_token. Find it in the app credentials page at https://open.feishu.cn/app."
+        },
+        {
+          "key": "appSecret",
+          "label": "App Secret",
+          "inputType": "password",
+          "required": true,
+          "secret": true,
+          "description": "The Feishu custom app app_secret used to fetch tenant_access_token. Copy it from the app credentials page at https://open.feishu.cn/app."
+        }
+      ]
+    }
+  ],
+  "homepageUrl": "https://open.feishu.cn",
+  "actions": [
+    {
+      "id": "feishu_app_bot.add_message_reaction",
+      "service": "feishu_app_bot",
+      "name": "add_message_reaction",
+      "description": "Add one emoji reaction to a Feishu/Lark message.",
+      "requiredScopes": [
+        "im:message.reactions:write_only"
+      ],
+      "providerPermissions": [
+        "im:message.reactions:write_only"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "messageId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The Feishu message ID to react to."
+          },
+          "emojiType": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The Feishu emoji type to add."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "messageId",
+          "emojiType"
+        ],
+        "description": "Input for adding a Feishu message reaction."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "The Feishu API code. 0 means success."
+          },
+          "msg": {
+            "type": "string",
+            "description": "The Feishu API message."
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "reaction_id": {
+                "type": "string",
+                "description": "The reaction ID."
+              },
+              "operator": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": true,
+                "description": "The reaction operator."
+              },
+              "action_time": {
+                "type": "string",
+                "description": "The reaction action time in milliseconds."
+              },
+              "reaction_type": {
+                "type": "object",
+                "properties": {
+                  "emoji_type": {
+                    "type": "string",
+                    "description": "The Feishu emoji type."
+                  }
+                },
+                "additionalProperties": false,
+                "required": [
+                  "emoji_type"
+                ],
+                "description": "The Feishu reaction type."
+              }
+            },
+            "additionalProperties": true,
+            "description": "One Feishu message reaction."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "msg",
+          "data"
+        ],
+        "description": "A Feishu reaction response envelope."
+      }
+    },
+    {
+      "id": "feishu_app_bot.download_file",
+      "service": "feishu_app_bot",
+      "name": "download_file",
+      "description": "Download one Feishu/Lark file by file key and upload it to transit storage.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "fileKey": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The Feishu file key to download."
+          },
+          "fileName": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The optional file name to use for the downloaded transit file."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "fileKey"
+        ],
+        "description": "Input for downloading one Feishu file."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "fileKey": {
+            "type": "string",
+            "description": "The Feishu file key that was downloaded."
+          },
+          "file": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The downloaded file name."
+              },
+              "mimetype": {
+                "type": "string",
+                "description": "The MIME type of the downloaded file."
+              },
+              "downloadUrl": {
+                "type": "string",
+                "description": "The local transit URL for downloading the file."
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "name",
+              "mimetype",
+              "downloadUrl"
+            ],
+            "description": "A downloadable file uploaded to connector transit storage."
+          },
+          "contentType": {
+            "type": "string",
+            "description": "The MIME type of the downloaded file."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "fileKey",
+          "file",
+          "contentType"
+        ],
+        "description": "A Feishu file-download response."
+      }
+    },
+    {
+      "id": "feishu_app_bot.download_image",
+      "service": "feishu_app_bot",
+      "name": "download_image",
+      "description": "Download one Feishu/Lark image by image key and upload it to transit storage.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "imageKey": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The Feishu image key to download."
+          },
+          "fileName": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The optional file name to use for the downloaded transit file."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "imageKey"
+        ],
+        "description": "Input for downloading one Feishu image."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "imageKey": {
+            "type": "string",
+            "description": "The Feishu image key that was downloaded."
+          },
+          "file": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The downloaded file name."
+              },
+              "mimetype": {
+                "type": "string",
+                "description": "The MIME type of the downloaded file."
+              },
+              "downloadUrl": {
+                "type": "string",
+                "description": "The local transit URL for downloading the file."
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "name",
+              "mimetype",
+              "downloadUrl"
+            ],
+            "description": "A downloadable file uploaded to connector transit storage."
+          },
+          "contentType": {
+            "type": "string",
+            "description": "The MIME type of the downloaded image."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "imageKey",
+          "file",
+          "contentType"
+        ],
+        "description": "A Feishu image-download response."
+      }
+    },
+    {
+      "id": "feishu_app_bot.edit_message",
+      "service": "feishu_app_bot",
+      "name": "edit_message",
+      "description": "Edit a Feishu/Lark text or post message sent by the app bot.",
+      "requiredScopes": [
+        "im:message:update"
+      ],
+      "providerPermissions": [
+        "im:message:update"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "messageId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The Feishu message ID to edit."
+          },
+          "msgType": {
+            "type": "string",
+            "enum": [
+              "text",
+              "post"
+            ],
+            "description": "The Feishu message type supported by the edit endpoint."
+          },
+          "content": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "description": "A pre-serialized Feishu message content JSON string."
+              },
+              {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": true,
+                "description": "A Feishu message content object that will be JSON-stringified."
+              }
+            ],
+            "description": "The message content payload."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "messageId",
+          "msgType",
+          "content"
+        ],
+        "description": "Input for editing a Feishu message."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "The Feishu API code. 0 means success."
+          },
+          "msg": {
+            "type": "string",
+            "description": "The Feishu API message."
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "message_id": {
+                "type": "string",
+                "description": "The Feishu message identifier."
+              },
+              "root_id": {
+                "type": "string",
+                "description": "The root message identifier."
+              },
+              "parent_id": {
+                "type": "string",
+                "description": "The parent message identifier."
+              },
+              "thread_id": {
+                "type": "string",
+                "description": "The thread identifier."
+              },
+              "msg_type": {
+                "type": "string",
+                "description": "The Feishu message type."
+              },
+              "create_time": {
+                "type": "string",
+                "description": "The message creation timestamp in milliseconds."
+              },
+              "update_time": {
+                "type": "string",
+                "description": "The message update timestamp in milliseconds."
+              },
+              "deleted": {
+                "type": "boolean",
+                "description": "Whether the message has been recalled or deleted."
+              },
+              "updated": {
+                "type": "boolean",
+                "description": "Whether the message has been updated."
+              },
+              "chat_id": {
+                "type": "string",
+                "description": "The Feishu chat identifier."
+              },
+              "sender": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "The sender identifier."
+                  },
+                  "id_type": {
+                    "type": "string",
+                    "description": "The sender identifier type."
+                  },
+                  "sender_type": {
+                    "type": "string",
+                    "description": "The sender type such as user or app."
+                  },
+                  "tenant_key": {
+                    "type": "string",
+                    "description": "The tenant key of the sender."
+                  }
+                },
+                "additionalProperties": true,
+                "description": "The Feishu sender object."
+              },
+              "body": {
+                "type": "object",
+                "properties": {
+                  "content": {
+                    "type": "string",
+                    "description": "The serialized Feishu message content JSON string."
+                  }
+                },
+                "additionalProperties": true,
+                "description": "The Feishu message body."
+              },
+              "mentions": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "key": {
+                      "type": "string",
+                      "description": "The stable mention placeholder key."
+                    },
+                    "id": {
+                      "type": "string",
+                      "description": "The mentioned user or bot identifier."
+                    },
+                    "id_type": {
+                      "type": "string",
+                      "description": "The identifier type of the mentioned user or bot."
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "The display name of the mentioned user or bot."
+                    },
+                    "tenant_key": {
+                      "type": "string",
+                      "description": "The tenant key of the mentioned user or bot."
+                    }
+                  },
+                  "additionalProperties": true,
+                  "description": "One Feishu mention item."
+                },
+                "description": "The mentions contained in the message."
+              },
+              "upper_message_id": {
+                "type": "string",
+                "description": "The parent message identifier for merge-forward payloads."
+              }
+            },
+            "additionalProperties": true,
+            "description": "One Feishu message payload."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "msg",
+          "data"
+        ],
+        "description": "A Feishu message API response envelope."
+      }
+    },
+    {
+      "id": "feishu_app_bot.get_chat",
+      "service": "feishu_app_bot",
+      "name": "get_chat",
+      "description": "Fetch one Feishu/Lark chat by chat_id.",
+      "requiredScopes": [
+        "im:chat:read"
+      ],
+      "providerPermissions": [
+        "im:chat:read"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "chatId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The Feishu chat ID to fetch."
+          },
+          "userIdType": {
+            "type": "string",
+            "enum": [
+              "open_id",
+              "union_id",
+              "user_id"
+            ],
+            "description": "The user identifier type returned by Feishu read APIs."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "chatId"
+        ],
+        "description": "Input for fetching a Feishu chat."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "The Feishu API code. 0 means success."
+          },
+          "msg": {
+            "type": "string",
+            "description": "The Feishu API message."
+          },
+          "data": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true,
+            "description": "The Feishu chat detail payload."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "msg",
+          "data"
+        ],
+        "description": "A Feishu chat-detail response envelope."
+      }
+    },
+    {
+      "id": "feishu_app_bot.get_message",
+      "service": "feishu_app_bot",
+      "name": "get_message",
+      "description": "Fetch one Feishu/Lark message by message_id.",
+      "requiredScopes": [
+        "im:message:readonly",
+        "im:message.group_msg"
+      ],
+      "providerPermissions": [
+        "im:message:readonly",
+        "im:message.group_msg"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "messageId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The Feishu message ID to fetch."
+          },
+          "userIdType": {
+            "type": "string",
+            "enum": [
+              "open_id",
+              "union_id",
+              "user_id"
+            ],
+            "description": "The user identifier type returned by Feishu read APIs."
+          },
+          "cardMsgContentType": {
+            "type": "string",
+            "enum": [
+              "user_card_content"
+            ],
+            "description": "Return the original card JSON when the target message is a card."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "messageId"
+        ],
+        "description": "Input for fetching a Feishu message."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "The Feishu API code. 0 means success."
+          },
+          "msg": {
+            "type": "string",
+            "description": "The Feishu API message."
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "items": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "message_id": {
+                      "type": "string",
+                      "description": "The Feishu message identifier."
+                    },
+                    "root_id": {
+                      "type": "string",
+                      "description": "The root message identifier."
+                    },
+                    "parent_id": {
+                      "type": "string",
+                      "description": "The parent message identifier."
+                    },
+                    "thread_id": {
+                      "type": "string",
+                      "description": "The thread identifier."
+                    },
+                    "msg_type": {
+                      "type": "string",
+                      "description": "The Feishu message type."
+                    },
+                    "create_time": {
+                      "type": "string",
+                      "description": "The message creation timestamp in milliseconds."
+                    },
+                    "update_time": {
+                      "type": "string",
+                      "description": "The message update timestamp in milliseconds."
+                    },
+                    "deleted": {
+                      "type": "boolean",
+                      "description": "Whether the message has been recalled or deleted."
+                    },
+                    "updated": {
+                      "type": "boolean",
+                      "description": "Whether the message has been updated."
+                    },
+                    "chat_id": {
+                      "type": "string",
+                      "description": "The Feishu chat identifier."
+                    },
+                    "sender": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "description": "The sender identifier."
+                        },
+                        "id_type": {
+                          "type": "string",
+                          "description": "The sender identifier type."
+                        },
+                        "sender_type": {
+                          "type": "string",
+                          "description": "The sender type such as user or app."
+                        },
+                        "tenant_key": {
+                          "type": "string",
+                          "description": "The tenant key of the sender."
+                        }
+                      },
+                      "additionalProperties": true,
+                      "description": "The Feishu sender object."
+                    },
+                    "body": {
+                      "type": "object",
+                      "properties": {
+                        "content": {
+                          "type": "string",
+                          "description": "The serialized Feishu message content JSON string."
+                        }
+                      },
+                      "additionalProperties": true,
+                      "description": "The Feishu message body."
+                    },
+                    "mentions": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "key": {
+                            "type": "string",
+                            "description": "The stable mention placeholder key."
+                          },
+                          "id": {
+                            "type": "string",
+                            "description": "The mentioned user or bot identifier."
+                          },
+                          "id_type": {
+                            "type": "string",
+                            "description": "The identifier type of the mentioned user or bot."
+                          },
+                          "name": {
+                            "type": "string",
+                            "description": "The display name of the mentioned user or bot."
+                          },
+                          "tenant_key": {
+                            "type": "string",
+                            "description": "The tenant key of the mentioned user or bot."
+                          }
+                        },
+                        "additionalProperties": true,
+                        "description": "One Feishu mention item."
+                      },
+                      "description": "The mentions contained in the message."
+                    },
+                    "upper_message_id": {
+                      "type": "string",
+                      "description": "The parent message identifier for merge-forward payloads."
+                    }
+                  },
+                  "additionalProperties": true,
+                  "description": "One Feishu message payload."
+                },
+                "description": "The messages returned for the queried message ID."
+              }
+            },
+            "additionalProperties": true,
+            "description": "The Feishu get-message payload."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "msg",
+          "data"
+        ],
+        "description": "A Feishu get-message response envelope."
+      }
+    },
+    {
+      "id": "feishu_app_bot.list_chat_members",
+      "service": "feishu_app_bot",
+      "name": "list_chat_members",
+      "description": "List visible members in one Feishu/Lark chat.",
+      "requiredScopes": [
+        "im:chat.members:read"
+      ],
+      "providerPermissions": [
+        "im:chat.members:read"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "chatId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The Feishu chat ID to inspect."
+          },
+          "memberIdType": {
+            "type": "string",
+            "enum": [
+              "open_id",
+              "union_id",
+              "user_id"
+            ],
+            "description": "The user identifier type returned by Feishu read APIs."
+          },
+          "pageSize": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100,
+            "description": "The Feishu page size."
+          },
+          "pageToken": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The Feishu pagination token."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "chatId"
+        ],
+        "description": "Input for listing Feishu chat members."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "The Feishu API code. 0 means success."
+          },
+          "msg": {
+            "type": "string",
+            "description": "The Feishu API message."
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "items": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "member_id_type": {
+                      "type": "string",
+                      "description": "The member ID type."
+                    },
+                    "member_id": {
+                      "type": "string",
+                      "description": "The member ID."
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "The member display name."
+                    },
+                    "tenant_key": {
+                      "type": "string",
+                      "description": "The member tenant key."
+                    }
+                  },
+                  "additionalProperties": true,
+                  "description": "One Feishu chat member."
+                },
+                "description": "The returned chat members."
+              },
+              "page_token": {
+                "type": "string",
+                "description": "The pagination token for the next page."
+              },
+              "has_more": {
+                "type": "boolean",
+                "description": "Whether another page is available."
+              },
+              "member_total": {
+                "type": "integer",
+                "description": "The total member count."
+              }
+            },
+            "additionalProperties": true,
+            "required": [
+              "items",
+              "has_more"
+            ],
+            "description": "The Feishu chat-member-list payload."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "msg",
+          "data"
+        ],
+        "description": "A Feishu chat-member-list response envelope."
+      }
+    },
+    {
+      "id": "feishu_app_bot.list_chats",
+      "service": "feishu_app_bot",
+      "name": "list_chats",
+      "description": "List chats that the Feishu/Lark app bot currently belongs to.",
+      "requiredScopes": [
+        "im:chat:read"
+      ],
+      "providerPermissions": [
+        "im:chat:read"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "userIdType": {
+            "type": "string",
+            "enum": [
+              "open_id",
+              "union_id",
+              "user_id"
+            ],
+            "description": "The user identifier type returned by Feishu read APIs."
+          },
+          "sortType": {
+            "type": "string",
+            "enum": [
+              "ByCreateTimeAsc",
+              "ByActiveTimeDesc"
+            ],
+            "description": "The sort order used for listing chats."
+          },
+          "pageSize": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100,
+            "description": "The Feishu page size."
+          },
+          "pageToken": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The Feishu pagination token."
+          }
+        },
+        "additionalProperties": false,
+        "description": "Input for listing Feishu chats."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "The Feishu API code. 0 means success."
+          },
+          "msg": {
+            "type": "string",
+            "description": "The Feishu API message."
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "items": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "chat_id": {
+                      "type": "string",
+                      "description": "The Feishu chat ID."
+                    },
+                    "avatar": {
+                      "type": "string",
+                      "description": "The chat avatar URL."
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "The chat name."
+                    },
+                    "description": {
+                      "type": "string",
+                      "description": "The chat description."
+                    },
+                    "owner_id": {
+                      "type": "string",
+                      "description": "The owner user ID."
+                    },
+                    "owner_id_type": {
+                      "type": "string",
+                      "description": "The owner ID type."
+                    },
+                    "external": {
+                      "type": "boolean",
+                      "description": "Whether the chat is external."
+                    },
+                    "tenant_key": {
+                      "type": "string",
+                      "description": "The tenant key of the chat."
+                    },
+                    "chat_status": {
+                      "type": "string",
+                      "description": "The chat status."
+                    }
+                  },
+                  "additionalProperties": true,
+                  "required": [
+                    "chat_id"
+                  ],
+                  "description": "One Feishu chat summary."
+                },
+                "description": "The returned chat summaries."
+              },
+              "page_token": {
+                "type": "string",
+                "description": "The pagination token for the next page."
+              },
+              "has_more": {
+                "type": "boolean",
+                "description": "Whether another page is available."
+              }
+            },
+            "additionalProperties": true,
+            "required": [
+              "items",
+              "has_more"
+            ],
+            "description": "The Feishu chat-list payload."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "msg",
+          "data"
+        ],
+        "description": "A Feishu chat-list response envelope."
+      }
+    },
+    {
+      "id": "feishu_app_bot.list_message_reactions",
+      "service": "feishu_app_bot",
+      "name": "list_message_reactions",
+      "description": "List emoji reactions on one Feishu/Lark message.",
+      "requiredScopes": [
+        "im:message.reactions:read"
+      ],
+      "providerPermissions": [
+        "im:message.reactions:read"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "messageId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The Feishu message ID to inspect."
+          },
+          "reactionType": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Filter by one Feishu emoji type."
+          },
+          "pageSize": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50,
+            "description": "The Feishu page size."
+          },
+          "pageToken": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The Feishu pagination token."
+          },
+          "userIdType": {
+            "type": "string",
+            "enum": [
+              "open_id",
+              "union_id",
+              "user_id"
+            ],
+            "description": "The user identifier type returned by Feishu read APIs."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "messageId"
+        ],
+        "description": "Input for listing Feishu message reactions."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "The Feishu API code. 0 means success."
+          },
+          "msg": {
+            "type": "string",
+            "description": "The Feishu API message."
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "items": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "reaction_id": {
+                      "type": "string",
+                      "description": "The reaction ID."
+                    },
+                    "operator": {
+                      "type": "object",
+                      "properties": {},
+                      "additionalProperties": true,
+                      "description": "The reaction operator."
+                    },
+                    "action_time": {
+                      "type": "string",
+                      "description": "The reaction action time in milliseconds."
+                    },
+                    "reaction_type": {
+                      "type": "object",
+                      "properties": {
+                        "emoji_type": {
+                          "type": "string",
+                          "description": "The Feishu emoji type."
+                        }
+                      },
+                      "additionalProperties": false,
+                      "required": [
+                        "emoji_type"
+                      ],
+                      "description": "The Feishu reaction type."
+                    }
+                  },
+                  "additionalProperties": true,
+                  "description": "One Feishu message reaction."
+                },
+                "description": "The returned reactions."
+              },
+              "has_more": {
+                "type": "boolean",
+                "description": "Whether another page is available."
+              },
+              "page_token": {
+                "type": "string",
+                "description": "The pagination token for the next page."
+              }
+            },
+            "additionalProperties": true,
+            "required": [
+              "items",
+              "has_more"
+            ],
+            "description": "The Feishu reaction-list payload."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "msg",
+          "data"
+        ],
+        "description": "A Feishu reaction-list response envelope."
+      }
+    },
+    {
+      "id": "feishu_app_bot.list_messages",
+      "service": "feishu_app_bot",
+      "name": "list_messages",
+      "description": "List Feishu/Lark history messages from a chat or thread.",
+      "requiredScopes": [
+        "im:message:readonly",
+        "im:message.group_msg"
+      ],
+      "providerPermissions": [
+        "im:message:readonly",
+        "im:message.group_msg"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "containerIdType": {
+            "type": "string",
+            "enum": [
+              "chat",
+              "thread"
+            ],
+            "description": "The Feishu container type to read history from."
+          },
+          "containerId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The Feishu chat or thread identifier."
+          },
+          "startTime": {
+            "type": "string",
+            "minLength": 1,
+            "description": "A millisecond or second timestamp encoded as a string."
+          },
+          "endTime": {
+            "type": "string",
+            "minLength": 1,
+            "description": "A millisecond or second timestamp encoded as a string."
+          },
+          "sortType": {
+            "type": "string",
+            "enum": [
+              "ByCreateTimeAsc",
+              "ByCreateTimeDesc"
+            ],
+            "description": "The sort order used for listing history messages."
+          },
+          "pageSize": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50,
+            "description": "The Feishu page size."
+          },
+          "pageToken": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The Feishu pagination token."
+          },
+          "cardMsgContentType": {
+            "type": "string",
+            "enum": [
+              "user_card_content"
+            ],
+            "description": "Return the original card JSON when the target message is a card."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "containerIdType",
+          "containerId"
+        ],
+        "description": "Input for listing Feishu history messages."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "The Feishu API code. 0 means success."
+          },
+          "msg": {
+            "type": "string",
+            "description": "The Feishu API message."
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "has_more": {
+                "type": "boolean",
+                "description": "Whether another history page is available."
+              },
+              "page_token": {
+                "type": "string",
+                "description": "The pagination token for the next page."
+              },
+              "items": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "message_id": {
+                      "type": "string",
+                      "description": "The Feishu message identifier."
+                    },
+                    "root_id": {
+                      "type": "string",
+                      "description": "The root message identifier."
+                    },
+                    "parent_id": {
+                      "type": "string",
+                      "description": "The parent message identifier."
+                    },
+                    "thread_id": {
+                      "type": "string",
+                      "description": "The thread identifier."
+                    },
+                    "msg_type": {
+                      "type": "string",
+                      "description": "The Feishu message type."
+                    },
+                    "create_time": {
+                      "type": "string",
+                      "description": "The message creation timestamp in milliseconds."
+                    },
+                    "update_time": {
+                      "type": "string",
+                      "description": "The message update timestamp in milliseconds."
+                    },
+                    "deleted": {
+                      "type": "boolean",
+                      "description": "Whether the message has been recalled or deleted."
+                    },
+                    "updated": {
+                      "type": "boolean",
+                      "description": "Whether the message has been updated."
+                    },
+                    "chat_id": {
+                      "type": "string",
+                      "description": "The Feishu chat identifier."
+                    },
+                    "sender": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "description": "The sender identifier."
+                        },
+                        "id_type": {
+                          "type": "string",
+                          "description": "The sender identifier type."
+                        },
+                        "sender_type": {
+                          "type": "string",
+                          "description": "The sender type such as user or app."
+                        },
+                        "tenant_key": {
+                          "type": "string",
+                          "description": "The tenant key of the sender."
+                        }
+                      },
+                      "additionalProperties": true,
+                      "description": "The Feishu sender object."
+                    },
+                    "body": {
+                      "type": "object",
+                      "properties": {
+                        "content": {
+                          "type": "string",
+                          "description": "The serialized Feishu message content JSON string."
+                        }
+                      },
+                      "additionalProperties": true,
+                      "description": "The Feishu message body."
+                    },
+                    "mentions": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "key": {
+                            "type": "string",
+                            "description": "The stable mention placeholder key."
+                          },
+                          "id": {
+                            "type": "string",
+                            "description": "The mentioned user or bot identifier."
+                          },
+                          "id_type": {
+                            "type": "string",
+                            "description": "The identifier type of the mentioned user or bot."
+                          },
+                          "name": {
+                            "type": "string",
+                            "description": "The display name of the mentioned user or bot."
+                          },
+                          "tenant_key": {
+                            "type": "string",
+                            "description": "The tenant key of the mentioned user or bot."
+                          }
+                        },
+                        "additionalProperties": true,
+                        "description": "One Feishu mention item."
+                      },
+                      "description": "The mentions contained in the message."
+                    },
+                    "upper_message_id": {
+                      "type": "string",
+                      "description": "The parent message identifier for merge-forward payloads."
+                    }
+                  },
+                  "additionalProperties": true,
+                  "description": "One Feishu message payload."
+                },
+                "description": "The history messages returned by Feishu."
+              }
+            },
+            "additionalProperties": true,
+            "required": [
+              "has_more",
+              "items"
+            ],
+            "description": "The paginated Feishu message list payload."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "msg",
+          "data"
+        ],
+        "description": "A Feishu message-list response envelope."
+      }
+    },
+    {
+      "id": "feishu_app_bot.list_pins",
+      "service": "feishu_app_bot",
+      "name": "list_pins",
+      "description": "List pin records in one Feishu/Lark chat and time window.",
+      "requiredScopes": [
+        "im:message.pins:read"
+      ],
+      "providerPermissions": [
+        "im:message.pins:read"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "chatId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The Feishu chat ID to inspect."
+          },
+          "startTime": {
+            "type": "string",
+            "minLength": 1,
+            "description": "A millisecond or second timestamp encoded as a string."
+          },
+          "endTime": {
+            "type": "string",
+            "minLength": 1,
+            "description": "A millisecond or second timestamp encoded as a string."
+          },
+          "pageSize": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50,
+            "description": "The Feishu page size."
+          },
+          "pageToken": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The Feishu pagination token."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "chatId"
+        ],
+        "description": "Input for listing Feishu pin records."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "The Feishu API code. 0 means success."
+          },
+          "msg": {
+            "type": "string",
+            "description": "The Feishu API message."
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "items": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "message_id": {
+                      "type": "string",
+                      "description": "The pinned message ID."
+                    },
+                    "chat_id": {
+                      "type": "string",
+                      "description": "The pinned chat ID."
+                    },
+                    "operator_id": {
+                      "type": "string",
+                      "description": "The pin operator ID."
+                    },
+                    "operator_id_type": {
+                      "type": "string",
+                      "description": "The pin operator ID type."
+                    },
+                    "create_time": {
+                      "type": "string",
+                      "description": "The pin creation time in milliseconds."
+                    }
+                  },
+                  "additionalProperties": true,
+                  "description": "One Feishu pin record."
+                },
+                "description": "The returned pin records."
+              },
+              "has_more": {
+                "type": "boolean",
+                "description": "Whether another page is available."
+              },
+              "page_token": {
+                "type": "string",
+                "description": "The pagination token for the next page."
+              }
+            },
+            "additionalProperties": true,
+            "required": [
+              "items",
+              "has_more"
+            ],
+            "description": "The Feishu pin-list payload."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "msg",
+          "data"
+        ],
+        "description": "A Feishu pin-list response envelope."
+      }
+    },
+    {
+      "id": "feishu_app_bot.pin_message",
+      "service": "feishu_app_bot",
+      "name": "pin_message",
+      "description": "Pin one Feishu/Lark message inside its chat.",
+      "requiredScopes": [
+        "im:message.pins:write_only"
+      ],
+      "providerPermissions": [
+        "im:message.pins:write_only"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "messageId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The Feishu message ID to pin."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "messageId"
+        ],
+        "description": "Input for pinning a Feishu message."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "The Feishu API code. 0 means success."
+          },
+          "msg": {
+            "type": "string",
+            "description": "The Feishu API message."
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "pin": {
+                "type": "object",
+                "properties": {
+                  "message_id": {
+                    "type": "string",
+                    "description": "The pinned message ID."
+                  },
+                  "chat_id": {
+                    "type": "string",
+                    "description": "The pinned chat ID."
+                  },
+                  "operator_id": {
+                    "type": "string",
+                    "description": "The pin operator ID."
+                  },
+                  "operator_id_type": {
+                    "type": "string",
+                    "description": "The pin operator ID type."
+                  },
+                  "create_time": {
+                    "type": "string",
+                    "description": "The pin creation time in milliseconds."
+                  }
+                },
+                "additionalProperties": true,
+                "description": "One Feishu pin record."
+              }
+            },
+            "additionalProperties": true,
+            "description": "The Feishu pin payload."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "msg",
+          "data"
+        ],
+        "description": "A Feishu pin response envelope."
+      }
+    },
+    {
+      "id": "feishu_app_bot.recall_message",
+      "service": "feishu_app_bot",
+      "name": "recall_message",
+      "description": "Recall one Feishu/Lark message that the app bot sent.",
+      "requiredScopes": [
+        "im:message:recall"
+      ],
+      "providerPermissions": [
+        "im:message:recall"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "messageId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The Feishu message ID to recall."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "messageId"
+        ],
+        "description": "Input for recalling a Feishu message."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "The Feishu API code. 0 means success."
+          },
+          "msg": {
+            "type": "string",
+            "description": "The Feishu API message."
+          },
+          "data": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true,
+            "description": "The Feishu empty response payload."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "msg",
+          "data"
+        ],
+        "description": "A Feishu empty response envelope."
+      }
+    },
+    {
+      "id": "feishu_app_bot.remove_message_reaction",
+      "service": "feishu_app_bot",
+      "name": "remove_message_reaction",
+      "description": "Remove one Feishu/Lark message reaction by reaction_id.",
+      "requiredScopes": [
+        "im:message.reactions:write_only"
+      ],
+      "providerPermissions": [
+        "im:message.reactions:write_only"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "messageId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The Feishu message ID to update."
+          },
+          "reactionId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The Feishu reaction ID to remove."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "messageId",
+          "reactionId"
+        ],
+        "description": "Input for removing a Feishu message reaction."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "The Feishu API code. 0 means success."
+          },
+          "msg": {
+            "type": "string",
+            "description": "The Feishu API message."
+          },
+          "data": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true,
+            "description": "The Feishu empty response payload."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "msg",
+          "data"
+        ],
+        "description": "A Feishu empty response envelope."
+      }
+    },
+    {
+      "id": "feishu_app_bot.remove_pin",
+      "service": "feishu_app_bot",
+      "name": "remove_pin",
+      "description": "Remove the pin state from one Feishu/Lark message.",
+      "requiredScopes": [
+        "im:message.pins:write_only"
+      ],
+      "providerPermissions": [
+        "im:message.pins:write_only"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "messageId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The Feishu message ID to unpin."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "messageId"
+        ],
+        "description": "Input for removing a Feishu message pin."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "The Feishu API code. 0 means success."
+          },
+          "msg": {
+            "type": "string",
+            "description": "The Feishu API message."
+          },
+          "data": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true,
+            "description": "The Feishu empty response payload."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "msg",
+          "data"
+        ],
+        "description": "A Feishu empty response envelope."
+      }
+    },
+    {
+      "id": "feishu_app_bot.reply_message",
+      "service": "feishu_app_bot",
+      "name": "reply_message",
+      "description": "Reply to an existing Feishu/Lark message as the app bot.",
+      "requiredScopes": [
+        "im:message:send_as_bot"
+      ],
+      "providerPermissions": [
+        "im:message:send_as_bot"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "messageId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The Feishu message ID to reply to."
+          },
+          "msgType": {
+            "type": "string",
+            "enum": [
+              "text",
+              "post",
+              "image",
+              "file",
+              "audio",
+              "media",
+              "sticker",
+              "interactive",
+              "share_chat",
+              "share_user"
+            ],
+            "description": "The Feishu message type to send in the reply."
+          },
+          "content": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "description": "A pre-serialized Feishu message content JSON string."
+              },
+              {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": true,
+                "description": "A Feishu message content object that will be JSON-stringified."
+              }
+            ],
+            "description": "The message content payload."
+          },
+          "replyInThread": {
+            "type": "boolean",
+            "description": "Whether Feishu should create the reply inside the thread."
+          },
+          "uuid": {
+            "type": "string",
+            "maxLength": 50,
+            "description": "The optional Feishu deduplication UUID for this reply."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "messageId",
+          "msgType",
+          "content"
+        ],
+        "description": "Input for replying to a Feishu message."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "The Feishu API code. 0 means success."
+          },
+          "msg": {
+            "type": "string",
+            "description": "The Feishu API message."
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "message_id": {
+                "type": "string",
+                "description": "The Feishu message identifier."
+              },
+              "root_id": {
+                "type": "string",
+                "description": "The root message identifier."
+              },
+              "parent_id": {
+                "type": "string",
+                "description": "The parent message identifier."
+              },
+              "thread_id": {
+                "type": "string",
+                "description": "The thread identifier."
+              },
+              "msg_type": {
+                "type": "string",
+                "description": "The Feishu message type."
+              },
+              "create_time": {
+                "type": "string",
+                "description": "The message creation timestamp in milliseconds."
+              },
+              "update_time": {
+                "type": "string",
+                "description": "The message update timestamp in milliseconds."
+              },
+              "deleted": {
+                "type": "boolean",
+                "description": "Whether the message has been recalled or deleted."
+              },
+              "updated": {
+                "type": "boolean",
+                "description": "Whether the message has been updated."
+              },
+              "chat_id": {
+                "type": "string",
+                "description": "The Feishu chat identifier."
+              },
+              "sender": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "The sender identifier."
+                  },
+                  "id_type": {
+                    "type": "string",
+                    "description": "The sender identifier type."
+                  },
+                  "sender_type": {
+                    "type": "string",
+                    "description": "The sender type such as user or app."
+                  },
+                  "tenant_key": {
+                    "type": "string",
+                    "description": "The tenant key of the sender."
+                  }
+                },
+                "additionalProperties": true,
+                "description": "The Feishu sender object."
+              },
+              "body": {
+                "type": "object",
+                "properties": {
+                  "content": {
+                    "type": "string",
+                    "description": "The serialized Feishu message content JSON string."
+                  }
+                },
+                "additionalProperties": true,
+                "description": "The Feishu message body."
+              },
+              "mentions": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "key": {
+                      "type": "string",
+                      "description": "The stable mention placeholder key."
+                    },
+                    "id": {
+                      "type": "string",
+                      "description": "The mentioned user or bot identifier."
+                    },
+                    "id_type": {
+                      "type": "string",
+                      "description": "The identifier type of the mentioned user or bot."
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "The display name of the mentioned user or bot."
+                    },
+                    "tenant_key": {
+                      "type": "string",
+                      "description": "The tenant key of the mentioned user or bot."
+                    }
+                  },
+                  "additionalProperties": true,
+                  "description": "One Feishu mention item."
+                },
+                "description": "The mentions contained in the message."
+              },
+              "upper_message_id": {
+                "type": "string",
+                "description": "The parent message identifier for merge-forward payloads."
+              }
+            },
+            "additionalProperties": true,
+            "description": "One Feishu message payload."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "msg",
+          "data"
+        ],
+        "description": "A Feishu message API response envelope."
+      }
+    },
+    {
+      "id": "feishu_app_bot.search_chats",
+      "service": "feishu_app_bot",
+      "name": "search_chats",
+      "description": "Search chats visible to the Feishu/Lark app bot by keyword.",
+      "requiredScopes": [
+        "im:chat:read"
+      ],
+      "providerPermissions": [
+        "im:chat:read"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64,
+            "description": "The chat search keyword."
+          },
+          "userIdType": {
+            "type": "string",
+            "enum": [
+              "open_id",
+              "union_id",
+              "user_id"
+            ],
+            "description": "The user identifier type returned by Feishu read APIs."
+          },
+          "pageSize": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100,
+            "description": "The Feishu page size."
+          },
+          "pageToken": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The Feishu pagination token."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "query"
+        ],
+        "description": "Input for searching visible Feishu chats."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "The Feishu API code. 0 means success."
+          },
+          "msg": {
+            "type": "string",
+            "description": "The Feishu API message."
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "items": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "chat_id": {
+                      "type": "string",
+                      "description": "The Feishu chat ID."
+                    },
+                    "avatar": {
+                      "type": "string",
+                      "description": "The chat avatar URL."
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "The chat name."
+                    },
+                    "description": {
+                      "type": "string",
+                      "description": "The chat description."
+                    },
+                    "owner_id": {
+                      "type": "string",
+                      "description": "The owner user ID."
+                    },
+                    "owner_id_type": {
+                      "type": "string",
+                      "description": "The owner ID type."
+                    },
+                    "external": {
+                      "type": "boolean",
+                      "description": "Whether the chat is external."
+                    },
+                    "tenant_key": {
+                      "type": "string",
+                      "description": "The tenant key of the chat."
+                    },
+                    "chat_status": {
+                      "type": "string",
+                      "description": "The chat status."
+                    }
+                  },
+                  "additionalProperties": true,
+                  "required": [
+                    "chat_id"
+                  ],
+                  "description": "One Feishu chat summary."
+                },
+                "description": "The returned chat summaries."
+              },
+              "page_token": {
+                "type": "string",
+                "description": "The pagination token for the next page."
+              },
+              "has_more": {
+                "type": "boolean",
+                "description": "Whether another page is available."
+              }
+            },
+            "additionalProperties": true,
+            "required": [
+              "items",
+              "has_more"
+            ],
+            "description": "The Feishu chat-list payload."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "msg",
+          "data"
+        ],
+        "description": "A Feishu chat-list response envelope."
+      }
+    },
+    {
+      "id": "feishu_app_bot.send_message",
+      "service": "feishu_app_bot",
+      "name": "send_message",
+      "description": "Send a Feishu/Lark app bot message to a user or chat.",
+      "requiredScopes": [
+        "im:message:send_as_bot"
+      ],
+      "providerPermissions": [
+        "im:message:send_as_bot"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "receiveIdType": {
+            "type": "string",
+            "enum": [
+              "open_id",
+              "union_id",
+              "user_id",
+              "email",
+              "chat_id"
+            ],
+            "description": "The identifier type used by receiveId."
+          },
+          "receiveId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The target user or chat identifier."
+          },
+          "msgType": {
+            "type": "string",
+            "enum": [
+              "text",
+              "post",
+              "image",
+              "file",
+              "audio",
+              "media",
+              "sticker",
+              "interactive",
+              "share_chat",
+              "share_user",
+              "system"
+            ],
+            "description": "The Feishu message type to send."
+          },
+          "content": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "description": "A pre-serialized Feishu message content JSON string."
+              },
+              {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": true,
+                "description": "A Feishu message content object that will be JSON-stringified."
+              }
+            ],
+            "description": "The message content payload."
+          },
+          "uuid": {
+            "type": "string",
+            "maxLength": 50,
+            "description": "The optional Feishu deduplication UUID for this message."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "receiveIdType",
+          "receiveId",
+          "msgType",
+          "content"
+        ],
+        "description": "Input for sending a Feishu app bot message."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "The Feishu API code. 0 means success."
+          },
+          "msg": {
+            "type": "string",
+            "description": "The Feishu API message."
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "message_id": {
+                "type": "string",
+                "description": "The Feishu message identifier."
+              },
+              "root_id": {
+                "type": "string",
+                "description": "The root message identifier."
+              },
+              "parent_id": {
+                "type": "string",
+                "description": "The parent message identifier."
+              },
+              "thread_id": {
+                "type": "string",
+                "description": "The thread identifier."
+              },
+              "msg_type": {
+                "type": "string",
+                "description": "The Feishu message type."
+              },
+              "create_time": {
+                "type": "string",
+                "description": "The message creation timestamp in milliseconds."
+              },
+              "update_time": {
+                "type": "string",
+                "description": "The message update timestamp in milliseconds."
+              },
+              "deleted": {
+                "type": "boolean",
+                "description": "Whether the message has been recalled or deleted."
+              },
+              "updated": {
+                "type": "boolean",
+                "description": "Whether the message has been updated."
+              },
+              "chat_id": {
+                "type": "string",
+                "description": "The Feishu chat identifier."
+              },
+              "sender": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "The sender identifier."
+                  },
+                  "id_type": {
+                    "type": "string",
+                    "description": "The sender identifier type."
+                  },
+                  "sender_type": {
+                    "type": "string",
+                    "description": "The sender type such as user or app."
+                  },
+                  "tenant_key": {
+                    "type": "string",
+                    "description": "The tenant key of the sender."
+                  }
+                },
+                "additionalProperties": true,
+                "description": "The Feishu sender object."
+              },
+              "body": {
+                "type": "object",
+                "properties": {
+                  "content": {
+                    "type": "string",
+                    "description": "The serialized Feishu message content JSON string."
+                  }
+                },
+                "additionalProperties": true,
+                "description": "The Feishu message body."
+              },
+              "mentions": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "key": {
+                      "type": "string",
+                      "description": "The stable mention placeholder key."
+                    },
+                    "id": {
+                      "type": "string",
+                      "description": "The mentioned user or bot identifier."
+                    },
+                    "id_type": {
+                      "type": "string",
+                      "description": "The identifier type of the mentioned user or bot."
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "The display name of the mentioned user or bot."
+                    },
+                    "tenant_key": {
+                      "type": "string",
+                      "description": "The tenant key of the mentioned user or bot."
+                    }
+                  },
+                  "additionalProperties": true,
+                  "description": "One Feishu mention item."
+                },
+                "description": "The mentions contained in the message."
+              },
+              "upper_message_id": {
+                "type": "string",
+                "description": "The parent message identifier for merge-forward payloads."
+              }
+            },
+            "additionalProperties": true,
+            "description": "One Feishu message payload."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "msg",
+          "data"
+        ],
+        "description": "A Feishu message API response envelope."
+      }
+    },
+    {
+      "id": "feishu_app_bot.upload_file",
+      "service": "feishu_app_bot",
+      "name": "upload_file",
+      "description": "Upload one public file URL to Feishu/Lark and return the file key for message sending.",
+      "requiredScopes": [
+        "im:resource"
+      ],
+      "providerPermissions": [
+        "im:resource"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "fileUrl": {
+            "type": "string",
+            "description": "The public file URL to download and upload to Feishu.",
+            "format": "uri"
+          },
+          "fileType": {
+            "type": "string",
+            "enum": [
+              "opus",
+              "mp4",
+              "pdf",
+              "doc",
+              "xls",
+              "ppt",
+              "stream"
+            ],
+            "description": "The Feishu file type used by the file upload API."
+          },
+          "fileName": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The optional file name to send to Feishu. Inferred from the URL when omitted."
+          },
+          "duration": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "The optional duration in milliseconds for audio or video uploads."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "fileUrl",
+          "fileType"
+        ],
+        "description": "Input for uploading one file to Feishu."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "The Feishu API code. 0 means success."
+          },
+          "msg": {
+            "type": "string",
+            "description": "The Feishu API message."
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "file_key": {
+                "type": "string",
+                "description": "The Feishu file key returned by the upload API."
+              }
+            },
+            "additionalProperties": true,
+            "description": "The Feishu file-upload payload."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "msg",
+          "data"
+        ],
+        "description": "A Feishu file-upload response envelope."
+      }
+    },
+    {
+      "id": "feishu_app_bot.upload_image",
+      "service": "feishu_app_bot",
+      "name": "upload_image",
+      "description": "Upload one public image URL to Feishu/Lark and return the image key for message sending.",
+      "requiredScopes": [
+        "im:resource"
+      ],
+      "providerPermissions": [
+        "im:resource"
+      ],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "imageUrl": {
+            "type": "string",
+            "description": "The public image URL to download and upload to Feishu.",
+            "format": "uri"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "imageUrl"
+        ],
+        "description": "Input for uploading one image to Feishu."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "The Feishu API code. 0 means success."
+          },
+          "msg": {
+            "type": "string",
+            "description": "The Feishu API message."
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "image_key": {
+                "type": "string",
+                "description": "The Feishu image key returned by the upload API."
+              }
+            },
+            "additionalProperties": true,
+            "description": "The Feishu image-upload payload."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "msg",
+          "data"
+        ],
+        "description": "A Feishu image-upload response envelope."
+      }
+    }
+  ]
+}

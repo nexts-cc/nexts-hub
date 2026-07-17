@@ -1,0 +1,622 @@
+{
+  "service": "cursor",
+  "displayName": "Cursor",
+  "categories": [
+    "Developer Tools",
+    "AI"
+  ],
+  "authTypes": [
+    "api_key"
+  ],
+  "auth": [
+    {
+      "type": "api_key",
+      "label": "API Key",
+      "placeholder": "crsr_...",
+      "description": "Cursor API key sent with Basic authentication. Create or copy a key from Cursor Dashboard > API Keys: https://cursor.com/dashboard/api"
+    }
+  ],
+  "homepageUrl": "https://cursor.com",
+  "actions": [
+    {
+      "id": "cursor.get_daily_usage_data",
+      "service": "cursor",
+      "name": "get_daily_usage_data",
+      "description": "Retrieve Cursor daily usage metrics for a team over a date range of up to 30 days.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "startDate": {
+            "type": "integer",
+            "description": "The inclusive start date in epoch milliseconds."
+          },
+          "endDate": {
+            "type": "integer",
+            "description": "The inclusive end date in epoch milliseconds."
+          },
+          "page": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "The 1-indexed page number to request."
+          },
+          "pageSize": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1000,
+            "description": "The number of users to return per page."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "startDate",
+          "endDate"
+        ],
+        "description": "The input for retrieving Cursor daily usage data."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "userId": {
+                  "type": "integer",
+                  "description": "The Cursor user ID."
+                },
+                "day": {
+                  "type": "string",
+                  "description": "The day covered by this usage row.",
+                  "format": "date"
+                },
+                "date": {
+                  "type": "integer",
+                  "description": "The day timestamp in epoch milliseconds."
+                },
+                "email": {
+                  "type": "string",
+                  "description": "The user email address.",
+                  "format": "email"
+                },
+                "isActive": {
+                  "type": "boolean",
+                  "description": "Whether the user had activity on this day."
+                },
+                "totalLinesAdded": {
+                  "type": "integer",
+                  "description": "The total lines added."
+                },
+                "totalLinesDeleted": {
+                  "type": "integer",
+                  "description": "The total lines deleted."
+                },
+                "acceptedLinesAdded": {
+                  "type": "integer",
+                  "description": "The AI-suggested added lines that were accepted."
+                },
+                "acceptedLinesDeleted": {
+                  "type": "integer",
+                  "description": "The AI-suggested deleted lines that were accepted."
+                },
+                "totalApplies": {
+                  "type": "integer",
+                  "description": "The total AI code apply actions."
+                },
+                "totalAccepts": {
+                  "type": "integer",
+                  "description": "The total accepted AI suggestions."
+                },
+                "totalRejects": {
+                  "type": "integer",
+                  "description": "The total rejected AI suggestions."
+                },
+                "totalTabsShown": {
+                  "type": "integer",
+                  "description": "The total Tab completions shown."
+                },
+                "totalTabsAccepted": {
+                  "type": "integer",
+                  "description": "The total Tab completions accepted."
+                },
+                "composerRequests": {
+                  "type": "integer",
+                  "description": "The number of Composer requests."
+                },
+                "chatRequests": {
+                  "type": "integer",
+                  "description": "The number of chat requests."
+                },
+                "agentRequests": {
+                  "type": "integer",
+                  "description": "The number of Agent mode requests."
+                },
+                "cmdkUsages": {
+                  "type": "integer",
+                  "description": "The number of Cmd+K inline edit uses."
+                },
+                "subscriptionIncludedReqs": {
+                  "type": "integer",
+                  "description": "The subscription-included request count."
+                },
+                "apiKeyReqs": {
+                  "type": "integer",
+                  "description": "The API key request count."
+                },
+                "usageBasedReqs": {
+                  "type": "integer",
+                  "description": "The usage-based request count."
+                },
+                "bugbotUsages": {
+                  "type": "integer",
+                  "description": "The Bugbot usage count."
+                },
+                "mostUsedModel": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The most frequently used model for the day."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "applyMostUsedExtension": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The most common file extension for apply actions."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "tabMostUsedExtension": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The most common file extension for Tab completions."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "clientVersion": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The Cursor client version used."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "additionalProperties": true,
+              "description": "A Cursor daily usage row."
+            },
+            "description": "The Cursor daily usage rows."
+          },
+          "period": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true,
+            "description": "A JSON object returned by Cursor."
+          },
+          "pagination": {
+            "type": "object",
+            "properties": {
+              "page": {
+                "type": "integer",
+                "description": "The current 1-indexed page number."
+              },
+              "pageSize": {
+                "type": "integer",
+                "description": "The number of records requested per page."
+              },
+              "totalCount": {
+                "type": "integer",
+                "description": "The total number of matching records."
+              },
+              "totalUsers": {
+                "type": "integer",
+                "description": "The total number of matching users."
+              },
+              "totalPages": {
+                "type": "integer",
+                "description": "The total number of result pages."
+              },
+              "hasNextPage": {
+                "type": "boolean",
+                "description": "Whether another result page is available."
+              },
+              "hasPreviousPage": {
+                "type": "boolean",
+                "description": "Whether a previous result page is available."
+              }
+            },
+            "additionalProperties": true,
+            "description": "Cursor pagination metadata."
+          },
+          "raw": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true,
+            "description": "A JSON object returned by Cursor."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "data",
+          "period",
+          "raw"
+        ],
+        "description": "The Cursor daily usage data response."
+      }
+    },
+    {
+      "id": "cursor.get_team_spend",
+      "service": "cursor",
+      "name": "get_team_spend",
+      "description": "Retrieve Cursor team spending for the current billing cycle with optional search, sort, and pagination.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "searchTerm": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Search text matched against user names and emails."
+          },
+          "sortBy": {
+            "type": "string",
+            "enum": [
+              "amount",
+              "date",
+              "user"
+            ],
+            "description": "The field used to sort spending rows."
+          },
+          "sortDirection": {
+            "type": "string",
+            "enum": [
+              "asc",
+              "desc"
+            ],
+            "description": "The sort direction for spending rows."
+          },
+          "page": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "The 1-indexed page number to request."
+          },
+          "pageSize": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "The number of spending rows to return per page."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The input for retrieving Cursor team spending."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "teamMemberSpend": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "userId": {
+                  "type": "integer",
+                  "description": "The Cursor user ID."
+                },
+                "name": {
+                  "type": "string",
+                  "description": "The user display name."
+                },
+                "email": {
+                  "type": "string",
+                  "description": "The user email address.",
+                  "format": "email"
+                },
+                "role": {
+                  "type": "string",
+                  "description": "The team role such as member or owner."
+                },
+                "spendCents": {
+                  "type": "number",
+                  "description": "The on-demand spend in cents for the current billing cycle."
+                },
+                "overallSpendCents": {
+                  "type": "number",
+                  "description": "The total spend in cents for the current billing cycle, including included usage."
+                },
+                "fastPremiumRequests": {
+                  "type": "integer",
+                  "description": "The number of usage-based premium requests."
+                },
+                "hardLimitOverrideDollars": {
+                  "type": "number",
+                  "description": "The custom hard spending limit override in dollars."
+                },
+                "monthlyLimitDollars": {
+                  "anyOf": [
+                    {
+                      "type": "number",
+                      "description": "The monthly spending limit in dollars, or null when none is set."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "additionalProperties": true,
+              "description": "A Cursor team member spending row."
+            },
+            "description": "The Cursor team member spending rows."
+          },
+          "subscriptionCycleStart": {
+            "type": "integer",
+            "description": "The current subscription cycle start timestamp in epoch milliseconds."
+          },
+          "totalMembers": {
+            "type": "integer",
+            "description": "The total number of matching team members."
+          },
+          "totalPages": {
+            "type": "integer",
+            "description": "The total number of spending pages."
+          },
+          "raw": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true,
+            "description": "A JSON object returned by Cursor."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "teamMemberSpend",
+          "subscriptionCycleStart",
+          "totalMembers",
+          "totalPages",
+          "raw"
+        ],
+        "description": "The Cursor team spending response."
+      }
+    },
+    {
+      "id": "cursor.list_audit_logs",
+      "service": "cursor",
+      "name": "list_audit_logs",
+      "description": "List Cursor team audit log events with optional time, event type, user, search, and page filters.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "startTime": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The start time as a Cursor date shortcut, ISO timestamp, date, or Unix timestamp."
+          },
+          "endTime": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The end time as a Cursor date shortcut, ISO timestamp, date, or Unix timestamp."
+          },
+          "eventTypes": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "description": "Cursor audit event types to include.",
+            "minItems": 1
+          },
+          "search": {
+            "type": "string",
+            "minLength": 1,
+            "description": "A search term used to filter audit events."
+          },
+          "page": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "The 1-indexed page number to request."
+          },
+          "pageSize": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 500,
+            "description": "The number of records to return per page."
+          },
+          "users": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "description": "User emails or encoded Cursor user IDs to filter by.",
+            "minItems": 1
+          }
+        },
+        "additionalProperties": false,
+        "description": "The input for listing Cursor audit logs."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "events": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "event_id": {
+                  "type": "string",
+                  "description": "The Cursor audit event ID."
+                },
+                "timestamp": {
+                  "type": "string",
+                  "description": "The event timestamp.",
+                  "format": "date-time"
+                },
+                "ip_address": {
+                  "type": "string",
+                  "description": "The IP address associated with the event."
+                },
+                "user_email": {
+                  "type": "string",
+                  "description": "The user email address associated with the event.",
+                  "format": "email"
+                },
+                "event_type": {
+                  "type": "string",
+                  "description": "The Cursor audit event type."
+                },
+                "event_data": {
+                  "type": "object",
+                  "properties": {},
+                  "additionalProperties": true,
+                  "description": "A JSON object returned by Cursor."
+                }
+              },
+              "additionalProperties": true,
+              "description": "A Cursor audit log event."
+            },
+            "description": "The Cursor audit log events."
+          },
+          "pagination": {
+            "type": "object",
+            "properties": {
+              "page": {
+                "type": "integer",
+                "description": "The current 1-indexed page number."
+              },
+              "pageSize": {
+                "type": "integer",
+                "description": "The number of records requested per page."
+              },
+              "totalCount": {
+                "type": "integer",
+                "description": "The total number of matching records."
+              },
+              "totalUsers": {
+                "type": "integer",
+                "description": "The total number of matching users."
+              },
+              "totalPages": {
+                "type": "integer",
+                "description": "The total number of result pages."
+              },
+              "hasNextPage": {
+                "type": "boolean",
+                "description": "Whether another result page is available."
+              },
+              "hasPreviousPage": {
+                "type": "boolean",
+                "description": "Whether a previous result page is available."
+              }
+            },
+            "additionalProperties": true,
+            "description": "Cursor pagination metadata."
+          },
+          "params": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true,
+            "description": "A JSON object returned by Cursor."
+          },
+          "raw": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true,
+            "description": "A JSON object returned by Cursor."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "events",
+          "pagination",
+          "raw"
+        ],
+        "description": "The Cursor audit logs response."
+      }
+    },
+    {
+      "id": "cursor.list_team_members",
+      "service": "cursor",
+      "name": "list_team_members",
+      "description": "List Cursor team members visible to the team API key.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false,
+        "description": "The input for listing Cursor team members."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "teamMembers": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer",
+                  "description": "The unique Cursor team member ID."
+                },
+                "email": {
+                  "type": "string",
+                  "description": "The team member email address.",
+                  "format": "email"
+                },
+                "name": {
+                  "type": "string",
+                  "description": "The team member display name."
+                },
+                "role": {
+                  "type": "string",
+                  "description": "The team role such as member or owner."
+                },
+                "isRemoved": {
+                  "type": "boolean",
+                  "description": "Whether this member has been removed from the team."
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "id",
+                "email"
+              ],
+              "description": "A Cursor team member."
+            },
+            "description": "The Cursor team members."
+          },
+          "raw": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true,
+            "description": "A JSON object returned by Cursor."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "teamMembers",
+          "raw"
+        ],
+        "description": "The Cursor team members response."
+      }
+    }
+  ]
+}

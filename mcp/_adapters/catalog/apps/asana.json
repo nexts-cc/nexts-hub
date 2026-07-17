@@ -1,0 +1,2421 @@
+{
+  "service": "asana",
+  "displayName": "Asana",
+  "categories": [
+    "Productivity"
+  ],
+  "authTypes": [
+    "api_key"
+  ],
+  "auth": [
+    {
+      "type": "api_key",
+      "label": "Personal Access Token",
+      "placeholder": "asana_pat",
+      "description": "Asana personal access token used with the Authorization Bearer header. Get it from the Asana developer console at https://app.asana.com/0/my-apps.",
+      "extraFields": []
+    }
+  ],
+  "homepageUrl": "https://asana.com",
+  "actions": [
+    {
+      "id": "asana.create_project",
+      "service": "asana",
+      "name": "create_project",
+      "description": "Create an Asana project in a workspace with optional notes, owner, dates, and display settings.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The Asana project name."
+          },
+          "notes": {
+            "type": "string",
+            "description": "The Asana project notes."
+          },
+          "owner": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The project owner identifier, such as \"me\", an email, or a user gid."
+          },
+          "dueOn": {
+            "type": "string",
+            "description": "The project due date in YYYY-MM-DD format.",
+            "format": "date"
+          },
+          "startOn": {
+            "type": "string",
+            "description": "The project start date in YYYY-MM-DD format.",
+            "format": "date"
+          },
+          "privacySetting": {
+            "type": "string",
+            "description": "The Asana project privacy setting."
+          },
+          "defaultView": {
+            "type": "string",
+            "description": "The Asana project default view."
+          },
+          "defaultAccessLevel": {
+            "type": "string",
+            "description": "The Asana project default access level."
+          },
+          "color": {
+            "type": "string",
+            "description": "The Asana project color."
+          },
+          "icon": {
+            "type": "string",
+            "description": "The Asana project icon."
+          },
+          "customFields": {
+            "type": "object",
+            "additionalProperties": {
+              "description": "An Asana custom field value."
+            },
+            "description": "Arbitrary object keyed by Asana custom field gid."
+          },
+          "archived": {
+            "type": "boolean",
+            "description": "Whether the project is archived."
+          },
+          "workspaceId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The Asana workspace gid that owns the project."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "workspaceId",
+          "name"
+        ],
+        "description": "The input payload for this action."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "project": {
+            "type": "object",
+            "properties": {
+              "gid": {
+                "type": "string",
+                "description": "The project gid."
+              },
+              "resource_type": {
+                "type": "string",
+                "description": "The resource type."
+              },
+              "name": {
+                "type": "string",
+                "description": "The project name."
+              },
+              "archived": {
+                "type": "boolean",
+                "description": "Whether the project is archived."
+              },
+              "color": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The project color."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "icon": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The project icon."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "notes": {
+                "type": "string",
+                "description": "The project notes."
+              },
+              "due_on": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The project due date."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "start_on": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The project start date."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "default_view": {
+                "type": "string",
+                "description": "The project default view."
+              },
+              "privacy_setting": {
+                "type": "string",
+                "description": "The project privacy setting."
+              },
+              "default_access_level": {
+                "type": "string",
+                "description": "The project default access level."
+              },
+              "created_at": {
+                "type": "string",
+                "description": "The project creation timestamp."
+              },
+              "modified_at": {
+                "type": "string",
+                "description": "The project update timestamp."
+              },
+              "permalink_url": {
+                "type": "string",
+                "description": "The project permalink URL."
+              },
+              "owner": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "gid": {
+                        "type": "string",
+                        "description": "The resource gid."
+                      },
+                      "resource_type": {
+                        "type": "string",
+                        "description": "The resource type."
+                      },
+                      "name": {
+                        "type": "string",
+                        "description": "The resource name."
+                      }
+                    },
+                    "additionalProperties": true,
+                    "description": "A compact Asana resource reference."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "workspace": {
+                "type": "object",
+                "properties": {
+                  "gid": {
+                    "type": "string",
+                    "description": "The resource gid."
+                  },
+                  "resource_type": {
+                    "type": "string",
+                    "description": "The resource type."
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "The resource name."
+                  }
+                },
+                "additionalProperties": true,
+                "description": "A compact Asana resource reference."
+              },
+              "team": {
+                "type": "object",
+                "properties": {
+                  "gid": {
+                    "type": "string",
+                    "description": "The resource gid."
+                  },
+                  "resource_type": {
+                    "type": "string",
+                    "description": "The resource type."
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "The resource name."
+                  }
+                },
+                "additionalProperties": true,
+                "description": "A compact Asana resource reference."
+              },
+              "custom_fields": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "description": "A custom field value."
+                  },
+                  "description": "A custom field response object."
+                },
+                "description": "Custom fields returned by Asana."
+              }
+            },
+            "additionalProperties": true,
+            "description": "An Asana project."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The output payload for this action."
+      }
+    },
+    {
+      "id": "asana.create_task",
+      "service": "asana",
+      "name": "create_task",
+      "description": "Create a new Asana task in a project with optional assignee, notes, dates, and custom fields.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The Asana task name."
+          },
+          "notes": {
+            "type": "string",
+            "description": "The Asana task notes."
+          },
+          "assignee": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The Asana task assignee, such as \"me\", an email, or a user gid."
+          },
+          "completed": {
+            "type": "boolean",
+            "description": "Whether the task is completed."
+          },
+          "dueOn": {
+            "type": "string",
+            "description": "The task due date in YYYY-MM-DD format.",
+            "format": "date"
+          },
+          "dueAt": {
+            "type": "string",
+            "description": "The task due date-time in RFC 3339 format.",
+            "format": "date-time"
+          },
+          "startOn": {
+            "type": "string",
+            "description": "The task start date in YYYY-MM-DD format.",
+            "format": "date"
+          },
+          "startAt": {
+            "type": "string",
+            "description": "The task start date-time in RFC 3339 format.",
+            "format": "date-time"
+          },
+          "approvalStatus": {
+            "type": "string",
+            "description": "The Asana task approval status."
+          },
+          "resourceSubtype": {
+            "type": "string",
+            "description": "The Asana task subtype."
+          },
+          "customFields": {
+            "type": "object",
+            "additionalProperties": {
+              "description": "An Asana custom field value."
+            },
+            "description": "Arbitrary object keyed by Asana custom field gid."
+          },
+          "projectId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The Asana project gid that should receive the task."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "projectId",
+          "name"
+        ],
+        "description": "The input payload for this action."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "task": {
+            "type": "object",
+            "properties": {
+              "gid": {
+                "type": "string",
+                "description": "The task gid."
+              },
+              "resource_type": {
+                "type": "string",
+                "description": "The resource type."
+              },
+              "name": {
+                "type": "string",
+                "description": "The task name."
+              },
+              "resource_subtype": {
+                "type": "string",
+                "description": "The task subtype."
+              },
+              "completed": {
+                "type": "boolean",
+                "description": "Whether the task is completed."
+              },
+              "notes": {
+                "type": "string",
+                "description": "The task notes."
+              },
+              "due_on": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The task due date."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "due_at": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The task due date-time."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "start_on": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The task start date."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "start_at": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The task start date-time."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "created_at": {
+                "type": "string",
+                "description": "The task creation timestamp."
+              },
+              "modified_at": {
+                "type": "string",
+                "description": "The task update timestamp."
+              },
+              "completed_at": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The task completion timestamp."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "permalink_url": {
+                "type": "string",
+                "description": "The task permalink URL."
+              },
+              "approval_status": {
+                "type": "string",
+                "description": "The task approval status."
+              },
+              "assignee": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "gid": {
+                        "type": "string",
+                        "description": "The resource gid."
+                      },
+                      "resource_type": {
+                        "type": "string",
+                        "description": "The resource type."
+                      },
+                      "name": {
+                        "type": "string",
+                        "description": "The resource name."
+                      }
+                    },
+                    "additionalProperties": true,
+                    "description": "A compact Asana resource reference."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "workspace": {
+                "type": "object",
+                "properties": {
+                  "gid": {
+                    "type": "string",
+                    "description": "The resource gid."
+                  },
+                  "resource_type": {
+                    "type": "string",
+                    "description": "The resource type."
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "The resource name."
+                  }
+                },
+                "additionalProperties": true,
+                "description": "A compact Asana resource reference."
+              },
+              "parent": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "gid": {
+                        "type": "string",
+                        "description": "The resource gid."
+                      },
+                      "resource_type": {
+                        "type": "string",
+                        "description": "The resource type."
+                      },
+                      "name": {
+                        "type": "string",
+                        "description": "The resource name."
+                      }
+                    },
+                    "additionalProperties": true,
+                    "description": "A compact Asana resource reference."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "projects": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "gid": {
+                      "type": "string",
+                      "description": "The resource gid."
+                    },
+                    "resource_type": {
+                      "type": "string",
+                      "description": "The resource type."
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "The resource name."
+                    }
+                  },
+                  "additionalProperties": true,
+                  "description": "A compact Asana resource reference."
+                },
+                "description": "Projects linked to the task."
+              },
+              "memberships": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "description": "A membership value."
+                  },
+                  "description": "A task membership object."
+                },
+                "description": "Memberships returned by Asana."
+              },
+              "custom_fields": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "description": "A custom field value."
+                  },
+                  "description": "A custom field response object."
+                },
+                "description": "Custom fields returned by Asana."
+              }
+            },
+            "additionalProperties": true,
+            "description": "An Asana task."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The output payload for this action."
+      }
+    },
+    {
+      "id": "asana.get_project",
+      "service": "asana",
+      "name": "get_project",
+      "description": "Get a single Asana project by gid.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "projectId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The Asana project gid."
+          },
+          "includeFields": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "description": "An Asana field name."
+            },
+            "description": "Additional Asana fields to request via opt_fields.",
+            "minItems": 1
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "projectId"
+        ],
+        "description": "The input payload for this action."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "project": {
+            "type": "object",
+            "properties": {
+              "gid": {
+                "type": "string",
+                "description": "The project gid."
+              },
+              "resource_type": {
+                "type": "string",
+                "description": "The resource type."
+              },
+              "name": {
+                "type": "string",
+                "description": "The project name."
+              },
+              "archived": {
+                "type": "boolean",
+                "description": "Whether the project is archived."
+              },
+              "color": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The project color."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "icon": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The project icon."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "notes": {
+                "type": "string",
+                "description": "The project notes."
+              },
+              "due_on": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The project due date."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "start_on": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The project start date."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "default_view": {
+                "type": "string",
+                "description": "The project default view."
+              },
+              "privacy_setting": {
+                "type": "string",
+                "description": "The project privacy setting."
+              },
+              "default_access_level": {
+                "type": "string",
+                "description": "The project default access level."
+              },
+              "created_at": {
+                "type": "string",
+                "description": "The project creation timestamp."
+              },
+              "modified_at": {
+                "type": "string",
+                "description": "The project update timestamp."
+              },
+              "permalink_url": {
+                "type": "string",
+                "description": "The project permalink URL."
+              },
+              "owner": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "gid": {
+                        "type": "string",
+                        "description": "The resource gid."
+                      },
+                      "resource_type": {
+                        "type": "string",
+                        "description": "The resource type."
+                      },
+                      "name": {
+                        "type": "string",
+                        "description": "The resource name."
+                      }
+                    },
+                    "additionalProperties": true,
+                    "description": "A compact Asana resource reference."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "workspace": {
+                "type": "object",
+                "properties": {
+                  "gid": {
+                    "type": "string",
+                    "description": "The resource gid."
+                  },
+                  "resource_type": {
+                    "type": "string",
+                    "description": "The resource type."
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "The resource name."
+                  }
+                },
+                "additionalProperties": true,
+                "description": "A compact Asana resource reference."
+              },
+              "team": {
+                "type": "object",
+                "properties": {
+                  "gid": {
+                    "type": "string",
+                    "description": "The resource gid."
+                  },
+                  "resource_type": {
+                    "type": "string",
+                    "description": "The resource type."
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "The resource name."
+                  }
+                },
+                "additionalProperties": true,
+                "description": "A compact Asana resource reference."
+              },
+              "custom_fields": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "description": "A custom field value."
+                  },
+                  "description": "A custom field response object."
+                },
+                "description": "Custom fields returned by Asana."
+              }
+            },
+            "additionalProperties": true,
+            "description": "An Asana project."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The output payload for this action."
+      }
+    },
+    {
+      "id": "asana.get_task",
+      "service": "asana",
+      "name": "get_task",
+      "description": "Get a single Asana task by gid.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "taskId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The Asana task gid."
+          },
+          "includeFields": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "description": "An Asana field name."
+            },
+            "description": "Additional Asana fields to request via opt_fields.",
+            "minItems": 1
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "taskId"
+        ],
+        "description": "The input payload for this action."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "task": {
+            "type": "object",
+            "properties": {
+              "gid": {
+                "type": "string",
+                "description": "The task gid."
+              },
+              "resource_type": {
+                "type": "string",
+                "description": "The resource type."
+              },
+              "name": {
+                "type": "string",
+                "description": "The task name."
+              },
+              "resource_subtype": {
+                "type": "string",
+                "description": "The task subtype."
+              },
+              "completed": {
+                "type": "boolean",
+                "description": "Whether the task is completed."
+              },
+              "notes": {
+                "type": "string",
+                "description": "The task notes."
+              },
+              "due_on": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The task due date."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "due_at": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The task due date-time."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "start_on": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The task start date."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "start_at": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The task start date-time."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "created_at": {
+                "type": "string",
+                "description": "The task creation timestamp."
+              },
+              "modified_at": {
+                "type": "string",
+                "description": "The task update timestamp."
+              },
+              "completed_at": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The task completion timestamp."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "permalink_url": {
+                "type": "string",
+                "description": "The task permalink URL."
+              },
+              "approval_status": {
+                "type": "string",
+                "description": "The task approval status."
+              },
+              "assignee": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "gid": {
+                        "type": "string",
+                        "description": "The resource gid."
+                      },
+                      "resource_type": {
+                        "type": "string",
+                        "description": "The resource type."
+                      },
+                      "name": {
+                        "type": "string",
+                        "description": "The resource name."
+                      }
+                    },
+                    "additionalProperties": true,
+                    "description": "A compact Asana resource reference."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "workspace": {
+                "type": "object",
+                "properties": {
+                  "gid": {
+                    "type": "string",
+                    "description": "The resource gid."
+                  },
+                  "resource_type": {
+                    "type": "string",
+                    "description": "The resource type."
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "The resource name."
+                  }
+                },
+                "additionalProperties": true,
+                "description": "A compact Asana resource reference."
+              },
+              "parent": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "gid": {
+                        "type": "string",
+                        "description": "The resource gid."
+                      },
+                      "resource_type": {
+                        "type": "string",
+                        "description": "The resource type."
+                      },
+                      "name": {
+                        "type": "string",
+                        "description": "The resource name."
+                      }
+                    },
+                    "additionalProperties": true,
+                    "description": "A compact Asana resource reference."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "projects": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "gid": {
+                      "type": "string",
+                      "description": "The resource gid."
+                    },
+                    "resource_type": {
+                      "type": "string",
+                      "description": "The resource type."
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "The resource name."
+                    }
+                  },
+                  "additionalProperties": true,
+                  "description": "A compact Asana resource reference."
+                },
+                "description": "Projects linked to the task."
+              },
+              "memberships": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "description": "A membership value."
+                  },
+                  "description": "A task membership object."
+                },
+                "description": "Memberships returned by Asana."
+              },
+              "custom_fields": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "description": "A custom field value."
+                  },
+                  "description": "A custom field response object."
+                },
+                "description": "Custom fields returned by Asana."
+              }
+            },
+            "additionalProperties": true,
+            "description": "An Asana task."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The output payload for this action."
+      }
+    },
+    {
+      "id": "asana.get_workspace",
+      "service": "asana",
+      "name": "get_workspace",
+      "description": "Get a single Asana workspace by gid.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "workspaceId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The Asana workspace gid."
+          },
+          "includeFields": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "description": "An Asana field name."
+            },
+            "description": "Additional Asana fields to request via opt_fields.",
+            "minItems": 1
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "workspaceId"
+        ],
+        "description": "The input payload for this action."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "workspace": {
+            "type": "object",
+            "properties": {
+              "gid": {
+                "type": "string",
+                "description": "The workspace gid."
+              },
+              "resource_type": {
+                "type": "string",
+                "description": "The resource type."
+              },
+              "name": {
+                "type": "string",
+                "description": "The workspace name."
+              },
+              "email_domains": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "description": "A workspace email domain."
+                },
+                "description": "The workspace email domains."
+              },
+              "is_organization": {
+                "type": "boolean",
+                "description": "Whether the workspace is an organization."
+              }
+            },
+            "additionalProperties": true,
+            "description": "An Asana workspace."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The output payload for this action."
+      }
+    },
+    {
+      "id": "asana.list_project_tasks",
+      "service": "asana",
+      "name": "list_project_tasks",
+      "description": "List tasks within an Asana project, ordered by project priority, with pagination support.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "projectId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The Asana project gid."
+          },
+          "completedSince": {
+            "anyOf": [
+              {
+                "const": "now",
+                "type": "string"
+              },
+              {
+                "type": "string",
+                "description": "A completion timestamp.",
+                "format": "date-time"
+              }
+            ],
+            "description": "Only include tasks incomplete or completed since this RFC 3339 timestamp, or use the literal \"now\"."
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100,
+            "description": "Maximum number of items to return in one Asana page."
+          },
+          "cursor": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Opaque pagination cursor returned by a previous Asana response."
+          },
+          "includeFields": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "description": "An Asana field name."
+            },
+            "description": "Additional Asana fields to request via opt_fields.",
+            "minItems": 1
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "projectId"
+        ],
+        "description": "The input payload for this action."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "tasks": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "gid": {
+                  "type": "string",
+                  "description": "The task gid."
+                },
+                "resource_type": {
+                  "type": "string",
+                  "description": "The resource type."
+                },
+                "name": {
+                  "type": "string",
+                  "description": "The task name."
+                },
+                "resource_subtype": {
+                  "type": "string",
+                  "description": "The task subtype."
+                },
+                "completed": {
+                  "type": "boolean",
+                  "description": "Whether the task is completed."
+                },
+                "notes": {
+                  "type": "string",
+                  "description": "The task notes."
+                },
+                "due_on": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The task due date."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "due_at": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The task due date-time."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "start_on": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The task start date."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "start_at": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The task start date-time."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "created_at": {
+                  "type": "string",
+                  "description": "The task creation timestamp."
+                },
+                "modified_at": {
+                  "type": "string",
+                  "description": "The task update timestamp."
+                },
+                "completed_at": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The task completion timestamp."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "permalink_url": {
+                  "type": "string",
+                  "description": "The task permalink URL."
+                },
+                "approval_status": {
+                  "type": "string",
+                  "description": "The task approval status."
+                },
+                "assignee": {
+                  "anyOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "gid": {
+                          "type": "string",
+                          "description": "The resource gid."
+                        },
+                        "resource_type": {
+                          "type": "string",
+                          "description": "The resource type."
+                        },
+                        "name": {
+                          "type": "string",
+                          "description": "The resource name."
+                        }
+                      },
+                      "additionalProperties": true,
+                      "description": "A compact Asana resource reference."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "workspace": {
+                  "type": "object",
+                  "properties": {
+                    "gid": {
+                      "type": "string",
+                      "description": "The resource gid."
+                    },
+                    "resource_type": {
+                      "type": "string",
+                      "description": "The resource type."
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "The resource name."
+                    }
+                  },
+                  "additionalProperties": true,
+                  "description": "A compact Asana resource reference."
+                },
+                "parent": {
+                  "anyOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "gid": {
+                          "type": "string",
+                          "description": "The resource gid."
+                        },
+                        "resource_type": {
+                          "type": "string",
+                          "description": "The resource type."
+                        },
+                        "name": {
+                          "type": "string",
+                          "description": "The resource name."
+                        }
+                      },
+                      "additionalProperties": true,
+                      "description": "A compact Asana resource reference."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "projects": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "gid": {
+                        "type": "string",
+                        "description": "The resource gid."
+                      },
+                      "resource_type": {
+                        "type": "string",
+                        "description": "The resource type."
+                      },
+                      "name": {
+                        "type": "string",
+                        "description": "The resource name."
+                      }
+                    },
+                    "additionalProperties": true,
+                    "description": "A compact Asana resource reference."
+                  },
+                  "description": "Projects linked to the task."
+                },
+                "memberships": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "description": "A membership value."
+                    },
+                    "description": "A task membership object."
+                  },
+                  "description": "Memberships returned by Asana."
+                },
+                "custom_fields": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "description": "A custom field value."
+                    },
+                    "description": "A custom field response object."
+                  },
+                  "description": "Custom fields returned by Asana."
+                }
+              },
+              "additionalProperties": true,
+              "description": "An Asana task."
+            },
+            "description": "The Asana tasks."
+          },
+          "nextCursor": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "Opaque pagination cursor for the next Asana page, or null when there is no next page."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "description": "The output payload for this action."
+      }
+    },
+    {
+      "id": "asana.list_projects",
+      "service": "asana",
+      "name": "list_projects",
+      "description": "List Asana projects for a workspace, with optional archived filtering and pagination.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "workspaceId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The Asana workspace gid to filter projects on."
+          },
+          "archived": {
+            "type": "boolean",
+            "description": "Whether to include archived projects."
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100,
+            "description": "Maximum number of items to return in one Asana page."
+          },
+          "cursor": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Opaque pagination cursor returned by a previous Asana response."
+          },
+          "includeFields": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "description": "An Asana field name."
+            },
+            "description": "Additional Asana fields to request via opt_fields.",
+            "minItems": 1
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "workspaceId"
+        ],
+        "description": "The input payload for this action."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "projects": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "gid": {
+                  "type": "string",
+                  "description": "The project gid."
+                },
+                "resource_type": {
+                  "type": "string",
+                  "description": "The resource type."
+                },
+                "name": {
+                  "type": "string",
+                  "description": "The project name."
+                },
+                "archived": {
+                  "type": "boolean",
+                  "description": "Whether the project is archived."
+                },
+                "color": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The project color."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "icon": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The project icon."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "notes": {
+                  "type": "string",
+                  "description": "The project notes."
+                },
+                "due_on": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The project due date."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "start_on": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The project start date."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "default_view": {
+                  "type": "string",
+                  "description": "The project default view."
+                },
+                "privacy_setting": {
+                  "type": "string",
+                  "description": "The project privacy setting."
+                },
+                "default_access_level": {
+                  "type": "string",
+                  "description": "The project default access level."
+                },
+                "created_at": {
+                  "type": "string",
+                  "description": "The project creation timestamp."
+                },
+                "modified_at": {
+                  "type": "string",
+                  "description": "The project update timestamp."
+                },
+                "permalink_url": {
+                  "type": "string",
+                  "description": "The project permalink URL."
+                },
+                "owner": {
+                  "anyOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "gid": {
+                          "type": "string",
+                          "description": "The resource gid."
+                        },
+                        "resource_type": {
+                          "type": "string",
+                          "description": "The resource type."
+                        },
+                        "name": {
+                          "type": "string",
+                          "description": "The resource name."
+                        }
+                      },
+                      "additionalProperties": true,
+                      "description": "A compact Asana resource reference."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "workspace": {
+                  "type": "object",
+                  "properties": {
+                    "gid": {
+                      "type": "string",
+                      "description": "The resource gid."
+                    },
+                    "resource_type": {
+                      "type": "string",
+                      "description": "The resource type."
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "The resource name."
+                    }
+                  },
+                  "additionalProperties": true,
+                  "description": "A compact Asana resource reference."
+                },
+                "team": {
+                  "type": "object",
+                  "properties": {
+                    "gid": {
+                      "type": "string",
+                      "description": "The resource gid."
+                    },
+                    "resource_type": {
+                      "type": "string",
+                      "description": "The resource type."
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "The resource name."
+                    }
+                  },
+                  "additionalProperties": true,
+                  "description": "A compact Asana resource reference."
+                },
+                "custom_fields": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "description": "A custom field value."
+                    },
+                    "description": "A custom field response object."
+                  },
+                  "description": "Custom fields returned by Asana."
+                }
+              },
+              "additionalProperties": true,
+              "description": "An Asana project."
+            },
+            "description": "The Asana projects."
+          },
+          "nextCursor": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "Opaque pagination cursor for the next Asana page, or null when there is no next page."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "description": "The output payload for this action."
+      }
+    },
+    {
+      "id": "asana.list_workspaces",
+      "service": "asana",
+      "name": "list_workspaces",
+      "description": "List the Asana workspaces visible to the connected personal access token.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100,
+            "description": "Maximum number of items to return in one Asana page."
+          },
+          "cursor": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Opaque pagination cursor returned by a previous Asana response."
+          },
+          "includeFields": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "description": "An Asana field name."
+            },
+            "description": "Additional Asana fields to request via opt_fields.",
+            "minItems": 1
+          }
+        },
+        "additionalProperties": false,
+        "description": "The input payload for this action."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "workspaces": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "gid": {
+                  "type": "string",
+                  "description": "The workspace gid."
+                },
+                "resource_type": {
+                  "type": "string",
+                  "description": "The resource type."
+                },
+                "name": {
+                  "type": "string",
+                  "description": "The workspace name."
+                },
+                "email_domains": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "A workspace email domain."
+                  },
+                  "description": "The workspace email domains."
+                },
+                "is_organization": {
+                  "type": "boolean",
+                  "description": "Whether the workspace is an organization."
+                }
+              },
+              "additionalProperties": true,
+              "description": "An Asana workspace."
+            },
+            "description": "The Asana workspaces."
+          },
+          "nextCursor": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "Opaque pagination cursor for the next Asana page, or null when there is no next page."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "description": "The output payload for this action."
+      }
+    },
+    {
+      "id": "asana.update_project",
+      "service": "asana",
+      "name": "update_project",
+      "description": "Update an existing Asana project by gid.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The Asana project name."
+          },
+          "notes": {
+            "type": "string",
+            "description": "The Asana project notes."
+          },
+          "owner": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The project owner identifier, such as \"me\", an email, or a user gid."
+          },
+          "dueOn": {
+            "type": "string",
+            "description": "The project due date in YYYY-MM-DD format.",
+            "format": "date"
+          },
+          "startOn": {
+            "type": "string",
+            "description": "The project start date in YYYY-MM-DD format.",
+            "format": "date"
+          },
+          "privacySetting": {
+            "type": "string",
+            "description": "The Asana project privacy setting."
+          },
+          "defaultView": {
+            "type": "string",
+            "description": "The Asana project default view."
+          },
+          "defaultAccessLevel": {
+            "type": "string",
+            "description": "The Asana project default access level."
+          },
+          "color": {
+            "type": "string",
+            "description": "The Asana project color."
+          },
+          "icon": {
+            "type": "string",
+            "description": "The Asana project icon."
+          },
+          "customFields": {
+            "type": "object",
+            "additionalProperties": {
+              "description": "An Asana custom field value."
+            },
+            "description": "Arbitrary object keyed by Asana custom field gid."
+          },
+          "archived": {
+            "type": "boolean",
+            "description": "Whether the project is archived."
+          },
+          "projectId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The Asana project gid."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "projectId"
+        ],
+        "description": "The input payload for this action.",
+        "anyOf": [
+          {
+            "required": [
+              "name"
+            ]
+          },
+          {
+            "required": [
+              "notes"
+            ]
+          },
+          {
+            "required": [
+              "owner"
+            ]
+          },
+          {
+            "required": [
+              "dueOn"
+            ]
+          },
+          {
+            "required": [
+              "startOn"
+            ]
+          },
+          {
+            "required": [
+              "privacySetting"
+            ]
+          },
+          {
+            "required": [
+              "defaultView"
+            ]
+          },
+          {
+            "required": [
+              "defaultAccessLevel"
+            ]
+          },
+          {
+            "required": [
+              "color"
+            ]
+          },
+          {
+            "required": [
+              "icon"
+            ]
+          },
+          {
+            "required": [
+              "customFields"
+            ]
+          },
+          {
+            "required": [
+              "archived"
+            ]
+          }
+        ]
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "project": {
+            "type": "object",
+            "properties": {
+              "gid": {
+                "type": "string",
+                "description": "The project gid."
+              },
+              "resource_type": {
+                "type": "string",
+                "description": "The resource type."
+              },
+              "name": {
+                "type": "string",
+                "description": "The project name."
+              },
+              "archived": {
+                "type": "boolean",
+                "description": "Whether the project is archived."
+              },
+              "color": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The project color."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "icon": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The project icon."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "notes": {
+                "type": "string",
+                "description": "The project notes."
+              },
+              "due_on": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The project due date."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "start_on": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The project start date."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "default_view": {
+                "type": "string",
+                "description": "The project default view."
+              },
+              "privacy_setting": {
+                "type": "string",
+                "description": "The project privacy setting."
+              },
+              "default_access_level": {
+                "type": "string",
+                "description": "The project default access level."
+              },
+              "created_at": {
+                "type": "string",
+                "description": "The project creation timestamp."
+              },
+              "modified_at": {
+                "type": "string",
+                "description": "The project update timestamp."
+              },
+              "permalink_url": {
+                "type": "string",
+                "description": "The project permalink URL."
+              },
+              "owner": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "gid": {
+                        "type": "string",
+                        "description": "The resource gid."
+                      },
+                      "resource_type": {
+                        "type": "string",
+                        "description": "The resource type."
+                      },
+                      "name": {
+                        "type": "string",
+                        "description": "The resource name."
+                      }
+                    },
+                    "additionalProperties": true,
+                    "description": "A compact Asana resource reference."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "workspace": {
+                "type": "object",
+                "properties": {
+                  "gid": {
+                    "type": "string",
+                    "description": "The resource gid."
+                  },
+                  "resource_type": {
+                    "type": "string",
+                    "description": "The resource type."
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "The resource name."
+                  }
+                },
+                "additionalProperties": true,
+                "description": "A compact Asana resource reference."
+              },
+              "team": {
+                "type": "object",
+                "properties": {
+                  "gid": {
+                    "type": "string",
+                    "description": "The resource gid."
+                  },
+                  "resource_type": {
+                    "type": "string",
+                    "description": "The resource type."
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "The resource name."
+                  }
+                },
+                "additionalProperties": true,
+                "description": "A compact Asana resource reference."
+              },
+              "custom_fields": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "description": "A custom field value."
+                  },
+                  "description": "A custom field response object."
+                },
+                "description": "Custom fields returned by Asana."
+              }
+            },
+            "additionalProperties": true,
+            "description": "An Asana project."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The output payload for this action."
+      }
+    },
+    {
+      "id": "asana.update_task",
+      "service": "asana",
+      "name": "update_task",
+      "description": "Update an existing Asana task by gid.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The Asana task name."
+          },
+          "notes": {
+            "type": "string",
+            "description": "The Asana task notes."
+          },
+          "assignee": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The Asana task assignee, such as \"me\", an email, or a user gid."
+          },
+          "completed": {
+            "type": "boolean",
+            "description": "Whether the task is completed."
+          },
+          "dueOn": {
+            "type": "string",
+            "description": "The task due date in YYYY-MM-DD format.",
+            "format": "date"
+          },
+          "dueAt": {
+            "type": "string",
+            "description": "The task due date-time in RFC 3339 format.",
+            "format": "date-time"
+          },
+          "startOn": {
+            "type": "string",
+            "description": "The task start date in YYYY-MM-DD format.",
+            "format": "date"
+          },
+          "startAt": {
+            "type": "string",
+            "description": "The task start date-time in RFC 3339 format.",
+            "format": "date-time"
+          },
+          "approvalStatus": {
+            "type": "string",
+            "description": "The Asana task approval status."
+          },
+          "resourceSubtype": {
+            "type": "string",
+            "description": "The Asana task subtype."
+          },
+          "customFields": {
+            "type": "object",
+            "additionalProperties": {
+              "description": "An Asana custom field value."
+            },
+            "description": "Arbitrary object keyed by Asana custom field gid."
+          },
+          "taskId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The Asana task gid."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "taskId"
+        ],
+        "description": "The input payload for this action.",
+        "anyOf": [
+          {
+            "required": [
+              "name"
+            ]
+          },
+          {
+            "required": [
+              "notes"
+            ]
+          },
+          {
+            "required": [
+              "assignee"
+            ]
+          },
+          {
+            "required": [
+              "completed"
+            ]
+          },
+          {
+            "required": [
+              "dueOn"
+            ]
+          },
+          {
+            "required": [
+              "dueAt"
+            ]
+          },
+          {
+            "required": [
+              "startOn"
+            ]
+          },
+          {
+            "required": [
+              "startAt"
+            ]
+          },
+          {
+            "required": [
+              "approvalStatus"
+            ]
+          },
+          {
+            "required": [
+              "resourceSubtype"
+            ]
+          },
+          {
+            "required": [
+              "customFields"
+            ]
+          }
+        ]
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "task": {
+            "type": "object",
+            "properties": {
+              "gid": {
+                "type": "string",
+                "description": "The task gid."
+              },
+              "resource_type": {
+                "type": "string",
+                "description": "The resource type."
+              },
+              "name": {
+                "type": "string",
+                "description": "The task name."
+              },
+              "resource_subtype": {
+                "type": "string",
+                "description": "The task subtype."
+              },
+              "completed": {
+                "type": "boolean",
+                "description": "Whether the task is completed."
+              },
+              "notes": {
+                "type": "string",
+                "description": "The task notes."
+              },
+              "due_on": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The task due date."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "due_at": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The task due date-time."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "start_on": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The task start date."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "start_at": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The task start date-time."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "created_at": {
+                "type": "string",
+                "description": "The task creation timestamp."
+              },
+              "modified_at": {
+                "type": "string",
+                "description": "The task update timestamp."
+              },
+              "completed_at": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The task completion timestamp."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "permalink_url": {
+                "type": "string",
+                "description": "The task permalink URL."
+              },
+              "approval_status": {
+                "type": "string",
+                "description": "The task approval status."
+              },
+              "assignee": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "gid": {
+                        "type": "string",
+                        "description": "The resource gid."
+                      },
+                      "resource_type": {
+                        "type": "string",
+                        "description": "The resource type."
+                      },
+                      "name": {
+                        "type": "string",
+                        "description": "The resource name."
+                      }
+                    },
+                    "additionalProperties": true,
+                    "description": "A compact Asana resource reference."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "workspace": {
+                "type": "object",
+                "properties": {
+                  "gid": {
+                    "type": "string",
+                    "description": "The resource gid."
+                  },
+                  "resource_type": {
+                    "type": "string",
+                    "description": "The resource type."
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "The resource name."
+                  }
+                },
+                "additionalProperties": true,
+                "description": "A compact Asana resource reference."
+              },
+              "parent": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "gid": {
+                        "type": "string",
+                        "description": "The resource gid."
+                      },
+                      "resource_type": {
+                        "type": "string",
+                        "description": "The resource type."
+                      },
+                      "name": {
+                        "type": "string",
+                        "description": "The resource name."
+                      }
+                    },
+                    "additionalProperties": true,
+                    "description": "A compact Asana resource reference."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "projects": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "gid": {
+                      "type": "string",
+                      "description": "The resource gid."
+                    },
+                    "resource_type": {
+                      "type": "string",
+                      "description": "The resource type."
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "The resource name."
+                    }
+                  },
+                  "additionalProperties": true,
+                  "description": "A compact Asana resource reference."
+                },
+                "description": "Projects linked to the task."
+              },
+              "memberships": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "description": "A membership value."
+                  },
+                  "description": "A task membership object."
+                },
+                "description": "Memberships returned by Asana."
+              },
+              "custom_fields": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "description": "A custom field value."
+                  },
+                  "description": "A custom field response object."
+                },
+                "description": "Custom fields returned by Asana."
+              }
+            },
+            "additionalProperties": true,
+            "description": "An Asana task."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The output payload for this action."
+      }
+    }
+  ]
+}

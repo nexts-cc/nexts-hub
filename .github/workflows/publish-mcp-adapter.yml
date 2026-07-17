@@ -1,0 +1,43 @@
+name: Publish MCP adapter
+
+on:
+  workflow_dispatch:
+    inputs:
+      service:
+        description: Adapter service id, for example gmail
+        required: true
+        type: string
+      version:
+        description: SemVer package version
+        required: true
+        default: 1.0.0
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm run validate
+      - name: Build one MCP adapter
+        run: npm run build:mcp -- --service "${{ inputs.service }}" --version "${{ inputs.version }}"
+      - name: Publish immutable release assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SERVICE: ${{ inputs.service }}
+          VERSION: ${{ inputs.version }}
+        run: |
+          tag="mcp-${SERVICE}-v${VERSION}"
+          gh release create "$tag" \
+            "dist/mcp/${SERVICE}"/*.tgz \
+            "dist/mcp/${SERVICE}/catalog-release.json" \
+            --title "MCP ${SERVICE} v${VERSION}" \
+            --notes "NEXTS-owned MCP adapter ${SERVICE} v${VERSION}."

@@ -1,0 +1,289 @@
+{
+  "service": "wecom_bot",
+  "displayName": "WeCom Bot",
+  "categories": [
+    "Communication"
+  ],
+  "authTypes": [
+    "api_key"
+  ],
+  "auth": [
+    {
+      "type": "api_key",
+      "label": "Webhook Key",
+      "placeholder": "693a91f6-7xxx-4bc4-97a0-0ec2sifa5aaa",
+      "description": "Paste the `key` query value from the WeCom bot webhook URL. Create the group bot and copy its webhook URL from the official config guide: https://developer.work.weixin.qq.com/document/path/91770 . The full webhook URL is also accepted.",
+      "extraFields": []
+    }
+  ],
+  "homepageUrl": "https://work.weixin.qq.com",
+  "actions": [
+    {
+      "id": "wecom_bot.send_image_message",
+      "service": "wecom_bot",
+      "name": "send_image_message",
+      "description": "Send an image message through the WeCom bot webhook.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "base64": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The base64-encoded image bytes. The raw image must be a JPG or PNG no larger than 2 MB."
+          },
+          "md5": {
+            "type": "string",
+            "pattern": "^[a-fA-F0-9]{32}$",
+            "description": "The MD5 digest of the raw image bytes before base64 encoding."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "base64",
+          "md5"
+        ],
+        "description": "Input for sending a WeCom image message."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "errcode": {
+            "type": "integer",
+            "description": "The WeCom response code. `0` means success."
+          },
+          "errmsg": {
+            "type": "string",
+            "description": "The WeCom response message."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "errcode",
+          "errmsg"
+        ],
+        "description": "The normalized WeCom bot send result."
+      }
+    },
+    {
+      "id": "wecom_bot.send_markdown_message",
+      "service": "wecom_bot",
+      "name": "send_markdown_message",
+      "description": "Send a markdown message through the WeCom bot webhook.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The markdown content encoded as UTF-8."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "content"
+        ],
+        "description": "Input for sending a WeCom markdown message."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "errcode": {
+            "type": "integer",
+            "description": "The WeCom response code. `0` means success."
+          },
+          "errmsg": {
+            "type": "string",
+            "description": "The WeCom response message."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "errcode",
+          "errmsg"
+        ],
+        "description": "The normalized WeCom bot send result."
+      }
+    },
+    {
+      "id": "wecom_bot.send_markdown_v2_message",
+      "service": "wecom_bot",
+      "name": "send_markdown_v2_message",
+      "description": "Send a markdown_v2 message through the WeCom bot webhook.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The markdown_v2 content encoded as UTF-8. WeCom markdown_v2 does not support `@` mentions."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "content"
+        ],
+        "description": "Input for sending a WeCom markdown_v2 message."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "errcode": {
+            "type": "integer",
+            "description": "The WeCom response code. `0` means success."
+          },
+          "errmsg": {
+            "type": "string",
+            "description": "The WeCom response message."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "errcode",
+          "errmsg"
+        ],
+        "description": "The normalized WeCom bot send result."
+      }
+    },
+    {
+      "id": "wecom_bot.send_news_message",
+      "service": "wecom_bot",
+      "name": "send_news_message",
+      "description": "Send a news message through the WeCom bot webhook.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "articles": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "The article title. Titles longer than 128 bytes are truncated by WeCom."
+                },
+                "description": {
+                  "type": "string",
+                  "description": "The optional article description. Descriptions longer than 512 bytes are truncated by WeCom."
+                },
+                "url": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "The URL opened after the user clicks the article."
+                },
+                "picurl": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "The optional JPG or PNG image URL shown for the article."
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "title",
+                "url"
+              ],
+              "description": "One WeCom news article payload."
+            },
+            "description": "The news articles to send. WeCom supports 1 to 8 articles per message.",
+            "minItems": 1,
+            "maxItems": 8
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "articles"
+        ],
+        "description": "Input for sending a WeCom news message."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "errcode": {
+            "type": "integer",
+            "description": "The WeCom response code. `0` means success."
+          },
+          "errmsg": {
+            "type": "string",
+            "description": "The WeCom response message."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "errcode",
+          "errmsg"
+        ],
+        "description": "The normalized WeCom bot send result."
+      }
+    },
+    {
+      "id": "wecom_bot.send_text_message",
+      "service": "wecom_bot",
+      "name": "send_text_message",
+      "description": "Send a text message through the WeCom bot webhook.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The text content. The value can include WeCom `<@userid>` mention syntax."
+          },
+          "mentionedList": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "description": "One WeCom user ID to mention, or `@all` to mention everyone."
+            },
+            "description": "Optional user IDs to mention explicitly.",
+            "minItems": 1
+          },
+          "mentionedMobileList": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "description": "One phone number to mention, or `@all` to mention everyone."
+            },
+            "description": "Optional mobile numbers to mention explicitly.",
+            "minItems": 1
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "content"
+        ],
+        "description": "Input for sending a WeCom text message."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "errcode": {
+            "type": "integer",
+            "description": "The WeCom response code. `0` means success."
+          },
+          "errmsg": {
+            "type": "string",
+            "description": "The WeCom response message."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "errcode",
+          "errmsg"
+        ],
+        "description": "The normalized WeCom bot send result."
+      }
+    }
+  ]
+}

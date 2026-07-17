@@ -87,7 +87,7 @@ export function computeCategoryHashes(baseDir = root) {
       join("plugins", ".agents", "plugins", "marketplace.json"),
     ]),
     assistants: hashPaths(baseDir, contentDirs(baseDir, "assistants")),
-    mcp: hashPaths(baseDir, contentDirs(baseDir, "mcp")),
+    mcp: hashPaths(baseDir, [...contentDirs(baseDir, "mcp"), join("mcp", "_adapters")]),
   };
 }
 

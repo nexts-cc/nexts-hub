@@ -1,0 +1,547 @@
+{
+  "service": "wttr_in",
+  "displayName": "wttr.in",
+  "categories": [
+    "Location",
+    "Data"
+  ],
+  "authTypes": [
+    "no_auth"
+  ],
+  "auth": [
+    {
+      "type": "no_auth"
+    }
+  ],
+  "homepageUrl": "https://wttr.in/",
+  "actions": [
+    {
+      "id": "wttr_in.get_weather",
+      "service": "wttr_in",
+      "name": "get_weather",
+      "description": "Get current weather and forecast from wttr.in as JSON.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "location": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Optional wttr.in location such as London, muc, @example.com, 94107, or 30.25,120.21. If omitted, wttr.in infers the location from the connector or proxy IP rather than the end user."
+          },
+          "format": {
+            "type": "string",
+            "enum": [
+              "j1",
+              "j2"
+            ],
+            "description": "The wttr.in JSON format variant."
+          },
+          "lang": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Optional wttr.in localization language code such as en, fr, or zh."
+          },
+          "units": {
+            "type": "string",
+            "enum": [
+              "metric",
+              "us"
+            ],
+            "description": "Optional wttr.in unit mode."
+          }
+        },
+        "additionalProperties": false,
+        "description": "Input parameters for fetching wttr.in weather JSON."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "location": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The nearest area name returned by wttr.in."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "region": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The region returned by wttr.in."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "country": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The country returned by wttr.in."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "latitude": {
+                "anyOf": [
+                  {
+                    "type": "number",
+                    "description": "The numeric weather value after parsing the wttr.in string field."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "longitude": {
+                "anyOf": [
+                  {
+                    "type": "number",
+                    "description": "The numeric weather value after parsing the wttr.in string field."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "query": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The request query reported by wttr.in."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "type": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The request type reported by wttr.in."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "additionalProperties": false,
+            "description": "The normalized wttr.in location metadata."
+          },
+          "current": {
+            "type": "object",
+            "properties": {
+              "observationTime": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The observation time returned by wttr.in."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "description": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The current weather description."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "weatherCode": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The wttr.in weather condition code."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "temperatureC": {
+                "anyOf": [
+                  {
+                    "type": "number",
+                    "description": "The numeric weather value after parsing the wttr.in string field."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "temperatureF": {
+                "anyOf": [
+                  {
+                    "type": "number",
+                    "description": "The numeric weather value after parsing the wttr.in string field."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "feelsLikeC": {
+                "anyOf": [
+                  {
+                    "type": "number",
+                    "description": "The numeric weather value after parsing the wttr.in string field."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "feelsLikeF": {
+                "anyOf": [
+                  {
+                    "type": "number",
+                    "description": "The numeric weather value after parsing the wttr.in string field."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "humidity": {
+                "anyOf": [
+                  {
+                    "type": "number",
+                    "description": "The numeric weather value after parsing the wttr.in string field."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "cloudCover": {
+                "anyOf": [
+                  {
+                    "type": "number",
+                    "description": "The numeric weather value after parsing the wttr.in string field."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "pressureMb": {
+                "anyOf": [
+                  {
+                    "type": "number",
+                    "description": "The numeric weather value after parsing the wttr.in string field."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "precipitationMm": {
+                "anyOf": [
+                  {
+                    "type": "number",
+                    "description": "The numeric weather value after parsing the wttr.in string field."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "windSpeedKmph": {
+                "anyOf": [
+                  {
+                    "type": "number",
+                    "description": "The numeric weather value after parsing the wttr.in string field."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "windSpeedMiles": {
+                "anyOf": [
+                  {
+                    "type": "number",
+                    "description": "The numeric weather value after parsing the wttr.in string field."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "windDirectionDegree": {
+                "anyOf": [
+                  {
+                    "type": "number",
+                    "description": "The numeric weather value after parsing the wttr.in string field."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "windDirection16Point": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The 16-point wind direction label."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "uvIndex": {
+                "anyOf": [
+                  {
+                    "type": "number",
+                    "description": "The numeric weather value after parsing the wttr.in string field."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "visibilityKm": {
+                "anyOf": [
+                  {
+                    "type": "number",
+                    "description": "The numeric weather value after parsing the wttr.in string field."
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "iconUrl": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "description": "The wttr.in weather icon URL when present.",
+                    "format": "uri"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "additionalProperties": false,
+            "description": "A normalized wttr.in current weather summary."
+          },
+          "forecast": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "date": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "The forecast date.",
+                      "format": "date"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "minTempC": {
+                  "anyOf": [
+                    {
+                      "type": "number",
+                      "description": "The numeric weather value after parsing the wttr.in string field."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "maxTempC": {
+                  "anyOf": [
+                    {
+                      "type": "number",
+                      "description": "The numeric weather value after parsing the wttr.in string field."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "avgTempC": {
+                  "anyOf": [
+                    {
+                      "type": "number",
+                      "description": "The numeric weather value after parsing the wttr.in string field."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "minTempF": {
+                  "anyOf": [
+                    {
+                      "type": "number",
+                      "description": "The numeric weather value after parsing the wttr.in string field."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "maxTempF": {
+                  "anyOf": [
+                    {
+                      "type": "number",
+                      "description": "The numeric weather value after parsing the wttr.in string field."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "avgTempF": {
+                  "anyOf": [
+                    {
+                      "type": "number",
+                      "description": "The numeric weather value after parsing the wttr.in string field."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "uvIndex": {
+                  "anyOf": [
+                    {
+                      "type": "number",
+                      "description": "The numeric weather value after parsing the wttr.in string field."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "sunHours": {
+                  "anyOf": [
+                    {
+                      "type": "number",
+                      "description": "The numeric weather value after parsing the wttr.in string field."
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "astronomy": {
+                  "type": "object",
+                  "properties": {
+                    "sunrise": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "description": "The sunrise time returned by wttr.in."
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "sunset": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "description": "The sunset time returned by wttr.in."
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "moonrise": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "description": "The moonrise time returned by wttr.in."
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "moonset": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "description": "The moonset time returned by wttr.in."
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "moonPhase": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "description": "The moon phase name returned by wttr.in."
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "moonIllumination": {
+                      "anyOf": [
+                        {
+                          "type": "number",
+                          "description": "The numeric weather value after parsing the wttr.in string field."
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    }
+                  },
+                  "additionalProperties": false,
+                  "description": "The normalized wttr.in astronomy data for one forecast day."
+                }
+              },
+              "additionalProperties": false,
+              "description": "A normalized wttr.in daily forecast summary."
+            },
+            "description": "Normalized daily forecast summaries."
+          },
+          "raw": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true,
+            "description": "The raw wttr.in JSON response payload."
+          }
+        },
+        "additionalProperties": false,
+        "description": "The response returned by wttr.in weather JSON."
+      }
+    }
+  ]
+}

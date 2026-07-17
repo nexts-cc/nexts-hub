@@ -1,0 +1,622 @@
+{
+  "service": "discordbot",
+  "displayName": "Discord Bot",
+  "categories": [
+    "Communication",
+    "Developer Tools"
+  ],
+  "authTypes": [
+    "api_key"
+  ],
+  "auth": [
+    {
+      "type": "api_key",
+      "label": "Bot Token",
+      "placeholder": "Discord bot token",
+      "description": "Discord bot token sent as Authorization: Bot <token>. Create a bot in the Discord Developer Portal and invite it to the guilds you want to manage.",
+      "extraFields": []
+    }
+  ],
+  "homepageUrl": "https://discord.com/developers/docs",
+  "actions": [
+    {
+      "id": "discordbot.create_message",
+      "service": "discordbot",
+      "name": "create_message",
+      "description": "Create a Discord message in a channel.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "channel_id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "A Discord snowflake identifier."
+          },
+          "content": {
+            "type": "string",
+            "maxLength": 2000,
+            "description": "The message content."
+          },
+          "embeds": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": true,
+              "description": "A raw Discord API object."
+            },
+            "description": "The embeds to include.",
+            "maxItems": 10
+          },
+          "components": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": true,
+              "description": "A raw Discord API object."
+            },
+            "description": "The components to include.",
+            "maxItems": 5
+          },
+          "allowed_mentions": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true,
+            "description": "A raw Discord API object."
+          },
+          "message_reference": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true,
+            "description": "A raw Discord API object."
+          },
+          "tts": {
+            "type": "boolean",
+            "description": "Whether the message is a text-to-speech message."
+          },
+          "flags": {
+            "type": "integer",
+            "description": "The message flags."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "channel_id"
+        ],
+        "description": "Input parameters for creating a message."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true,
+            "description": "A raw Discord API object."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "message"
+        ],
+        "description": "The created message response."
+      }
+    },
+    {
+      "id": "discordbot.delete_message",
+      "service": "discordbot",
+      "name": "delete_message",
+      "description": "Delete a Discord message from a channel.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "channel_id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "A Discord snowflake identifier."
+          },
+          "message_id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "A Discord snowflake identifier."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "channel_id",
+          "message_id"
+        ],
+        "description": "Input parameters containing a channel id and message id."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "const": true,
+            "type": "boolean",
+            "description": "The success flag."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "success"
+        ],
+        "description": "The success response returned by the action."
+      }
+    },
+    {
+      "id": "discordbot.get_application",
+      "service": "discordbot",
+      "name": "get_application",
+      "description": "Get a Discord application by ID.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "application_id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "A Discord snowflake identifier."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "application_id"
+        ],
+        "description": "Input parameters containing an application id."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "description": "A raw Discord API object."
+      }
+    },
+    {
+      "id": "discordbot.get_bot_gateway",
+      "service": "discordbot",
+      "name": "get_bot_gateway",
+      "description": "Get the recommended Discord Gateway URL and sharding metadata for the bot.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false,
+        "description": "No input parameters are required."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "description": "A raw Discord API object."
+      }
+    },
+    {
+      "id": "discordbot.get_channel",
+      "service": "discordbot",
+      "name": "get_channel",
+      "description": "Get a Discord channel by ID.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "channel_id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "A Discord snowflake identifier."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "channel_id"
+        ],
+        "description": "Input parameters containing a channel id."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "description": "A raw Discord API object."
+      }
+    },
+    {
+      "id": "discordbot.get_gateway",
+      "service": "discordbot",
+      "name": "get_gateway",
+      "description": "Get the public Discord Gateway URL.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false,
+        "description": "No input parameters are required."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "The public gateway URL."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "url"
+        ],
+        "description": "The gateway URL response."
+      }
+    },
+    {
+      "id": "discordbot.get_guild",
+      "service": "discordbot",
+      "name": "get_guild",
+      "description": "Get a Discord guild by ID.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "guild_id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "A Discord snowflake identifier."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "guild_id"
+        ],
+        "description": "Input parameters containing a guild id."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "description": "A raw Discord API object."
+      }
+    },
+    {
+      "id": "discordbot.get_guild_widget_png",
+      "service": "discordbot",
+      "name": "get_guild_widget_png",
+      "description": "Get a Discord guild widget PNG.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "guild_id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "A Discord snowflake identifier."
+          },
+          "style": {
+            "type": "string",
+            "enum": [
+              "shield",
+              "banner1",
+              "banner2",
+              "banner3",
+              "banner4"
+            ],
+            "description": "The visual style to use for the guild widget PNG."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "guild_id"
+        ],
+        "description": "Input for retrieving a Discord guild widget PNG."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "filename": {
+            "type": "string",
+            "description": "The file name."
+          },
+          "mimeType": {
+            "type": "string",
+            "description": "The MIME type."
+          },
+          "sizeBytes": {
+            "type": "integer",
+            "description": "The file size in bytes."
+          },
+          "dataBase64": {
+            "type": "string",
+            "description": "The file contents encoded as base64."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "filename",
+          "mimeType",
+          "sizeBytes",
+          "dataBase64"
+        ],
+        "description": "A binary file payload encoded for transport."
+      }
+    },
+    {
+      "id": "discordbot.get_my_application",
+      "service": "discordbot",
+      "name": "get_my_application",
+      "description": "Get the Discord application associated with the configured bot token.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false,
+        "description": "No input parameters are required."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "description": "A raw Discord API object."
+      }
+    },
+    {
+      "id": "discordbot.get_public_keys",
+      "service": "discordbot",
+      "name": "get_public_keys",
+      "description": "Get Discord OAuth2 public keys.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false,
+        "description": "No input parameters are required."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "keys": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": true,
+              "description": "A raw Discord API object."
+            },
+            "description": "The public keys returned by the API."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "keys"
+        ],
+        "description": "The public key response payload."
+      }
+    },
+    {
+      "id": "discordbot.get_user",
+      "service": "discordbot",
+      "name": "get_user",
+      "description": "Get a Discord user by ID.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "user_id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "A Discord snowflake identifier."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "user_id"
+        ],
+        "description": "Input parameters containing a user id."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "description": "A raw Discord API object."
+      }
+    },
+    {
+      "id": "discordbot.list_guild_channels",
+      "service": "discordbot",
+      "name": "list_guild_channels",
+      "description": "List channels in a Discord guild.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "guild_id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "A Discord snowflake identifier."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "guild_id"
+        ],
+        "description": "Input parameters containing a guild id."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "channels": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": true,
+              "description": "A raw Discord API object."
+            },
+            "description": "The channels returned by Discord."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "channels"
+        ],
+        "description": "The guild channels response."
+      }
+    },
+    {
+      "id": "discordbot.list_guild_roles",
+      "service": "discordbot",
+      "name": "list_guild_roles",
+      "description": "List roles in a Discord guild.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "guild_id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "A Discord snowflake identifier."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "guild_id"
+        ],
+        "description": "Input parameters containing a guild id."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "roles": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": true,
+              "description": "A raw Discord API object."
+            },
+            "description": "The roles returned by Discord."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "roles"
+        ],
+        "description": "The guild roles response."
+      }
+    },
+    {
+      "id": "discordbot.list_messages",
+      "service": "discordbot",
+      "name": "list_messages",
+      "description": "List messages from a Discord channel.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "channel_id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "A Discord snowflake identifier."
+          },
+          "around": {
+            "type": "string",
+            "minLength": 1,
+            "description": "A Discord snowflake identifier."
+          },
+          "before": {
+            "type": "string",
+            "minLength": 1,
+            "description": "A Discord snowflake identifier."
+          },
+          "after": {
+            "type": "string",
+            "minLength": 1,
+            "description": "A Discord snowflake identifier."
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100,
+            "description": "The maximum number of messages to return."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "channel_id"
+        ],
+        "description": "Input parameters for listing channel messages."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "messages": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": true,
+              "description": "A raw Discord API object."
+            },
+            "description": "The messages returned by Discord."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "messages"
+        ],
+        "description": "The messages response."
+      }
+    },
+    {
+      "id": "discordbot.test_auth",
+      "service": "discordbot",
+      "name": "test_auth",
+      "description": "Check whether the configured Discord bot token can call the current application endpoint.",
+      "requiredScopes": [],
+      "providerPermissions": [],
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false,
+        "description": "No input parameters are required."
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "auth_ok": {
+            "type": "boolean",
+            "description": "Whether authentication succeeded."
+          },
+          "status_code": {
+            "type": "integer",
+            "description": "The HTTP status code returned by the test request."
+          },
+          "error_body": {
+            "type": "string",
+            "description": "The error body returned by the test request."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "auth_ok",
+          "status_code",
+          "error_body"
+        ],
+        "description": "The authentication test result."
+      }
+    }
+  ]
+}
