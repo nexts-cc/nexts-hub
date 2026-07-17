@@ -20,6 +20,7 @@ const services = selection.toLowerCase() === "all"
   ? available
   : [...new Set(selection.split(",").map((value) => value.trim()).filter(Boolean))].sort();
 for (const service of services) if (!availableSet.has(service)) throw new Error(`Unknown MCP adapter: ${service}`);
+const releasesByTag = await loadReleasesByTag();
 
 let completed = 0;
 let skipped = 0;
@@ -36,18 +37,17 @@ for (const service of services) {
   if (actualHash !== definition.sha256) throw new Error(`SHA-256 mismatch for ${service}`);
 
   const tag = `mcp-${service}-v${version}`;
-  const created = await github(`/repos/${repository}/releases`, {
-    method: "POST",
-    body: { tag_name: tag, target_commitish: target, name: `MCP ${service} v${version}`, body: `NEXTS-owned MCP adapter ${service} v${version}.`, draft: true, prerelease: false },
-    allow: [201, 422]
-  });
-  let release = created.data;
-  if (created.status === 422) {
-    const existing = await github(`/repos/${repository}/releases/tags/${encodeURIComponent(tag)}`);
-    release = existing.data;
-    const expected = new Map([[basename(artifactPath), statSync(artifactPath).size], ["catalog-release.json", statSync(releaseDefinitionPath).size]]);
+  let release = await selectRelease(tag, releasesByTag.get(tag) ?? []);
+  if (!release) {
+    release = (await github(`/repos/${repository}/releases`, {
+      method: "POST",
+      body: { tag_name: tag, target_commitish: target, name: `MCP ${service} v${version}`, body: `NEXTS-owned MCP adapter ${service} v${version}.`, draft: true, prerelease: false },
+      allow: [201]
+    })).data;
+  } else {
+    const expectedPackageName = basename(artifactPath);
     const present = new Map((release.assets ?? []).map((asset) => [asset.name, asset.size]));
-    if (!release.draft && [...expected].every(([name, size]) => present.get(name) === size)) {
+    if (!release.draft && present.get(expectedPackageName) === statSync(artifactPath).size && present.has("catalog-release.json")) {
       skipped += 1;
       completed += 1;
       if (completed === services.length || completed % 25 === 0) process.stdout.write(`Published ${completed}/${services.length} MCP releases (${skipped} already complete).\n`);
@@ -58,11 +58,50 @@ for (const service of services) {
 
   await ensureAsset(release, artifactPath, "application/octet-stream");
   await ensureAsset(release, releaseDefinitionPath, "application/json");
-  if (release.draft) await github(`/repos/${repository}/releases/${release.id}`, { method: "PATCH", body: { draft: false } });
+  if (release.draft) {
+    try {
+      await github(`/repos/${repository}/releases/${release.id}`, { method: "PATCH", body: { draft: false } });
+    } catch (error) {
+      const tagConflict = error?.status === 422 && error?.data?.errors?.some((item) => item?.field === "tag_name" && item?.code === "already_exists");
+      if (!tagConflict) throw error;
+      process.stderr.write(`Removing orphaned package tag ${tag} before publishing its recovered draft.\n`);
+      await github(`/repos/${repository}/git/refs/tags/${encodeURIComponent(tag)}`, { method: "DELETE", allow: [204] });
+      await github(`/repos/${repository}/releases/${release.id}`, { method: "PATCH", body: { draft: false } });
+    }
+  }
   completed += 1;
   if (completed === services.length || completed % 25 === 0) process.stdout.write(`Published ${completed}/${services.length} MCP releases (${skipped} already complete).\n`);
 }
 process.stdout.write(`Local MCP release upload complete: ${completed - skipped} published, ${skipped} already complete.\n`);
+
+async function loadReleasesByTag() {
+  const grouped = new Map();
+  for (let page = 1; ; page += 1) {
+    const releases = (await github(`/repos/${repository}/releases?per_page=100&page=${page}`)).data;
+    for (const release of releases) {
+      const values = grouped.get(release.tag_name) ?? [];
+      values.push(release);
+      grouped.set(release.tag_name, values);
+    }
+    if (releases.length < 100) return grouped;
+  }
+}
+
+async function selectRelease(tag, candidates) {
+  if (!candidates.length) return null;
+  const published = candidates.filter((release) => !release.draft);
+  if (published.length > 1) throw new Error(`Multiple published releases unexpectedly use ${tag}`);
+  const selected = published[0] ?? [...candidates].sort((left, right) =>
+    (right.assets?.length ?? 0) - (left.assets?.length ?? 0) || String(left.created_at).localeCompare(String(right.created_at))
+  )[0];
+  for (const duplicate of candidates) {
+    if (duplicate.id === selected.id) continue;
+    if (!duplicate.draft) throw new Error(`Refusing to delete a published duplicate for ${tag}`);
+    process.stderr.write(`Deleting duplicate draft release ${duplicate.id} for ${tag}.\n`);
+    await github(`/repos/${repository}/releases/${duplicate.id}`, { method: "DELETE", allow: [204] });
+  }
+  return selected;
+}
 
 async function ensureAsset(release, filePath, contentType) {
   const name = basename(filePath);
@@ -95,7 +134,12 @@ async function requestWithRetry(url, options, allowed) {
     if (allowed.includes(response.status)) return { status: response.status, data };
     const retryable = response.status === 429 || response.status >= 500 ||
       (response.status === 403 && (/rate limit|abuse|temporarily/i.test(String(data?.message ?? data)) || response.headers.get("retry-after")));
-    if (!retryable || attempt === 7) throw new Error(`GitHub request failed (${response.status}) ${url}: ${data?.message ?? data}`);
+    if (!retryable || attempt === 7) {
+      const error = new Error(`GitHub request failed (${response.status}) ${url}: ${JSON.stringify(data)}`);
+      error.status = response.status;
+      error.data = data;
+      throw error;
+    }
     const retryAfter = Number.parseInt(response.headers.get("retry-after") ?? "", 10);
     const resetAt = Number.parseInt(response.headers.get("x-ratelimit-reset") ?? "", 10) * 1000;
     const delay = Number.isFinite(retryAfter)
