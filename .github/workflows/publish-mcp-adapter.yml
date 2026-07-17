@@ -29,6 +29,12 @@ jobs:
       batches: ${{ steps.select.outputs.batches }}
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm run validate
       - id: select
         env:
           SELECTION: ${{ inputs.selection }}
@@ -52,7 +58,6 @@ jobs:
           node-version: 20
           cache: npm
       - run: npm ci
-      - run: npm run validate
       - name: Build MCP adapter batch
         env:
           SERVICES: ${{ matrix.batch.services }}
